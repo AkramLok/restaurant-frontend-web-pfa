@@ -12,6 +12,8 @@ import Profile from "./components/Profile";
 import BoardUser from "./components/BoardUser";
 import BoardModerator from "./components/BoardModerator";
 import BoardAdmin from "./components/BoardAdmin";
+import Restaurant from "./components/Restaurant";
+
 
 // import AuthVerify from "./common/AuthVerify";
 import EventBus from "./common/EventBus";
@@ -50,7 +52,7 @@ const App = () => {
     <div>
       <nav className="navbar navbar-expand navbar-dark bg-dark">
         <Link to={"/"} className="navbar-brand">
-          bezKoder
+          CafeResto
         </Link>
         <div className="navbar-nav mr-auto">
           <li className="nav-item">
@@ -58,7 +60,14 @@ const App = () => {
               Home
             </Link>
           </li>
-
+          {currentUser ? (
+          <li className="nav-item">
+            <Link to={"/restaurant"} className="nav-link">
+              Restaurant
+            </Link>
+          </li>
+          ):(null)
+          } 
           {showModeratorBoard && (
             <li className="nav-item">
               <Link to={"/mod"} className="nav-link">
@@ -121,6 +130,7 @@ const App = () => {
           <Route exact path="/login" element={<Login />} />
           <Route exact path="/register" element={<Register />} />
           <Route exact path="/profile" element={<Profile />} />
+          <Route exact path="/restaurant" element={<Restaurant />} />
           <Route path="/user" element={<BoardUser />} />
           <Route path="/mod" element={<BoardModerator />} />
           <Route path="/admin" element={<BoardAdmin />} />
