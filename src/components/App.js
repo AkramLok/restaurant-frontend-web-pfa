@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Routes, Route, Link } from "react-router-dom";
 //import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
+
 import AuthService from "./services/auth.service";
 
 import Login from "./components/Login";
@@ -16,7 +17,6 @@ import Footer from "./components/Footer";
 
 // import AuthVerify from "./common/AuthVerify";
 import EventBus from "./common/EventBus";
-import ProfileMore from "./pages/ProfileMore";
 
 const App = () => {
   const [showModeratorBoard, setShowModeratorBoard] = useState(false);
@@ -91,7 +91,7 @@ const App = () => {
         )} */}
       </ul>
       <div className="flex items-center">
-          {currentUser ? (
+        {currentUser ? (
           <div className="text-white text-sm mr-4">
             <Link to={"/profile"}>{currentUser.username}</Link>
           </div>
@@ -117,19 +117,20 @@ const App = () => {
       </div>
     </div>
   </nav>
+  <div className="container mx-auto mt-8">
     <Routes>
       <Route exact path={"/"} element={<Home />} />
       <Route exact path={"/home"} element={<Home />} />
       <Route exact path="/login" element={<Login />} />
       <Route exact path="/register" element={<Register />} />
-      <Route exact path="/profile" element={<ProfileMore />} />
+      <Route exact path="/profile" element={<Profile />} />
       <Route exact path="/restaurant" element={<NewRestaurant />} />
       <Route path="/user" element={<BoardUser />} />
       <Route path="/mod" element={<BoardModerator />} />
       <Route path="/admin" element={<BoardAdmin />} />
     </Routes>
+  </div>
   <Footer/>
-
 </div>
 
   );

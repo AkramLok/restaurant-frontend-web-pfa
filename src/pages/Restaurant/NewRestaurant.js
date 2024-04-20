@@ -92,13 +92,7 @@ const Restaurant = () => {
   //     .finally(() => setLoading(false));
   // };
   return (
-
-<div className="container mx-auto">
-  <div className="max-w-lg mx-auto bg-white dark:bg-gray-800 rounded-lg shadow-md px-8 py-10">
-    <h3 className="text-xl font-bold text-center text-gray-700 dark:text-gray-200">This is my business !</h3>
-  </div>
-</div>
-
+    <main></main>
   );
 };
 
