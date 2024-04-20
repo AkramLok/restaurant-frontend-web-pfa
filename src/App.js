@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Routes, Route, Link } from "react-router-dom";
-import "bootstrap/dist/css/bootstrap.min.css";
+//import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 
 import AuthService from "./services/auth.service";
@@ -12,7 +12,7 @@ import Profile from "./components/Profile";
 import BoardUser from "./components/BoardUser";
 import BoardModerator from "./components/BoardModerator";
 import BoardAdmin from "./components/BoardAdmin";
-import Restaurant from "./components/Restaurant";
+import NewRestaurant from "./pages/Restaurant/NewRestaurant";
 
 
 // import AuthVerify from "./common/AuthVerify";
@@ -50,95 +50,89 @@ const App = () => {
 
   return (
     <div>
-      <nav className="navbar navbar-expand navbar-dark bg-dark">
-        <Link to={"/"} className="navbar-brand">
-          CafeResto
-        </Link>
-        <div className="navbar-nav mr-auto">
-          <li className="nav-item">
-            <Link to={"/home"} className="nav-link">
-              Home
-            </Link>
-          </li>
-          {currentUser ? (
-          <li className="nav-item">
-            <Link to={"/restaurant"} className="nav-link">
+  <nav className="bg-gray-900">
+    <div className="container mx-auto px-4 py-6 flex justify-between items-center">
+      <Link to={"/"} className="text-white text-2xl font-bold">
+        CafeResto
+      </Link>
+      <ul className="flex space-x-4">
+        <li>
+          <Link to={"/home"} className="text-white hover:text-gray-300">
+            Home
+          </Link>
+        </li>
+        {currentUser && (
+          <li>
+            <Link to={"/restaurant"} className="text-white hover:text-gray-300">
               Restaurant
             </Link>
           </li>
-          ):(null)
-          } 
-          {showModeratorBoard && (
-            <li className="nav-item">
-              <Link to={"/mod"} className="nav-link">
-                Moderator Board
-              </Link>
-            </li>
-          )}
-
-          {showAdminBoard && (
-            <li className="nav-item">
-              <Link to={"/admin"} className="nav-link">
-                Admin Board
-              </Link>
-            </li>
-          )}
-
-          {currentUser && (
-            <li className="nav-item">
-              <Link to={"/user"} className="nav-link">
-                User
-              </Link>
-            </li>
-          )}
-        </div>
-
+        )}
+        {showModeratorBoard && (
+          <li>
+            <Link to={"/mod"} className="text-white hover:text-gray-300">
+              Moderator Board
+            </Link>
+          </li>
+        )}
+        {showAdminBoard && (
+          <li>
+            <Link to={"/admin"} className="text-white hover:text-gray-300">
+              Admin Board
+            </Link>
+          </li>
+        )}
+        {currentUser && (
+          <li>
+            <Link to={"/user"} className="text-white hover:text-gray-300">
+              User
+            </Link>
+          </li>
+        )}
+      </ul>
+      <div className="flex items-center">
         {currentUser ? (
-          <div className="navbar-nav ml-auto">
-            <li className="nav-item">
-              <Link to={"/profile"} className="nav-link">
-                {currentUser.username}
-              </Link>
-            </li>
-            <li className="nav-item">
-              <a href="/login" className="nav-link" onClick={logOut}>
-                LogOut
-              </a>
-            </li>
+          <div className="text-white text-sm mr-4">
+            <Link to={"/profile"}>{currentUser.username}</Link>
           </div>
         ) : (
-          <div className="navbar-nav ml-auto">
-            <li className="nav-item">
-              <Link to={"/login"} className="nav-link">
+          <ul className="flex space-x-4">
+            <li>
+              <Link to={"/login"} className="text-white hover:text-gray-300">
                 Login
               </Link>
             </li>
-
-            <li className="nav-item">
-              <Link to={"/register"} className="nav-link">
+            <li>
+              <Link to={"/register"} className="text-white hover:text-gray-300">
                 Sign Up
               </Link>
             </li>
-          </div>
+          </ul>
         )}
-      </nav>
-
-      <div className="container mt-3">
-        <Routes>
-          <Route exact path={"/"} element={<Home />} />
-          <Route exact path={"/home"} element={<Home />} />
-          <Route exact path="/login" element={<Login />} />
-          <Route exact path="/register" element={<Register />} />
-          <Route exact path="/profile" element={<Profile />} />
-          <Route exact path="/restaurant" element={<Restaurant />} />
-          <Route path="/user" element={<BoardUser />} />
-          <Route path="/mod" element={<BoardModerator />} />
-          <Route path="/admin" element={<BoardAdmin />} />
-        </Routes>
+        {currentUser && (
+          <a href="/login" className="text-white hover:text-gray-300" onClick={logOut}>
+            LogOut
+          </a>
+        )}
       </div>
-
-      {/* <AuthVerify logOut={logOut}/> */}
     </div>
+  </nav>
+
+  <div className="container mx-auto mt-8">
+    <Routes>
+      <Route exact path={"/"} element={<Home />} />
+      <Route exact path={"/home"} element={<Home />} />
+      <Route exact path="/login" element={<Login />} />
+      <Route exact path="/register" element={<Register />} />
+      <Route exact path="/profile" element={<Profile />} />
+      <Route exact path="/restaurant" element={<NewRestaurant />} />
+      <Route path="/user" element={<BoardUser />} />
+      <Route path="/mod" element={<BoardModerator />} />
+      <Route path="/admin" element={<BoardAdmin />} />
+    </Routes>
+  </div>
+</div>
+
   );
 };
 
