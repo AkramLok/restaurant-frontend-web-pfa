@@ -6,6 +6,7 @@ import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
 import RestService from "../../services/rest.service";
+import AuthService from "../../services/auth.service";
 import { isEmail } from "validator";
 
 const required = (value) => {
@@ -18,7 +19,26 @@ const required = (value) => {
   }
 };
 
+const validEmail = (value) => {
+  if (!isEmail(value)) {
+    return (
+      <div className="text-sm text-gray-500 dark:text-gray-300">
+        This is not a valid email.
+      </div>
+    );
+  }
+};
+
 const Restaurant = () => {
+  const [currentUser, setCurrentUser] = useState(undefined);
+
+  useEffect(() => {
+    const user = AuthService.getCurrentUser();
+
+    if (user) {
+      setCurrentUser(user);
+    }
+  }, []);
   const form = useRef();
   const checkBtn = useRef();
 
@@ -70,7 +90,7 @@ const Restaurant = () => {
     form.current.validateAll();
 
     if (checkBtn.current.context._errors.length === 0) {
-      RestService.add(email, location, name, openingHours, phone, status).then(
+      RestService.add(email, location, name, openingHours, phone, status, currentUser.email).then(
         (response) => {
           setMessage(response.data.message);
           setSuccessful(true);
@@ -105,6 +125,7 @@ const Restaurant = () => {
               name="name"
               id="name"
               placeholder="Name"
+              value={name} onChange={onChangeName} validations={[required]}
               class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
             />
           </div>
@@ -115,10 +136,11 @@ const Restaurant = () => {
             >
               Email Address
             </label>
-            <input
+            <Input
               type="email"
               name="email"
               id="email"
+              value={email} onChange={onChangeEmail} validations={[required, validEmail]}
               placeholder="example@domain.com"
               class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
             />
@@ -130,10 +152,11 @@ const Restaurant = () => {
             >
               Location
             </label>
-            <input
+            <Input
               type="text"
               name="location"
               id="location"
+              value={location} onChange={onChangeLocation} validations={[required]}
               placeholder="Enter your restaurant/coffee shop location"
               class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
             />
@@ -148,8 +171,9 @@ const Restaurant = () => {
             </label>
             <input
               type="text"
-              name="opening_hours"
-              id="opening_hours"
+              name="openingHours"
+              id="openingHours"
+              value={openingHours} onChange={onChangeOpeningHours} validations={[required]}
               placeholder="Enter your restaurant/coffee shop opening hours"
               class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
             />
@@ -166,6 +190,7 @@ const Restaurant = () => {
               type="text"
               name="phone"
               id="phone"
+              value={phone} onChange={onChangePhone} validations={[required]}
               placeholder="Enter your restaurant/coffee shop phone number"
               class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
             />
@@ -182,6 +207,7 @@ const Restaurant = () => {
               type="text"
               name="status"
               id="status"
+              value={status} onChange={onChangeStatus} validations={[required]}
               placeholder="Enter your Restaurant/Coffee shop status"
               class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
             />
@@ -189,15 +215,31 @@ const Restaurant = () => {
 
           <div class="mb-5">
             <label for="image" class="mb-3 block text-base font-medium text-[#07074D]">Image</label>
-            <input type="file" class="block w-full px-3 py-2 mt-2 text-sm text-[#6B7280] bg-white border border-[#e0e0e0] rounded-md file:bg-gray-200 file:text-gray-700 file:text-sm file:px-4 file:py-1 file:border-none file:rounded-full file:bg-gray-800 file:text-gray-200 text-gray-300 placeholder-gray-400/70 placeholder-gray-500 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 focus:border-[#6A64F1] focus:shadow-md" />
+            <input type="file" class="block w-full px-3 py-2 mt-2 text-sm text-[#6B7280] bg-white border border-[#e0e0e0] rounded-md file:bg-gray-200 file:text-white file:text-sm file:px-4 file:py-1 file:border-none file:rounded-full file:bg-gray-800 file:text-gray-200 text-gray-300 placeholder-gray-400/70 placeholder-gray-500 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 focus:border-[#6A64F1] focus:shadow-md" />
           </div>
 
+
+      {message && (
+      <div className="text-sm text-center text-gray-700 dark:text-gray-200 mb-8">
+        <div
+          className={`${
+            successful ? "bg-green-500" : "bg-red-500"
+          } text-white font-bold rounded-lg border border-white shadow-lg p-5`}
+          role="alert"
+        >
+          {message}
+        </div>
+      </div>
+    )}
+          <CheckButton className="text-sm" style={{ display: "none" }} ref={checkBtn} />
           <div>
             <button
+              type="submit"
               class="hover:shadow-form rounded-md bg-[#6A64F1] py-3 px-8 text-base font-semibold text-white outline-none"
             >
               Submit
             </button>
+
           </div>
         </Form>
       </div>

@@ -4,7 +4,7 @@ import EventBus from "../common/EventBus";
 import AuthService from "../services/auth.service";
 
 const Navbar = () => {
-    const [showModeratorBoard, setShowModeratorBoard] = useState(false);
+  const [showModeratorBoard, setShowModeratorBoard] = useState(false);
   const [showAdminBoard, setShowAdminBoard] = useState(false);
   const [currentUser, setCurrentUser] = useState(undefined);
 
