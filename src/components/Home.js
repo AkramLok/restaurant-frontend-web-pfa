@@ -3,6 +3,8 @@ import React, { useState, useEffect } from "react";
 import UserService from "../services/user.service";
 import Header from "./Header";
 import Blog from "./Blog";
+import Blog2 from "./Blog2";
+
 const Home = () => {
   const [content, setContent] = useState("");
 
@@ -39,6 +41,7 @@ const Home = () => {
         </div>
       </section>
       <Blog/>
+      <Blog2/>
     </div>
 
   );

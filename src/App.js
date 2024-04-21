@@ -16,7 +16,9 @@ import Footer from "./components/Footer";
 
 // import AuthVerify from "./common/AuthVerify";
 import EventBus from "./common/EventBus";
-import ProfileMore from "./pages/ProfileMore";
+import ProfileMore from "./components/ProfileMore";
+import Navbar from "./components/Navbar";
+import Bar from "./components/Bar";
 
 const App = () => {
   const [showModeratorBoard, setShowModeratorBoard] = useState(false);
@@ -50,87 +52,20 @@ const App = () => {
 
   return (
     <div>
-  <nav className="bg-gray-900">
-    <div className="container mx-auto px-4 py-6 flex justify-between items-center">
-      <Link to={"/"} className="text-white text-2xl font-bold">
-        CafeResto
-      </Link>
-      <ul className="flex space-x-4">
-        <li>
-          <Link to={"/home"} className="text-white hover:text-gray-300">
-            Home
-          </Link>
-        </li>
-        {currentUser && (
-          <li>
-            <Link to={"/restaurant"} className="text-white hover:text-gray-300">
-              Restaurant
-            </Link>
-          </li>
-        )}
-        {/* {showModeratorBoard && (
-          <li>
-            <Link to={"/mod"} className="text-white hover:text-gray-300">
-              Moderator Board
-            </Link>
-          </li>
-        )}
-        {showAdminBoard && (
-          <li>
-            <Link to={"/admin"} className="text-white hover:text-gray-300">
-              Admin Board
-            </Link>
-          </li>
-        )}
-        {currentUser && (
-          <li>
-            <Link to={"/user"} className="text-white hover:text-gray-300">
-              User
-            </Link>
-          </li>
-        )} */}
-      </ul>
-      <div className="flex items-center">
-          {currentUser ? (
-          <div className="text-white text-sm mr-4">
-            <Link to={"/profile"}>{currentUser.username}</Link>
-          </div>
-        ) : (
-          <ul className="flex space-x-4">
-            <li>
-              <Link to={"/login"} className="text-white hover:text-gray-300">
-                Login
-              </Link>
-            </li>
-            <li>
-              <Link to={"/register"} className="text-white hover:text-gray-300">
-                Sign Up
-              </Link>
-            </li>
-          </ul>
-        )}
-        {currentUser && (
-          <a href="/login" className="text-white hover:text-gray-300" onClick={logOut}>
-            LogOut
-          </a>
-        )}
-      </div>
+      <Navbar />
+        <Routes>
+          <Route exact path="/" element={<Home />} />
+          <Route exact path="/home" element={<Home />} />
+          <Route exact path="/login" element={<Login />} />
+          <Route exact path="/register" element={<Register />} />
+          <Route exact path="/profile" element={<ProfileMore />} />
+          <Route exact path="/restaurant" element={<NewRestaurant />} />
+          <Route path="/user" element={<BoardUser />} />
+          <Route path="/mod" element={<BoardModerator />} />
+          <Route path="/admin" element={<BoardAdmin />} />
+        </Routes>
+      <Footer />
     </div>
-  </nav>
-    <Routes>
-      <Route exact path={"/"} element={<Home />} />
-      <Route exact path={"/home"} element={<Home />} />
-      <Route exact path="/login" element={<Login />} />
-      <Route exact path="/register" element={<Register />} />
-      <Route exact path="/profile" element={<ProfileMore />} />
-      <Route exact path="/restaurant" element={<NewRestaurant />} />
-      <Route path="/user" element={<BoardUser />} />
-      <Route path="/mod" element={<BoardModerator />} />
-      <Route path="/admin" element={<BoardAdmin />} />
-    </Routes>
-  <Footer/>
-
-</div>
 
   );
 };
