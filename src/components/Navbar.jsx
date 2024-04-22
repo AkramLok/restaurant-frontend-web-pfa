@@ -33,7 +33,7 @@ const Navbar = () => {
     setCurrentUser(undefined);
   };
     return (
-      <nav className="bg-gray-900">
+      <nav style={{ backgroundColor: '#005055' }}>
     <div className="container mx-auto px-4 py-6 flex justify-between items-center">
       <Link to={"/"} className="text-white text-2xl font-bold">
         RestCoffee
@@ -46,8 +46,29 @@ const Navbar = () => {
         </li>
         {currentUser && (
           <li>
-            <Link to={"/restaurant"} className="text-white hover:text-gray-300">
-              Restaurant
+            <Link to={"/restaurant/new"} className="text-white hover:text-gray-300">
+              RestaurantAdd
+            </Link>
+          </li>
+        )}
+        {currentUser && (
+          <li>
+            <Link to={"/restaurant/all"} className="text-white hover:text-gray-300">
+              RestaurantShow
+            </Link>
+          </li>
+        )}
+        {currentUser && (
+          <li>
+            <Link to={"/categorie/new"} className="text-white hover:text-gray-300">
+              CategorieAdd
+            </Link>
+          </li>
+        )}
+        {currentUser && (
+          <li>
+            <Link to={"/categorie/all"} className="text-white hover:text-gray-300">
+              CategorieShow
             </Link>
           </li>
         )}

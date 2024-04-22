@@ -3,9 +3,30 @@ label {
   margin-top: 10px;
 }
 
+
 .card-container.card {
   max-width: 350px !important;
   padding: 40px 40px;
+}
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+
+@media screen and (min-width: 768px) {
+  .main-content {
+    justify-content: space-between;
+  }
 }
 
 .card {
