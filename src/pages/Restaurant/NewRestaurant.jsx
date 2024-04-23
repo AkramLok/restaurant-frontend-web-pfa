@@ -5,7 +5,7 @@ import productPlaceholder from "../../assets/images/placeholder-image.webp";
 import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
-import RestService from "../../services/rest.service";
+import RestService from "../../services/restaurant.service";
 import AuthService from "../../services/auth.service";
 import { isEmail } from "validator";
 
@@ -90,7 +90,7 @@ const Restaurant = () => {
     form.current.validateAll();
 
     if (checkBtn.current.context._errors.length === 0) {
-      RestService.add(email, location, name, openingHours, phone, status, currentUser.email).then(
+      RestService.addRestaurant(email, location, name, openingHours, phone, status, currentUser.email).then(
         (response) => {
           setMessage(response.data.message);
           setSuccessful(true);
@@ -110,13 +110,13 @@ const Restaurant = () => {
     }
   };
   return (
-    <div class="flex items-center justify-center p-12">
+    <div class="flex items-center justify-center p-5">
       <div class="mx-auto w-full max-w-[550px]">
       <Form onSubmit={handleRestaurant} ref={form}>
           <div class="mb-5">
             <label
               for="name"
-              class="mb-3 block text-base font-medium text-[#07074D]"
+              class="mb-3 block text-white font-medium text-[#07074D]"
             >
               Restaurant/Coffee Shop Name
             </label>
@@ -132,7 +132,7 @@ const Restaurant = () => {
           <div class="mb-5">
             <label
               for="email"
-              class="mb-3 block text-base font-medium text-[#07074D]"
+              class="mb-3 block text-white font-medium text-[#07074D]"
             >
               Email Address
             </label>
@@ -148,7 +148,7 @@ const Restaurant = () => {
           <div class="mb-5">
             <label
               for="location"
-              class="mb-3 block text-base font-medium text-[#07074D]"
+              class="mb-3 block text-white font-medium text-[#07074D]"
             >
               Location
             </label>
@@ -165,7 +165,7 @@ const Restaurant = () => {
           <div class="mb-5">
             <label
               for="opening_hours"
-              class="mb-3 block text-base font-medium text-[#07074D]"
+              class="mb-3 block text-white font-medium text-[#07074D]"
             >
               Opening Hours
             </label>
@@ -182,7 +182,7 @@ const Restaurant = () => {
           <div class="mb-5">
             <label
               for="phone"
-              class="mb-3 block text-base font-medium text-[#07074D]"
+              class="mb-3 block text-white font-medium text-[#07074D]"
             >
               Phone
             </label>
@@ -199,7 +199,7 @@ const Restaurant = () => {
           <div class="mb-5">
             <label
               for="status"
-              class="mb-3 block text-base font-medium text-[#07074D]"
+              class="mb-3 block text-white font-medium text-[#07074D]"
             >
               Status
             </label>
@@ -213,8 +213,8 @@ const Restaurant = () => {
             />
           </div>
 
-          <div class="mb-5">
-            <label for="image" class="mb-3 block text-base font-medium text-[#07074D]">Image</label>
+          <div class="mb-10">
+            <label for="image" class="mb-3 block text-white font-medium text-[#07074D]">Image</label>
             <input type="file" class="block w-full px-3 py-2 mt-2 text-sm text-[#6B7280] bg-white border border-[#e0e0e0] rounded-md file:bg-gray-200 file:text-white file:text-sm file:px-4 file:py-1 file:border-none file:rounded-full file:bg-gray-800 file:text-gray-200 text-gray-300 placeholder-gray-400/70 placeholder-gray-500 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 focus:border-[#6A64F1] focus:shadow-md" />
           </div>
 
@@ -235,7 +235,7 @@ const Restaurant = () => {
           <div>
             <button
               type="submit"
-              class="hover:shadow-form rounded-md bg-[#6A64F1] py-3 px-8 text-base font-semibold text-white outline-none"
+              class="hover:shadow-form rounded-md bg-[#005055] py-3 px-8 text-base font-semibold text-white outline-none"
             >
               Submit
             </button>

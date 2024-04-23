@@ -13,16 +13,16 @@ import BoardModerator from "./components/BoardModerator";
 import BoardAdmin from "./components/BoardAdmin";
 import NewRestaurant from "./pages/Restaurant/NewRestaurant";
 import NewCategorie from "./pages/Categories/NewCategorie";
+import NewProduct from "./pages/Products/NewProduct";
 import GetAllRestaurants from "./pages/Restaurant/GetAllRestaurants";
 import GetAllCategories from "./pages/Categories/GetAllCategories";
+import GetAllProducts from "./pages/Products/GetAllProducts";
 import Footer from "./components/Footer";
 import EventBus from "./common/EventBus";
 import ProfileMore from "./components/ProfileMore";
 import Navbar from "./components/Navbar";
 import Bar from "./components/Bar";
 import { faMoon } from "@fortawesome/free-regular-svg-icons";
-import { IoMoon } from "react-icons/io5";
-import { IoSunny } from "react-icons/io5";
 import { IconContext } from "react-icons";
 
 const App = () => {
@@ -53,19 +53,10 @@ const App = () => {
     setShowAdminBoard(false);
     setCurrentUser(undefined);
   };
-  const [dark, setDark] = React.useState(false);
 
-  const darkModeHandler = () => {
-    setDark(!dark);
-    document.body.classList.toggle("dark");
-  };
   return (
     <div>
       <Navbar />
-      <button onClick={() => darkModeHandler()}>
-        {dark && <IoSunny />}
-        {!dark && <IoMoon />}
-      </button>
       <Routes>
         <Route exact path="/" element={<Home />} />
         <Route exact path="/home" element={<Home />} />
@@ -76,6 +67,8 @@ const App = () => {
         <Route exact path="/restaurant/all" element={<GetAllRestaurants />} />
         <Route exact path="/categorie/new" element={<NewCategorie />} />
         <Route exact path="/categorie/all" element={<GetAllCategories />} />
+        <Route exact path="/product/new" element={<NewProduct />} />
+        <Route exact path="/product/all" element={<GetAllProducts />} />
         <Route path="/user" element={<BoardUser />} />
         <Route path="/mod" element={<BoardModerator />} />
         <Route path="/admin" element={<BoardAdmin />} />

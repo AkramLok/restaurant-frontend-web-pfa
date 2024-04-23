@@ -2,14 +2,14 @@ import axios from "axios";
 
 const API_URL = "http://localhost:3000/api/restaurants/";
 
-const add = (
+const addRestaurant = (
   email,
   location,
   name,
   openingHours,
   phone,
   status,
-  ownerEmail
+  ownerId
 ) => {
   const user = JSON.parse(localStorage.getItem("user"));
   const token = user.accessToken;
@@ -31,28 +31,15 @@ const add = (
       openingHours,
       phone,
       status,
-      ownerEmail,
+      ownerId,
     },
     config
   );
 };
 
-const getAll = () => {
-  const user = JSON.parse(localStorage.getItem("user"));
-  const token = user.accessToken;
-
-  const config = {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  };
-
-  return axios.get(API_URL, config);
-};
-
 const RestService = {
-  add,
-  getAll,
+  addRestaurant,
+  //getAllRestaurants,
 };
 
 export default RestService;

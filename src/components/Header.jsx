@@ -39,7 +39,7 @@ const Header = () => {
             </span>{' '}
             quick, brown fox jumps over a lazy dog
           </h2>
-          <p className="text-white text-gray-700 md:text-lg">
+          <p className="text-white md:text-lg">
             Sed ut perspiciatis unde omnis iste natus error sit voluptatem
             accusantium doloremque rem aperiam, eaque ipsa quae.
           </p>
@@ -61,7 +61,7 @@ const Header = () => {
             Subscribe
           </button>
         </form>
-        <p className="max-w-md mb-10 text-xs text-gray-600 sm:text-sm md:text-center">
+        <p className="max-w-md mb-10 text-xs text-white sm:text-sm md:text-center">
           Sed ut perspiciatis unde omnis iste natus error sit voluptatem
           accusantium doloremque laudantium.
         </p>

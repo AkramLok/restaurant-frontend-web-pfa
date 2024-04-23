@@ -4,7 +4,7 @@ import React from "react";
 const Footer = () => {
     
   return (
-<footer class="text-gray-600 body-font">
+<footer class="text-gray-600 bg-white dark:bg-opacity-25 dark:bg-gray-400 bg-opacity-15 backdrop-filter backdrop-blur-md body-font">
   <div class="container px-5 py-24 mx-auto">
     <div class="flex flex-wrap md:text-left text-center order-first">
       <div class="lg:w-1/4 md:w-1/2 w-full px-4">
@@ -81,7 +81,7 @@ const Footer = () => {
         </svg>
         <span class="ml-3 text-xl">Tailblocks</span>
       </a>
-      <p class="text-sm text-gray-500 sm:ml-6 sm:mt-0 mt-4">© 2020 Tailblocks —
+      <p class="text-sm text-gray-500 sm:ml-6 sm:mt-0 mt-4">© 2024 Tailblocks —
         <a href="https://twitter.com/knyttneve" rel="noopener noreferrer" class="text-gray-600 ml-1" target="_blank">@knyttneve</a>
       </p>
       <span class="inline-flex sm:ml-auto sm:mt-0 mt-4 justify-center sm:justify-start">

@@ -134,7 +134,7 @@ const Register = (props) => {
   };
 
   return (
-    <div className="max-w-lg mx-auto bg-white dark:bg-gray-800 rounded-lg shadow-md px-8 py-10 flex flex-col items-center">
+    <div className="max-w-lg mx-auto m-20 bg-opacity-45 backdrop-filter backdrop-blur-md bg-white dark:bg-gray-700 rounded-lg shadow-md px-8 py-10 flex flex-col items-center">
       <img
         src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
         alt="profile-img"
@@ -161,7 +161,7 @@ const Register = (props) => {
                 type="text"
                 id="firstName"
                 name="firstName"
-                className="w-full px-3 dark:text-gray-200 dark:bg-gray-900 py-2 rounded-md border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                className="w-full px-3 dark:text-gray-200 dark:bg-gray-600 py-2 rounded-md border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-1 focus:ring-blue-500"
                 value={firstName}
                 onChange={onChangeFirstName}
                 validations={[required]}
@@ -177,7 +177,7 @@ const Register = (props) => {
                 type="text"
                 id="lastName"
                 name="lastName"
-                className="w-full px-3 dark:text-gray-200 dark:bg-gray-900 py-2 rounded-md border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                className="w-full px-3 dark:text-gray-200 dark:bg-gray-600 py-2 rounded-md border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-1 focus:ring-blue-500"
                 value={lastName}
                 onChange={onChangeLastName}
                 validations={[required]}
@@ -193,7 +193,7 @@ const Register = (props) => {
                 type="text"
                 id="username"
                 name="username"
-                className="w-full px-3 dark:text-gray-200 dark:bg-gray-900 py-2 rounded-md border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                className="w-full px-3 dark:text-gray-200 dark:bg-gray-600 py-2 rounded-md border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-1 focus:ring-blue-500"
                 value={username}
                 onChange={onChangeUsername}
                 validations={[required, vusername]}
@@ -208,7 +208,7 @@ const Register = (props) => {
               <Input
                 type="text"
                 id="email"
-                className="w-full px-3 dark:text-gray-200 dark:bg-gray-900 py-2 rounded-md border border-gray-300 dark:border-gray-700 
+                className="w-full px-3 dark:text-gray-200 dark:bg-gray-600 py-2 rounded-md border border-gray-300 dark:border-gray-700 
           focus:outline-none focus:ring-1 focus:ring-blue-500"
                 name="email"
                 value={email}
@@ -225,7 +225,7 @@ const Register = (props) => {
               <Input
                 type="password"
                 id="password"
-                className="w-full px-3 dark:text-gray-200 dark:bg-gray-900 py-2 rounded-md border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                className="w-full px-3 dark:text-gray-200 dark:bg-gray-600 py-2 rounded-md border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-1 focus:ring-blue-500"
                 name="password"
                 value={password}
                 onChange={onChangePassword}
@@ -242,7 +242,7 @@ const Register = (props) => {
                 type="text"
                 id="phone"
                 name="phone"
-                className="w-full px-3 dark:text-gray-200 dark:bg-gray-900 py-2 rounded-md border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                className="w-full px-3 dark:text-gray-200 dark:bg-gray-600 py-2 rounded-md border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-1 focus:ring-blue-500"
                 value={phone}
                 onChange={onChangePhone}
                 validations={[required]}
@@ -258,7 +258,7 @@ const Register = (props) => {
                 type="text"
                 id="address"
                 name="address"
-                className="w-full px-3 dark:text-gray-200 dark:bg-gray-900 py-2 rounded-md border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                className="w-full px-3 dark:text-gray-200 dark:bg-gray-600 py-2 rounded-md border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-1 focus:ring-blue-500"
                 value={address}
                 onChange={onChangeAddress}
                 validations={[required]}
