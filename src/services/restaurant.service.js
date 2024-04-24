@@ -9,7 +9,7 @@ const addRestaurant = (
   openingHours,
   phone,
   status,
-  ownerId
+  ownerEmail
 ) => {
   const user = JSON.parse(localStorage.getItem("user"));
   const token = user.accessToken;
@@ -31,15 +31,26 @@ const addRestaurant = (
       openingHours,
       phone,
       status,
-      ownerId,
+      ownerEmail,
     },
     config
   );
 };
 
+const getRestaurantsByOwner = (ownerId) => {
+  const user = JSON.parse(localStorage.getItem("user"));
+  const token = user.accessToken;
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+  return axios.get(API_URL + "all/" + ownerId, config);
+};
+
 const RestService = {
   addRestaurant,
-  //getAllRestaurants,
+  getRestaurantsByOwner,
 };
 
 export default RestService;

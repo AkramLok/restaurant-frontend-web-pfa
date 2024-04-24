@@ -1,17 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Skeleton from './Skeleton';
 import CategoryCard from './CategoryCard';
-import Pagination from './Pagination';
+import Pagination from '../../components/Pagination';
 import Select from '../../components/Select';
+import AuthService from "../../services/auth.service";
+import RestOwnerService from '../../services/restaurant-owner.service';
+import RestService from '../../services/restaurant.service';
 
 
-const restaurants = [
-  { label: 'Choose a restaurant', value: '' },
-  { label: 'United States', value: 'US' },
-  { label: 'Canada', value: 'CA' },
-  { label: 'France', value: 'FR' },
-  { label: 'Germany', value: 'DE' }
-];
+// const restaurants = [
+//   { label: 'Choose a restaurant', value: '' },
+//   { label: 'United States', value: 'US' },
+//   { label: 'Canada', value: 'CA' },
+//   { label: 'France', value: 'FR' },
+//   { label: 'Germany', value: 'DE' }
+// ];
 
 const categoriesData = [
     { id: 1, name: 'Category 1', description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi veniam eveniet quod asperiores corrupti in fugiat molestias dolores doloribus ducimus, modi, cum earum omnis est alias quos dolorem! Pariatur, ipsum." },
@@ -68,10 +71,15 @@ const categoriesData = [
   ];
 
 
+
+  
 const GetAllCategories = () => {
   const itemsPerPage = 12;
   const totalPages = Math.ceil(categoriesData.length / itemsPerPage);
   const [currentPage, setCurrentPage] = useState(1);
+  const [ownerWithRestaurants, setOwnerWithRestaurants] = useState(null);
+  const [loading, setLoading] = useState(true);
+
 
   const getCurrentCategories = () => {
     const startIndex = (currentPage - 1) * itemsPerPage;
@@ -83,11 +91,54 @@ const GetAllCategories = () => {
     setCurrentPage(pageNumber);
   };
 
+  useEffect(() => {
+    const fetchOwnerWithRestaurants = async () => {
+      try {
+        const user = AuthService.getCurrentUser();
+        if (user) {
+          // Fetch all owners
+          const response = await RestOwnerService.getAllOwners();
+          const allOwners = response.data;
+
+          // Filter the owner with the same email as in localStorage
+          const filteredOwner = allOwners.find(owner => owner.email === user.email);
+
+          if (filteredOwner) {
+            // Fetch restaurants of the filtered owner
+            const restaurantsResponse = await RestService.getRestaurantsByOwner(filteredOwner.id);
+            const ownerWithRestaurantsData = {
+              owner: filteredOwner,
+              restaurants: restaurantsResponse.data
+            };
+            setOwnerWithRestaurants(ownerWithRestaurantsData);
+          }
+          
+          setLoading(false);
+        }
+      } catch (error) {
+        console.error('Error fetching owner with restaurants:', error);
+        setLoading(false);
+      }
+    };
+
+    fetchOwnerWithRestaurants();
+  }, []);
+  
   return (
 <div className="flex flex-col items-center justify-center h-full">
-  <div className="w-1/2">
-    <Select label="Select a restaurant" options={restaurants} />
-  </div>
+<div className="w-1/2">
+  {ownerWithRestaurants ? (
+    <Select
+      label="Select a restaurant"
+      options={ownerWithRestaurants.restaurants.map(restaurant => ({
+        label: restaurant.name,
+        value: restaurant.id
+      }))}
+    />
+  ) : (
+    <p>Loading...</p>
+  )}
+</div>
   <div className="category-container flex flex-wrap justify-center m-4">
     {getCurrentCategories().map(category => (
       <CategoryCard key={category.id} category={category} />

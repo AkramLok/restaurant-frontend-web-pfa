@@ -8,6 +8,8 @@ import CheckButton from "react-validation/build/button";
 import CategorieService from "../../services/categorie.service";
 import AuthService from "../../services/auth.service";
 import Select from "../../components/Select";
+import RestOwnerService from '../../services/restaurant-owner.service';
+import RestService from '../../services/restaurant.service';
 
 const required = (value) => {
   if (!value) {
@@ -30,6 +32,8 @@ const restaurants = [
 
 const NewCategorie = () => {
   const [currentUser, setCurrentUser] = useState(undefined);
+  const [loading, setLoading] = useState(true);
+  const [ownerWithRestaurants, setOwnerWithRestaurants] = useState(null);
 
   useEffect(() => {
     const user = AuthService.getCurrentUser();
@@ -55,6 +59,39 @@ const NewCategorie = () => {
     const description = e.target.value;
     setDescription(description);
   };
+
+  useEffect(() => {
+    const fetchOwnerWithRestaurants = async () => {
+      try {
+        const user = AuthService.getCurrentUser();
+        if (user) {
+          // Fetch all owners
+          const response = await RestOwnerService.getAllOwners();
+          const allOwners = response.data;
+
+          // Filter the owner with the same email as in localStorage
+          const filteredOwner = allOwners.find(owner => owner.email === user.email);
+
+          if (filteredOwner) {
+            // Fetch restaurants of the filtered owner
+            const restaurantsResponse = await RestService.getRestaurantsByOwner(filteredOwner.id);
+            const ownerWithRestaurantsData = {
+              owner: filteredOwner,
+              restaurants: restaurantsResponse.data
+            };
+            setOwnerWithRestaurants(ownerWithRestaurantsData);
+          }
+          
+          setLoading(false);
+        }
+      } catch (error) {
+        console.error('Error fetching owner with restaurants:', error);
+        setLoading(false);
+      }
+    };
+
+    fetchOwnerWithRestaurants();
+  }, []);
 
   const handleCategorie = (e) => {
     e.preventDefault();
@@ -87,8 +124,17 @@ const NewCategorie = () => {
   return (
     <div class="flex items-center justify-center p-12">
       <div class="mx-auto w-full max-w-[550px]">
-      <Select label="Select a restaurant" options={restaurants} />
-      <Form onSubmit={handleCategorie} ref={form}>
+      {ownerWithRestaurants ? (
+    <Select
+      label="Select a restaurant"
+      options={ownerWithRestaurants.restaurants.map(restaurant => ({
+        label: restaurant.name,
+        value: restaurant.id
+      }))}
+    />
+  ) : (
+    <p>Loading...</p>
+  )}      <Form onSubmit={handleCategorie} ref={form}>
           <div class="mb-5">
             <label
               for="name"
