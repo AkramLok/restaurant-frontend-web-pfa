@@ -55,42 +55,70 @@ const Navbar = () => {
         {currentUser && (
           <li>
             <Link to={"/restaurant/new"} className="text-white hover:text-gray-300">
-              RestaurantAdd
+              RAdd
             </Link>
           </li>
         )}
         {currentUser && (
           <li>
             <Link to={"/restaurant/all"} className="text-white hover:text-gray-300">
-              RestaurantShow
+              RShow
             </Link>
           </li>
         )}
         {currentUser && (
           <li>
             <Link to={"/categorie/new"} className="text-white hover:text-gray-300">
-              CategorieAdd
+              CAdd
             </Link>
           </li>
         )}
         {currentUser && (
           <li>
             <Link to={"/categorie/all"} className="text-white hover:text-gray-300">
-              CategorieShow
+              CShow
             </Link>
           </li>
         )}
         {currentUser && (
           <li>
             <Link to={"/product/new"} className="text-white hover:text-gray-300">
-              ProductAdd
+              PAdd
             </Link>
           </li>
         )}
         {currentUser && (
           <li>
             <Link to={"/product/all"} className="text-white hover:text-gray-300">
-              ProductShow
+              PShow
+            </Link>
+          </li>
+        )}
+        {currentUser && (
+          <li>
+            <Link to={"/reward/new"} className="text-white hover:text-gray-300">
+              RAdd
+            </Link>
+          </li>
+        )}
+        {currentUser && (
+          <li>
+            <Link to={"/reward/all"} className="text-white hover:text-gray-300">
+              RShow
+            </Link>
+          </li>
+        )}
+        {currentUser && (
+          <li>
+            <Link to={"/offer/new"} className="text-white hover:text-gray-300">
+              OAdd
+            </Link>
+          </li>
+        )}
+        {currentUser && (
+          <li>
+            <Link to={"/offer/all"} className="text-white hover:text-gray-300">
+              OShow
             </Link>
           </li>
         )}

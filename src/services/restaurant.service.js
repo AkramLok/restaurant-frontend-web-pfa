@@ -3,13 +3,7 @@ import axios from "axios";
 const API_URL = "http://localhost:3000/api/restaurants/";
 
 const addRestaurant = (
-  email,
-  location,
-  name,
-  openingHours,
-  phone,
-  status,
-  ownerId
+  formData // Accept formData instead of individual fields
 ) => {
   const user = JSON.parse(localStorage.getItem("user"));
   const token = user.accessToken;
@@ -22,19 +16,7 @@ const addRestaurant = (
     },
   };
 
-  return axios.post(
-    API_URL + "create",
-    {
-      email,
-      location,
-      name,
-      openingHours,
-      phone,
-      status,
-      ownerId,
-    },
-    config
-  );
+  return axios.post(API_URL + "create", formData, config);
 };
 
 const getRestaurantsByOwner = (ownerId) => {
