@@ -1,14 +1,10 @@
-import React, { useEffect, useMemo, useState, useRef } from "react";
-import { Routes, Route, Link, NavLink,useNavigate } from "react-router-dom";
-import { connect } from "react-redux";
-import productPlaceholder from "../../assets/images/placeholder-image.webp";
+import React, { useEffect, useState, useRef } from "react";
 import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
+import Select from "react-select";
 import CategorieService from "../../services/categorie.service";
 import AuthService from "../../services/auth.service";
-import Select from "../../components/Select";
-import RestOwnerService from '../../services/restaurant-owner.service';
 import RestService from '../../services/restaurant.service';
 
 const required = (value) => {
@@ -21,19 +17,18 @@ const required = (value) => {
   }
 };
 
-const restaurants = [
-  { label: 'Choose a restaurant', value: '' },
-  { label: 'United States', value: 'US' },
-  { label: 'Canada', value: 'CA' },
-  { label: 'France', value: 'FR' },
-  { label: 'Germany', value: 'DE' }
-];
-
 
 const NewCategorie = () => {
   const [currentUser, setCurrentUser] = useState(undefined);
   const [loading, setLoading] = useState(true);
+  const [restaurantSelected, setRestaurantSelected] = useState({});
   const [ownerWithRestaurants, setOwnerWithRestaurants] = useState(null);
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+  const [successful, setSuccessful] = useState(false);
+  const [message, setMessage] = useState("");
+  const form = useRef();
+  const checkBtn = useRef();
 
   useEffect(() => {
     const user = AuthService.getCurrentUser();
@@ -42,46 +37,18 @@ const NewCategorie = () => {
       setCurrentUser(user);
     }
   }, []);
-  const form = useRef();
-  const checkBtn = useRef();
-
-  const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
-  const [successful, setSuccessful] = useState(false);
-  const [message, setMessage] = useState("");
-
-  const onChangeName = (e) => {
-    const name = e.target.value;
-    setName(name);
-  };
-
-  const onChangeDescription = (e) => {
-    const description = e.target.value;
-    setDescription(description);
-  };
 
   useEffect(() => {
     const fetchOwnerWithRestaurants = async () => {
       try {
         const user = AuthService.getCurrentUser();
         if (user) {
-          // Fetch all owners
-          const response = await RestOwnerService.getAllOwners();
-          const allOwners = response.data;
-
-          // Filter the owner with the same email as in localStorage
-          const filteredOwner = allOwners.find(owner => owner.email === user.email);
-
-          if (filteredOwner) {
-            // Fetch restaurants of the filtered owner
-            const restaurantsResponse = await RestService.getRestaurantsByOwner(filteredOwner.id);
-            const ownerWithRestaurantsData = {
-              owner: filteredOwner,
-              restaurants: restaurantsResponse.data
-            };
-            setOwnerWithRestaurants(ownerWithRestaurantsData);
-          }
-          
+          const restaurantsResponse = await RestService.getRestaurantsByOwner(user.id);
+          const ownerWithRestaurantsData = {
+            owner: user,
+            restaurants: restaurantsResponse.data
+          };
+          setOwnerWithRestaurants(ownerWithRestaurantsData);
           setLoading(false);
         }
       } catch (error) {
@@ -93,114 +60,153 @@ const NewCategorie = () => {
     fetchOwnerWithRestaurants();
   }, []);
 
+  const options = ownerWithRestaurants && ownerWithRestaurants.restaurants.length > 0
+  ? ownerWithRestaurants.restaurants.map(restaurant => ({
+      label: restaurant.name,
+      value: restaurant.id
+    }))
+  : [];
+
+
+  // Move the console.log outside the JSX
+useEffect(() => {
+  if (ownerWithRestaurants && ownerWithRestaurants.restaurants.length > 0) {
+    console.log("First restaurant ID:", options[0].id);
+    console.log("Options for Select component:", options.map(restaurant => ({
+      label: restaurant.name,
+      value: restaurant.id
+    })));
+  }
+}, [ownerWithRestaurants]);
+
+const handleChange = (restaurantSelected) => {
+  setRestaurantSelected(restaurantSelected);
+};
+
   const handleCategorie = (e) => {
     e.preventDefault();
-
     setMessage("");
     setSuccessful(false);
 
-    form.current.validateAll();
 
+    form.current.validateAll();
     if (checkBtn.current.context._errors.length === 0) {
-      CategorieService.add(name, description, currentUser.email).then(
-        (response) => {
+      CategorieService.addCategorie(name, description, restaurantSelected.value)
+      .then((response) => {
+        console.log("Response:", response); // Check the value of response
+        if (response && response.data) {
+          console.log("Response data:", response.data); // Check the value of response.data
           setMessage(response.data.message);
           setSuccessful(true);
-        },
-        (error) => {
-          const resMessage =
-            (error.response &&
-              error.response.data &&
-              error.response.data.message) ||
-            error.message ||
-            error.toString();
-
-          setMessage(resMessage);
+        } else {
+          console.error("Response or response data is undefined.");
+          setMessage("An error occurred while processing your request.");
           setSuccessful(false);
         }
-      );
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        const resMessage =
+          (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+          error.message ||
+          error.toString();
+    
+        setMessage(resMessage);
+        setSuccessful(false);
+      });
+    
     }
   };
+
+  
   return (
-    <div class="flex items-center justify-center p-12">
-      <div class="mx-auto w-full max-w-[550px]">
-      {ownerWithRestaurants ? (
-    <Select
-      label="Select a restaurant"
-      options={ownerWithRestaurants.restaurants.map(restaurant => ({
-        label: restaurant.name,
-        value: restaurant.id
-      }))}
-    />
-  ) : (
-    <p>Loading...</p>
-  )}      <Form onSubmit={handleCategorie} ref={form}>
-          <div class="mb-5">
-            <label
-              for="name"
-              class="mb-3 block text-base font-medium text-white"
-            >
+    <div className="flex items-center justify-center p-12">
+      <div className="mx-auto w-full max-w-[550px]">
+        <Form onSubmit={handleCategorie} ref={form}>
+          {ownerWithRestaurants ? (
+            ownerWithRestaurants.restaurants.length > 0 ? (
+              <div>
+                <p>{console.log(ownerWithRestaurants.restaurants[0].id)}</p>
+                <p>{console.log(ownerWithRestaurants.restaurants.map(restaurant => ({
+                      label: restaurant.name,
+                      value: restaurant.id
+                    })))}</p>
+                  <Select
+                    isLoading
+                    placeholder="Select a restaurant"
+                    label="Select a restaurant"
+                    defaultValue={restaurantSelected}
+                    onChange={handleChange}
+                    options={options}
+                  />
+              </div>
+            ) : (
+              <p>No restaurants available</p>
+            )
+          ) : (
+            <p>Loading...</p>
+          )}
+          <div className="mb-5">
+            <label htmlFor="name" className="mb-3 block text-base font-medium text-white">
               Categorie Name
             </label>
-            <Input
+            <input
               type="text"
               name="name"
               id="name"
               placeholder="Enter categorie name"
-              value={name} onChange={onChangeName} validations={[required]}
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              validations={[required]}
               className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
             />
           </div>
 
-          <div class="mb-5">
-            <label
-              for="phone"
-              class="mb-3 block text-base font-medium text-white"
-            >
+          <div className="mb-5">
+            <label htmlFor="description" className="mb-3 block text-base font-medium text-white">
               Categorie Description
             </label>
             <input
               type="text"
               name="description"
               id="description"
-              value={description} onChange={onChangeDescription} validations={[required]}
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              validations={[required]}
               placeholder="Enter categorie description"
-              class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
+              className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
             />
           </div>
+          <p>{console.log(restaurantSelected.label)}</p>
+          <p>op: {restaurantSelected?restaurantSelected.label: "dsf"}</p>
 
-          <div class="mb-10">
-            <label for="image" class="mb-3 block text-base font-medium text-white">Image</label>
-            <input type="file" class="block w-full px-3 py-2 mt-2 text-sm text-[#6B7280] bg-white border border-[#e0e0e0] rounded-md file:bg-gray-200 file:text-white file:text-sm file:px-4 file:py-1 file:border-none file:rounded-full file:bg-gray-800 file:text-gray-200 text-gray-300 placeholder-gray-400/70 placeholder-gray-500 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 focus:border-[#6A64F1] focus:shadow-md" />
-          </div>
-
-
-      {message && (
-      <div className="text-sm text-center text-gray-700 dark:text-gray-200 mb-8">
-        <div
-          className={`${
-            successful ? "bg-green-500" : "bg-red-500"
-          } text-white font-bold rounded-lg border border-white shadow-lg p-5`}
-          role="alert"
-        >
-          {message}
-        </div>
-      </div>
-    )}
+          {message && (
+            <div className="text-sm text-center text-gray-700 dark:text-gray-200 mb-8">
+              <div
+                className={`${
+                  successful ? "bg-green-500" : "bg-red-500"
+                } text-white font-bold rounded-lg border border-white shadow-lg p-5`}
+                role="alert"
+              >
+                {message}
+              </div>
+            </div>
+          )}
           <CheckButton className="text-sm" style={{ display: "none" }} ref={checkBtn} />
           <div>
             <button
               type="submit"
-              class="hover:shadow-form rounded-md bg-[#005055] py-3 px-8 text-base font-semibold text-white outline-none"
+              className="hover:shadow-form rounded-md bg-[#005055] py-3 px-8 text-base font-semibold text-white outline-none"
             >
               Submit
             </button>
-
           </div>
         </Form>
       </div>
-    </div> 
-);
+    </div>
+  );
 };
 
 export default NewCategorie;

@@ -1,5 +1,6 @@
 import React from 'react';
 import foodImage from '../assets/images/food-ad-1.jpeg';
+import '../style/Header.css';
 
 const Header = () => {
   return (
@@ -11,6 +12,13 @@ const Header = () => {
               Brand new
             </p>
           </div>
+          <main class="header_animation_codepen_1">
+            <section class="animation">
+              <div class="first"><div>Carlos Córdova</div></div>
+              <div class="second"><div>Web Developer</div></div>
+              <div class="third"><div>Systems Engineer</div></div>
+            </section>
+          </main>
           <h2 className="max-w-lg mb-6 font-sans text-3xl font-bold leading-none tracking-tight text-gray-900 sm:text-4xl md:mx-auto">
             <span className="relative inline-block">
               <svg

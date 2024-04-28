@@ -90,7 +90,7 @@ const Restaurant = () => {
     form.current.validateAll();
 
     if (checkBtn.current.context._errors.length === 0) {
-      RestService.addRestaurant(email, location, name, openingHours, phone, status, currentUser.email).then(
+      RestService.addRestaurant(email, location, name, openingHours, phone, status, currentUser.id).then(
         (response) => {
           setMessage(response.data.message);
           setSuccessful(true);

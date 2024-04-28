@@ -3,7 +3,6 @@ import { Routes, Route, Link, useNavigate } from "react-router-dom";
 import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
-
 import AuthService from "../services/auth.service";
 
 const required = (value) => {
@@ -140,7 +139,9 @@ const Login = () => {
           disabled={loading}
         >
           {loading && (
-            <span className="animate-spin mr-1 h-4 w-4 border-t-2 border-b-2 border-white rounded-full inline-block"></span>
+            <div>
+              <span className="animate-spin mr-1 h-4 w-4 border-t-2 border-b-2 border-white rounded-full inline-block"></span>
+            </div>
           )}
           <span>Login</span>
         </button>

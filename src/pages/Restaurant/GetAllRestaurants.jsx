@@ -22,15 +22,10 @@ const GetAllRestaurants = () => {
       try {
         const user = AuthService.getCurrentUser();
         if (user) {
-          // Fetch all owners
           const response = await RestOwnerService.getAllOwners();
           const allOwners = response.data;
-
-          // Filter the owner with the same email as in localStorage
           const filteredOwner = allOwners.find(owner => owner.email === user.email);
-
           if (filteredOwner) {
-            // Fetch restaurants of the filtered owner
             const restaurantsResponse = await RestService.getRestaurantsByOwner(filteredOwner.id);
             const ownerWithRestaurantsData = {
               owner: filteredOwner,

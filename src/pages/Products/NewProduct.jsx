@@ -8,7 +8,7 @@ import CheckButton from "react-validation/build/button";
 import CategorieService from "../../services/categorie.service";
 import AuthService from "../../services/auth.service";
 import ProductService from "../../services/product.service";
-import Select from "../../components/Select";
+import Select from "react-select";
 const required = (value) => {
   if (!value) {
     return (

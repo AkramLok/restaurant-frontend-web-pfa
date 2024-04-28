@@ -9,7 +9,7 @@ const addRestaurant = (
   openingHours,
   phone,
   status,
-  ownerEmail
+  ownerId
 ) => {
   const user = JSON.parse(localStorage.getItem("user"));
   const token = user.accessToken;
@@ -31,7 +31,7 @@ const addRestaurant = (
       openingHours,
       phone,
       status,
-      ownerEmail,
+      ownerId,
     },
     config
   );
