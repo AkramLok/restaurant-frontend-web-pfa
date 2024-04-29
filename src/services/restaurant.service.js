@@ -2,9 +2,7 @@ import axios from "axios";
 
 const API_URL = "http://localhost:3000/api/restaurants/";
 
-const addRestaurant = (
-  formData // Accept formData instead of individual fields
-) => {
+const addRestaurant = (formData) => {
   const user = JSON.parse(localStorage.getItem("user"));
   const token = user.accessToken;
 

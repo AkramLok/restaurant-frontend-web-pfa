@@ -4,10 +4,7 @@ import RestOwnerService from '../../services/restaurant-owner.service';
 import RestService from '../../services/restaurant.service';
 import RestaurantCard from './RestaurantCard';
 import Pagination from '../../components/Pagination';
-import { createClient } from 'pexels';
 
-const client = createClient('vLUNOhIiYXDqPhLt3G7kuw7X5OdFbZfQlz3KpU47HwfCSGiE7Hn5xhP9');
-const query = 'Nature';
 
 const GetAllRestaurants = () => {
   const itemsPerPage = 3;
@@ -45,30 +42,6 @@ const GetAllRestaurants = () => {
     fetchOwnerWithRestaurants();
   }, []);
 
-  useEffect(() => {
-    // Fetch photos for each restaurant
-    const fetchRestaurantPhotos = async () => {
-      try {
-        if (ownerWithRestaurants && ownerWithRestaurants.restaurants.length > 0) {
-          // Create an array to store promises for fetching photos
-          console.log(ownerWithRestaurants.restaurants);
-          const photoPromises = ownerWithRestaurants.restaurants.map(async (restaurant) => {
-            const photos = await client.photos.search({ query: restaurant.name, per_page: 1 });
-            return photos.photos[0]?.src.original || '';
-          });
-
-          // Resolve all promises
-          const photos = await Promise.all(photoPromises);
-          setRestaurantPhotos(photos);
-          console.log(restaurantPhotos);
-        }
-      } catch (error) {
-        console.error('Error fetching restaurant photos:', error);
-      }
-    };
-
-    fetchRestaurantPhotos();
-  }, [ownerWithRestaurants]);
 
   const totalPages = Math.ceil((ownerWithRestaurants?.restaurants.length || 0) / itemsPerPage);
 
@@ -100,7 +73,7 @@ const GetAllRestaurants = () => {
               <p>Restaurants: You have {ownerWithRestaurants.restaurants.length} !</p>
               <div className="category-container flex flex-wrap justify-center m-4">
                 {getCurrentRestaurants().map((restaurant, index) => (
-                  <RestaurantCard key={restaurant.id} restaurant={restaurant} imageUrl={restaurantPhotos[index]} />
+                    <RestaurantCard key={restaurant.id} restaurant={restaurant}/>
                 ))}
               </div>
               <Pagination
