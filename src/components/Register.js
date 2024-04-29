@@ -53,9 +53,7 @@ const Register = (props) => {
 
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [address, setAddress] = useState("");
+  const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const [successful, setSuccessful] = useState(false);
@@ -76,19 +74,9 @@ const Register = (props) => {
     setPassword(password);
   };
 
-  const onChangeFirstName = (e) => {
-    const firstName = e.target.value;
-    setFirstName(firstName);
-  };
-
-  const onChangeLastName = (e) => {
-    const lastName = e.target.value;
-    setLastName(lastName);
-  };
-
-  const onChangeAddress = (e) => {
-    const address = e.target.value;
-    setAddress(address);
+  const onChangeName = (e) => {
+    const name = e.target.value;
+    setName(name);
   };
 
   const onChangePhone = (e) => {
@@ -105,15 +93,7 @@ const Register = (props) => {
     form.current.validateAll();
 
     if (checkBtn.current.context._errors.length === 0) {
-      AuthService.register(
-        username,
-        email,
-        password,
-        firstName,
-        lastName,
-        phone,
-        address
-      ).then(
+      AuthService.register(username, email, password, name, phone).then(
         (response) => {
           setMessage(response.data.message);
           setSuccessful(true);
@@ -155,31 +135,15 @@ const Register = (props) => {
                 htmlFor="firstName"
                 className="text-sm text-gray-700 dark:text-gray-200 mr-2"
               >
-                First Name:
+                Name:
               </label>
               <Input
                 type="text"
-                id="firstName"
-                name="firstName"
+                id="name"
+                name="name"
                 className="w-full px-3 dark:text-gray-200 dark:bg-gray-600 py-2 rounded-md border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-1 focus:ring-blue-500"
-                value={firstName}
-                onChange={onChangeFirstName}
-                validations={[required]}
-              />
-
-              <label
-                htmlFor="lastName"
-                className="text-sm text-gray-700 dark:text-gray-200 mr-2"
-              >
-                Last Name:
-              </label>
-              <Input
-                type="text"
-                id="lastName"
-                name="lastName"
-                className="w-full px-3 dark:text-gray-200 dark:bg-gray-600 py-2 rounded-md border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-1 focus:ring-blue-500"
-                value={lastName}
-                onChange={onChangeLastName}
+                value={name}
+                onChange={onChangeName}
                 validations={[required]}
               />
 
@@ -245,22 +209,6 @@ const Register = (props) => {
                 className="w-full px-3 dark:text-gray-200 dark:bg-gray-600 py-2 rounded-md border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-1 focus:ring-blue-500"
                 value={phone}
                 onChange={onChangePhone}
-                validations={[required]}
-              />
-
-              <label
-                htmlFor="address"
-                className="text-sm text-gray-700 dark:text-gray-200 mr-2"
-              >
-                Address:
-              </label>
-              <Input
-                type="text"
-                id="address"
-                name="address"
-                className="w-full px-3 dark:text-gray-200 dark:bg-gray-600 py-2 rounded-md border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-1 focus:ring-blue-500"
-                value={address}
-                onChange={onChangeAddress}
                 validations={[required]}
               />
             </div>
