@@ -93,7 +93,9 @@ const Register = (props) => {
     form.current.validateAll();
 
     if (checkBtn.current.context._errors.length === 0) {
-      AuthService.register(username, email, password, name, phone).then(
+      AuthService.register(username, email, password, name, phone, [
+        "admin",
+      ]).then(
         (response) => {
           setMessage(response.data.message);
           setSuccessful(true);

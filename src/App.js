@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Routes, Route, Link } from "react-router-dom";
+import { Routes, Route, Link, Navigate } from "react-router-dom";
 //import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 import AuthService from "./services/auth.service";
@@ -11,6 +11,7 @@ import Profile from "./components/Profile";
 import BoardUser from "./components/BoardUser";
 import BoardModerator from "./components/BoardModerator";
 import BoardAdmin from "./components/BoardAdmin";
+import Menu from "./pages/Menu/Menu";
 import NewRestaurant from "./pages/Restaurant/NewRestaurant";
 import NewCategorie from "./pages/Categories/NewCategorie";
 import NewProduct from "./pages/Products/NewProduct";
@@ -68,6 +69,7 @@ const App = () => {
         <Route exact path="/login" element={<Login />} />
         <Route exact path="/register" element={<Register />} />
         <Route exact path="/profile" element={<ProfileMore />} />
+        <Route exact path="/menu" element={<Menu />} />
         <Route exact path="/restaurant/new" element={<NewRestaurant />} />
         <Route exact path="/restaurant/all" element={<GetAllRestaurants />} />
         <Route exact path="/categorie/new" element={<NewCategorie />} />

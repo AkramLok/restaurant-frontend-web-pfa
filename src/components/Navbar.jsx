@@ -9,7 +9,6 @@ const Navbar = () => {
   const [showModeratorBoard, setShowModeratorBoard] = useState(false);
   const [showAdminBoard, setShowAdminBoard] = useState(false);
   const [currentUser, setCurrentUser] = useState(undefined);
-
   useEffect(() => {
     const user = AuthService.getCurrentUser();
 
@@ -52,6 +51,13 @@ const Navbar = () => {
             Home
           </Link>
         </li>
+        {currentUser && (
+          <li>
+            <Link to={"/menu"} className="text-white hover:text-gray-300">
+              Menu
+            </Link>
+          </li>
+        )}
         {currentUser && (
           <li>
             <Link to={"/restaurant/new"} className="text-white hover:text-gray-300">

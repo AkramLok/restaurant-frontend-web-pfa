@@ -29,12 +29,17 @@ const validEmail = (value) => {
 const Restaurant = () => {
   const [currentUser, setCurrentUser] = useState(undefined);
   const [email, setEmail] = useState("");
-  const [location, setLocation] = useState("");
+  const [location, setLocation] = useState({});
   const [name, setName] = useState("");
-  const [openingHours, setOpeningHours] = useState("");
-  const [status, setStatus] = useState("");
-  const [phone, setPhone] = useState("");
-  const [file, setFile] = useState(null); // State to hold the selected file
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [cuisine, setCuisine] = useState("");
+  const [description, setDescription] = useState("");
+  const [instagram, setInstagram] = useState("");
+  const [priceRange, setPriceRange] = useState("");
+
+
+  const [logoFile, setLogoFile] = useState(null);
+  const [coverFile, setCoverFile] = useState(null);
   const [successful, setSuccessful] = useState(false);
   const [message, setMessage] = useState("");
   const form = useRef();
@@ -51,14 +56,25 @@ const Restaurant = () => {
   const onChangeEmail = (e) => setEmail(e.target.value);
   const onChangeLocation = (e) => setLocation(e.target.value);
   const onChangeName = (e) => setName(e.target.value);
-  const onChangeOpeningHours = (e) => setOpeningHours(e.target.value);
-  const onChangePhone = (e) => setPhone(e.target.value);
-  const onChangeStatus = (e) => setStatus(e.target.value);
+  const onChangeCuisine = (e) => setCuisine(e.target.value);
+  const onChangePhoneNumber = (e) => setPhoneNumber(e.target.value);
+  const onChangeDescription = (e) => setDescription(e.target.value);
+  const onChangeInstagram = (e) => setInstagram(e.target.value);
+  const onChangePriceRange = (e) => setPriceRange(e.target.value);
 
-  const handleFileChange = (e) => {
-    setFile(e.target.files[0]);
+  const handleLogoFileChange = (e) => {
+    setLogoFile(e.target.files[0]);
     console.log(e.target.files[0]);
   };
+
+  const handleCoverFileChange = (e) => {
+    setCoverFile(e.target.files[0]);
+    console.log(e.target.files[0]);
+    console.log("1-logo: "+logoFile);
+    console.log("2-cover: "+coverFile);
+  };
+
+
 
   const handleRestaurant = (e) => {
   e.preventDefault();
@@ -67,28 +83,45 @@ const Restaurant = () => {
   setSuccessful(false);
 
   form.current.validateAll();
-  const ownerId = currentUser.id;
+  const ownerId = currentUser.ownerId;
   console.log(JSON.stringify({
     email,
     location,
     name,
-    openingHours,
-    phone,
-    status,
+    cuisine,
+    phoneNumber,
+    description,
+    instagram,
+    priceRange,
     ownerId
   }));
+
+
+
   if (checkBtn.current.context._errors.length === 0) {
     const formData = new FormData();
-    formData.append("restaurantDTOString", JSON.stringify({
+
+    const json = JSON.stringify({
       email,
       location,
       name,
-      openingHours,
-      phone,
-      status,
-      ownerId
-    })); // Append the JSON object as a string
-    formData.append("file", file); // Append the selected file
+      cuisine,
+      phoneNumber,
+      description,
+      instagram,
+      priceRange
+    });
+    
+    const blob = new Blob([json], {
+    type: 'application/json'
+    });
+
+
+    formData.append("restaurant", blob);
+    formData.append("logoFile", logoFile);
+    formData.append("coverFile", coverFile);
+    formData.append("ownerId", ownerId);
+
 
     RestService.addRestaurant(formData).then(
       (response) => {
@@ -133,6 +166,8 @@ const Restaurant = () => {
               class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
             />
           </div>
+
+
           <div class="mb-5">
             <label
               for="email"
@@ -151,6 +186,9 @@ const Restaurant = () => {
               class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
             />
           </div>
+
+
+
           <div class="mb-5">
             <label
               for="location"
@@ -170,19 +208,21 @@ const Restaurant = () => {
             />
           </div>
 
+
+
           <div class="mb-5">
             <label
-              for="opening_hours"
+              for="cuisine"
               class="mb-3 block text-white font-medium text-[#07074D]"
             >
-              Opening Hours
+              Cuisine
             </label>
             <input
               type="text"
-              name="openingHours"
-              id="openingHours"
-              value={openingHours}
-              onChange={onChangeOpeningHours}
+              name="cuisine"
+              id="cuisine"
+              value={cuisine}
+              onChange={onChangeCuisine}
               validations={[required]}
               placeholder="Enter your restaurant/coffee shop opening hours"
               class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
@@ -194,14 +234,14 @@ const Restaurant = () => {
               for="phone"
               class="mb-3 block text-white font-medium text-[#07074D]"
             >
-              Phone
+              Phone Number
             </label>
             <input
               type="text"
-              name="phone"
-              id="phone"
-              value={phone}
-              onChange={onChangePhone}
+              name="phoneNumber"
+              id="phoneNumber"
+              value={phoneNumber}
+              onChange={onChangePhoneNumber}
               validations={[required]}
               placeholder="Enter your restaurant/coffee shop phone number"
               class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
@@ -210,33 +250,99 @@ const Restaurant = () => {
 
           <div class="mb-5">
             <label
-              for="status"
+              for="description"
               class="mb-3 block text-white font-medium text-[#07074D]"
             >
-              Status
+              Description
             </label>
             <input
               type="text"
-              name="status"
-              id="status"
-              value={status}
-              onChange={onChangeStatus}
+              name="description"
+              id="description"
+              value={description}
+              onChange={onChangeDescription}
               validations={[required]}
-              placeholder="Enter your Restaurant/Coffee shop status"
+              placeholder="Enter your Restaurant/Coffee shop description"
               class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
             />
           </div>
+          
+          <div class="mb-5">
+            <label
+              for="instagram"
+              class="mb-3 block text-white font-medium text-[#07074D]"
+            >
+              Instagram
+            </label>
+            <input
+              type="text"
+              name="instagram"
+              id="instagram"
+              value={instagram}
+              onChange={onChangeInstagram}
+              validations={[required]}
+              placeholder="Enter your Restaurant/Coffee shop instagram"
+              class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
+            />
+          </div>
+
+
+          <div class="mb-5">
+            <label
+              for="price_range"
+              class="mb-3 block text-white font-medium text-[#07074D]"
+            >
+              Price Range
+            </label>
+            <input
+              type="text"
+              name="priceRange"
+              id="priceRange"
+              value={priceRange}
+              onChange={onChangePriceRange}
+              validations={[required]}
+              placeholder="Enter your Restaurant/Coffee shop price range"
+              class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
+            />
+          </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
           <div className="mb-10">
             <label
               htmlFor="image"
               className="mb-3 block text-white font-medium text-[#07074D]"
             >
-              Image
+              Logo
             </label>
             <input
               type="file"
-              onChange={handleFileChange}
+              onChange={handleLogoFileChange}
+              className="block w-full px-3 py-2 mt-2 text-sm text-gray-700 border rounded-md file:bg-gray-200 file:text-white file:text-sm file:px-4 file:py-1 file:border-none file:rounded-full file:bg-gray-800 file:text-gray-200 text-gray-300 placeholder-gray-400/70 placeholder-gray-500 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 focus:border-blue-500 focus:shadow-md"
+            />
+
+
+            <label
+              htmlFor="image"
+              className="mb-3 block text-white font-medium text-[#07074D]"
+            >
+              Cover
+            </label>
+            <input
+              type="file"
+              onChange={handleCoverFileChange}
               className="block w-full px-3 py-2 mt-2 text-sm text-gray-700 border rounded-md file:bg-gray-200 file:text-white file:text-sm file:px-4 file:py-1 file:border-none file:rounded-full file:bg-gray-800 file:text-gray-200 text-gray-300 placeholder-gray-400/70 placeholder-gray-500 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 focus:border-blue-500 focus:shadow-md"
             />
           </div>
