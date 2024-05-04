@@ -224,7 +224,7 @@ const Restaurant = () => {
               value={cuisine}
               onChange={onChangeCuisine}
               validations={[required]}
-              placeholder="Enter your restaurant/coffee shop opening hours"
+              placeholder="Enter your restaurant/coffee shop cuisine"
               class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
             />
           </div>
@@ -306,20 +306,6 @@ const Restaurant = () => {
             />
           </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
           <div className="mb-10">
             <label
               htmlFor="image"
@@ -328,11 +314,11 @@ const Restaurant = () => {
               Logo
             </label>
             <input
+            required
               type="file"
               onChange={handleLogoFileChange}
               className="block w-full px-3 py-2 mt-2 text-sm text-gray-700 border rounded-md file:bg-gray-200 file:text-white file:text-sm file:px-4 file:py-1 file:border-none file:rounded-full file:bg-gray-800 file:text-gray-200 text-gray-300 placeholder-gray-400/70 placeholder-gray-500 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 focus:border-blue-500 focus:shadow-md"
             />
-
 
             <label
               htmlFor="image"
@@ -341,6 +327,7 @@ const Restaurant = () => {
               Cover
             </label>
             <input
+            required
               type="file"
               onChange={handleCoverFileChange}
               className="block w-full px-3 py-2 mt-2 text-sm text-gray-700 border rounded-md file:bg-gray-200 file:text-white file:text-sm file:px-4 file:py-1 file:border-none file:rounded-full file:bg-gray-800 file:text-gray-200 text-gray-300 placeholder-gray-400/70 placeholder-gray-500 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 focus:border-blue-500 focus:shadow-md"
@@ -369,7 +356,7 @@ const Restaurant = () => {
               type="submit"
               class="hover:shadow-form rounded-md bg-[#005055] py-3 px-8 text-base font-semibold text-white outline-none"
             >
-              Submit
+              Add Restaurant
             </button>
           </div>
         </Form>

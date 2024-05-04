@@ -1,8 +1,8 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:3000/api/categories/";
+const API_URL = "http://localhost:3000/api/food-categories/";
 
-const addCategorie = (name, description, restaurantId) => {
+const addCategorie = (name, restaurantId) => {
   const user = JSON.parse(localStorage.getItem("user"));
   const token = user.accessToken;
 
@@ -13,11 +13,9 @@ const addCategorie = (name, description, restaurantId) => {
   };
 
   return axios.post(
-    API_URL + "create",
+    API_URL + restaurantId,
     {
       name,
-      description,
-      restaurantId,
     },
     config
   );
@@ -32,7 +30,7 @@ const getCategoriesByRestaurantId = (restaurantId) => {
       Authorization: `Bearer ${token}`,
     },
   };
-  return axios.get(API_URL + "all/" + restaurantId, config);
+  return axios.get(API_URL + "restaurant/" + restaurantId, config);
 };
 
 const CategorieService = {

@@ -30,6 +30,8 @@ const getRestaurantByOwnerId = () => {
   return axios.get(API_URL + "/owner/" + user.ownerId, config);
 };
 
+{
+  /*
 const getRestaurantsByOwner = (ownerId) => {
   const user = JSON.parse(localStorage.getItem("user"));
   const token = user.accessToken;
@@ -40,10 +42,12 @@ const getRestaurantsByOwner = (ownerId) => {
   };
   return axios.get(API_URL + "all/" + ownerId, config);
 };
+*/
+}
 
 const RestService = {
   addRestaurant,
-  getRestaurantsByOwner,
+  //getRestaurantsByOwner,
   getRestaurantByOwnerId,
 };
 

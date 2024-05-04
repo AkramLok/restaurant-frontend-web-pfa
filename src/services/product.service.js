@@ -1,16 +1,8 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:3000/api/products/";
+const API_URL = "http://localhost:3000/api/product/";
 
-const addProduct = (
-  name,
-  description,
-  price,
-  available,
-  ownerEmail,
-  restaurantId,
-  categorieId
-) => {
+const addProductByCategorieId = (formData, categoryId) => {
   const user = JSON.parse(localStorage.getItem("user"));
   const token = user.accessToken;
 
@@ -18,26 +10,15 @@ const addProduct = (
 
   const config = {
     headers: {
+      "Content-Type": "Multiplart/form-data",
       Authorization: `Bearer ${token}`,
     },
   };
 
-  return axios.post(
-    API_URL + "create",
-    {
-      name,
-      description,
-      price,
-      available,
-      ownerEmail,
-      restaurantId,
-      categorieId,
-    },
-    config
-  );
+  return axios.post(API_URL + "foodCategory/" + categoryId, formData, config);
 };
 
-const getAllProducts = () => {
+const getAllProductsByCategoryId = (categoryId) => {
   const user = JSON.parse(localStorage.getItem("user"));
   const token = user.accessToken;
 
@@ -47,12 +28,12 @@ const getAllProducts = () => {
     },
   };
 
-  return axios.get(API_URL, config);
+  return axios.get(API_URL + "foodCategory/" + categoryId, config);
 };
 
 const ProductService = {
-  addProduct,
-  getAllProducts,
+  addProductByCategorieId,
+  getAllProductsByCategoryId,
 };
 
 export default ProductService;
