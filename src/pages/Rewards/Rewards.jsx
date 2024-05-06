@@ -4,11 +4,9 @@ import CateService from '../../services/categorie.service';
 import AuthService from "../../services/auth.service";
 import logoNoResto from "../../assets/images/placeholder-profile.jpg";
 import coverNoResto from "../../assets/images/placeholder-image.webp";
-import CategorieForm from "./CategorieForm";
-import ProductForm from "./ProductForm";
 import ProductService from "../../services/product.service";
 
-const Menu = () => {
+const Rewards = () => {
     const [restaurantOwned, setRestaurantOwned] = useState(null);
     const [cateRestOwned, setCateRestOwned] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -84,7 +82,6 @@ const Menu = () => {
             const responseDeleteProduct = await ProductService.deleteProductByCategoryId(productId);
             const deletedProduct = responseDeleteProduct.data;
             setDeleteProductByCategoryId(deletedProduct);
-            updateCategories();
         }
         catch (error){
             console.error('Error deleting product', error);
@@ -186,9 +183,6 @@ const Menu = () => {
   <div className="flex flex-wrap justify-center">
     <div className="w-full lg:w-9/12 px-4">
       <h3 className="mb-4 text-lg font-bold">Categories:</h3>
-      <button onClick={toggleModal} className="mb-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-        Add New Category
-      </button>
       {cateRestOwned.map((category) => (
         <div key={category.id} className="mb-6 border rounded-lg p-4 bg-white shadow-md">
           <h4 className="text-xl font-semibold mb-2">{category.name}</h4>
@@ -209,25 +203,14 @@ const Menu = () => {
           <h2 class="text-gray-900 title-font text-lg font-medium">{product.name}</h2>
           <p class="mt-1">${product.price}</p>
           <p class="mt-1">{product.info}</p>
-          <button onClick={()=>handleDeleteProduct(product.id)} class="px-4 py-2 bg-gray-200">X</button>
         </div>
       </div>
       
-
-
-
-
-
-
-
             ))}
             </div>
   </div>
 </section>
           </ul>
-          <button onClick={() => toggleModalProduct(category)} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4">
-            Add New Product in {category.name}
-          </button>
         </div>
       ))}
     </div>
@@ -251,7 +234,7 @@ const Menu = () => {
                 </div>
                 <span className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
                 <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-                    <CategorieForm restaurantId={restaurantOwned.id} toggleModal={toggleModal} updateCategories={updateCategories}/>
+                    {/*<CategorieForm restaurantId={restaurantOwned.id} toggleModal={toggleModal} updateCategories={updateCategories}/>*/}
                 </div>
             </div>
         </div>
@@ -268,47 +251,10 @@ const Menu = () => {
                 </div>
                 <span className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
                 <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-                    <ProductForm category={categorieToAddProduct} toggleModalProduct={toggleModalProduct} updateCategories={updateCategories}/>
+                    {/*<ProductForm category={categorieToAddProduct} toggleModalProduct={toggleModalProduct} updateCategories={updateCategories}/>*/}
                 </div>
             </div>
         </div>
-        /*<div className="fixed z-10 inset-0 overflow-y-auto">
-          <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-            <div className="fixed inset-0 transition-opacity" aria-hidden="true">
-              <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
-            </div>
-            <span className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
-            <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-              <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                <div className="sm:flex sm:items-start">
-                  <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-                    <h3 className="text-lg leading-6 font-medium text-gray-900" id="modal-title">
-                      Add New Product
-                    </h3>
-                    
-                    
-                    <div className="mt-2">
-                      <form>
-                        <div className="mb-4">
-                          <label htmlFor="category" className="block text-gray-700 text-sm font-bold mb-2">Product Name:</label>
-                          <input type="text" id="category" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
-                        </div>
-                      </form>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                <button onClick={toggleModalProduct} type="button" className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-pink-600 text-base font-medium text-white hover:bg-pink-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500 sm:ml-3 sm:w-auto sm:text-sm">
-                  Save
-                </button>
-                <button onClick={toggleModalProduct} type="button" className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
-                  Cancel
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>*/
       )}
 
 
@@ -317,4 +263,4 @@ const Menu = () => {
     )
 }
 
-export default Menu;
+export default Rewards;

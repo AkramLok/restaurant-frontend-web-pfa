@@ -5,6 +5,7 @@ import CheckButton from "react-validation/build/button";
 import RestService from "../../services/restaurant.service";
 import AuthService from "../../services/auth.service";
 import { isEmail } from "validator";
+import { Textarea } from '@tremor/react';
 
 const required = (value) => {
   if (!value) {
@@ -135,7 +136,7 @@ const Restaurant = () => {
             error.response.data.message) ||
           error.message ||
           error.toString();
-
+            console.log(error);
         setMessage(resMessage);
         setSuccessful(false);
       }
@@ -255,16 +256,15 @@ const Restaurant = () => {
             >
               Description
             </label>
-            <input
-              type="text"
+              <Textarea
               name="description"
               id="description"
               value={description}
               onChange={onChangeDescription}
               validations={[required]}
-              placeholder="Enter your Restaurant/Coffee shop description"
-              class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
-            />
+              placeholder="Enter your Restaurant/Coffee shop description" className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
+              />
+
           </div>
           
           <div class="mb-5">

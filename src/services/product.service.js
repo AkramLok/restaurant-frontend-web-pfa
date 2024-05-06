@@ -31,9 +31,22 @@ const getAllProductsByCategoryId = (categoryId) => {
   return axios.get(API_URL + "foodCategory/" + categoryId, config);
 };
 
+const deleteProductByCategoryId = (productId) => {
+  const user = JSON.parse(localStorage.getItem("user"));
+  const token = user.accessToken;
+
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+  return axios.delete(API_URL + productId, config);
+};
+
 const ProductService = {
   addProductByCategorieId,
   getAllProductsByCategoryId,
+  deleteProductByCategoryId,
 };
 
 export default ProductService;
