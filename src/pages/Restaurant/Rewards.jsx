@@ -1,17 +1,12 @@
 import React, { useEffect, useState } from "react";
 import RestService from "../../services/restaurant.service";
 import CateService from "../../services/categorie.service";
+import AuthService from "../../services/auth.service";
 import logoNoResto from "../../assets/images/placeholder-profile.jpg";
 import coverNoResto from "../../assets/images/placeholder-image.webp";
-import CategorieForm from "./CategorieForm";
-import ProductForm from "./ProductForm";
 import ProductService from "../../services/product.service";
-import Skeleton from "./Skeleton";
 
-import { useLocation } from "react-router-dom";
-import Breadcrumbs from "../../components/Breadcrumbs";
-
-const Menu = () => {
+const Rewards = () => {
   const [restaurantOwned, setRestaurantOwned] = useState(null);
   const [cateRestOwned, setCateRestOwned] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -92,7 +87,6 @@ const Menu = () => {
         await ProductService.deleteProductByCategoryId(productId);
       const deletedProduct = responseDeleteProduct.data;
       setDeleteProductByCategoryId(deletedProduct);
-      updateCategories();
     } catch (error) {
       console.error("Error deleting product", error);
     }
@@ -110,58 +104,13 @@ const Menu = () => {
     }
   };
 
-  const productGallery = (category, product) => (
-    <div className="relative group">
-      <img
-        alt="ecommerce"
-        className="object-cover w-full h-full rounded-lg"
-        src={"http://localhost:8080/api/product/files/" + product.img}
-      />
-      <div className="absolute inset-0 bg-black bg-opacity-50 text-white p-2 opacity-0 transition-opacity duration-300 group-hover:opacity-100 flex items-center justify-center">
-        <div className="bg-white rounded-lg p-4 shadow-md">
-          <h3 className="text-gray-500 text-xs tracking-widest title-font mb-1">
-            {category.name}
-          </h3>
-          <h2 className="text-gray-900 title-font text-lg font-medium">
-            {product.name.length > 20
-              ? product.name.substring(0, 20) + "..."
-              : product.name}
-          </h2>
-          <p className="mt-1 text-gray-900">${product.price}</p>
-          <p className="mt-1 overflow-hidden overflow-ellipsis text-gray-900">
-            {product.info.length > 20
-              ? product.info.substring(0, 20) + "..."
-              : product.info}
-          </p>
-          <button
-            onClick={() => handleDeleteProduct(product.id)}
-            className="mt-2 px-3 py-1 bg-gray-200 rounded-md text-sm text-gray-800 hover:bg-gray-300"
-          >
-            Delete
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-
-  const location = useLocation();
-  const getBreadcrumbs = () => {
-    const paths = [
-      { name: "Home", url: "/" },
-      { name: "Menu", url: "/menu" },
-    ];
-    const currentPath = location.pathname;
-    return paths;
-  };
-
   return (
     <main className="profile-page">
-      <Breadcrumbs paths={getBreadcrumbs()} />
       {loading ? (
-        // <p className="dark:text-white text-center self-center text-2xl font-semibold whitespace-nowrap text-white">
-        //   Loading restaurant data. Please wait...
-        // </p>
-        <Skeleton />
+        <p className="dark:text-white text-center self-center text-2xl font-semibold whitespace-nowrap text-white">
+          Loading restaurant data. Please wait...
+          <Skeleton />
+        </p>
       ) : (
         <div>
           <section className="relative block h-500-px">
@@ -301,17 +250,13 @@ const Menu = () => {
                             ? restaurantOwned.description
                             : "None"}
                         </p>
-                        {restaurantOwned.id ? (
-                          <a
-                            href="#pablo"
-                            onClick={toggleCategories}
-                            class="font-normal text-pink-500"
-                          >
-                            Show more
-                          </a>
-                        ) : (
-                          <div></div>
-                        )}
+                        <a
+                          href="#pablo"
+                          onClick={toggleCategories}
+                          class="font-normal text-pink-500"
+                        >
+                          Show more
+                        </a>
                       </div>
                     </div>
                   </div>
@@ -320,133 +265,50 @@ const Menu = () => {
                   {showCategories && cateRestOwned && (
                     <div className="mt-10 py-10 border-t border-blueGray-200">
                       <div className="flex flex-wrap justify-center">
-                        <div className="w-full lg:w-11/12 px-4">
+                        <div className="w-full lg:w-9/12 px-4">
                           <h3 className="mb-4 text-lg font-bold">
                             Categories:
                           </h3>
-                          <button
-                            onClick={toggleModal}
-                            className="mb-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                          >
-                            Add New Category
-                          </button>
                           {cateRestOwned.map((category) => (
                             <div
                               key={category.id}
                               className="mb-6 border rounded-lg p-4 bg-white shadow-md"
                             >
-                              <h4 className="text-xl font-semibold">
+                              <h4 className="text-xl font-semibold mb-2">
                                 {category.name}
                               </h4>
-
                               <ul className="list-disc ml-6">
-                                <section className="text-gray-600 body-font">
-                                  <div className="container px-4 py-10 mx-auto">
-                                    <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                                      {category.products
-                                        .reduce((chunks, product, index) => {
-                                          const chunkIndex = Math.floor(
-                                            index / 4
-                                          );
-                                          if (!chunks[chunkIndex]) {
-                                            chunks[chunkIndex] = [];
-                                          }
-                                          chunks[chunkIndex].push(product);
-                                          return chunks;
-                                        }, [])
-                                        .map((chunk, chunkIndex) => (
-                                          <div key={chunkIndex}>
-                                            {chunk.map((product, index) => (
-                                              <div
-                                                className="relative mb-6"
-                                                key={index}
-                                              >
-                                                {productGallery(
-                                                  category,
-                                                  product
-                                                )}
-                                              </div>
-                                            ))}
+                                <section class="text-gray-600 body-font">
+                                  <div class="container px-5 py-24 mx-auto">
+                                    <div class="flex flex-wrap -m-4">
+                                      {category.products.map((product) => (
+                                        <div class="lg:w-1/4 md:w-1/2 p-4 w-full">
+                                          <a class="block relative h-48 rounded overflow-hidden">
+                                            <img
+                                              alt="ecommerce"
+                                              class="object-cover object-center w-full h-full block"
+                                              src={
+                                                "http://localhost:8080/api/product/files/" +
+                                                product.img
+                                              }
+                                            />
+                                          </a>
+                                          <div class="mt-4">
+                                            <h3 class="text-gray-500 text-xs tracking-widest title-font mb-1">
+                                              {category.name}
+                                            </h3>
+                                            <h2 class="text-gray-900 title-font text-lg font-medium">
+                                              {product.name}
+                                            </h2>
+                                            <p class="mt-1">${product.price}</p>
+                                            <p class="mt-1">{product.info}</p>
                                           </div>
-                                        ))}
+                                        </div>
+                                      ))}
                                     </div>
                                   </div>
                                 </section>
                               </ul>
-
-                              <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                                <div class="grid gap-4">
-                                  <img
-                                    class="h-auto max-w-full rounded-lg"
-                                    src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image.jpg"
-                                    alt=""
-                                  />
-                                  <img
-                                    class="h-auto max-w-full rounded-lg"
-                                    src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-1.jpg"
-                                    alt=""
-                                  />
-                                  <img
-                                    class="h-auto max-w-full rounded-lg"
-                                    src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-2.jpg"
-                                    alt=""
-                                  />
-                                </div>
-
-                                <div class="grid gap-4">
-                                  <div>
-                                    <img
-                                      class="h-auto max-w-full rounded-lg"
-                                      src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-6.jpg"
-                                      alt=""
-                                    />
-                                  </div>
-                                  <div>
-                                    <img
-                                      class="h-auto max-w-full rounded-lg"
-                                      src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-7.jpg"
-                                      alt=""
-                                    />
-                                  </div>
-                                  <div>
-                                    <img
-                                      class="h-auto max-w-full rounded-lg"
-                                      src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-8.jpg"
-                                      alt=""
-                                    />
-                                  </div>
-                                </div>
-                                <div class="grid gap-4">
-                                  <div>
-                                    <img
-                                      class="h-auto max-w-full rounded-lg"
-                                      src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-9.jpg"
-                                      alt=""
-                                    />
-                                  </div>
-                                  <div>
-                                    <img
-                                      class="h-auto max-w-full rounded-lg"
-                                      src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-10.jpg"
-                                      alt=""
-                                    />
-                                  </div>
-                                  <div>
-                                    <img
-                                      class="h-auto max-w-full rounded-lg"
-                                      src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-11.jpg"
-                                      alt=""
-                                    />
-                                  </div>
-                                </div>
-                              </div>
-
-                              <button
-                                onClick={() => toggleModalProduct(category)}
-                                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4"
-                              >
-                                Add New Product in {category.name}
-                              </button>
                             </div>
                           ))}
                         </div>
@@ -476,15 +338,12 @@ const Menu = () => {
               &#8203;
             </span>
             <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-              <CategorieForm
-                restaurantId={restaurantOwned.id}
-                toggleModal={toggleModal}
-                updateCategories={updateCategories}
-              />
+              {/*<CategorieForm restaurantId={restaurantOwned.id} toggleModal={toggleModal} updateCategories={updateCategories}/>*/}
             </div>
           </div>
         </div>
       )}
+
       {/* Modal Product */}
       {showModalProduct && (
         <div className="fixed z-10 inset-0 overflow-y-auto">
@@ -502,11 +361,7 @@ const Menu = () => {
               &#8203;
             </span>
             <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-              <ProductForm
-                category={categorieToAddProduct}
-                toggleModalProduct={toggleModalProduct}
-                updateCategories={updateCategories}
-              />
+              {/*<ProductForm category={categorieToAddProduct} toggleModalProduct={toggleModalProduct} updateCategories={updateCategories}/>*/}
             </div>
           </div>
         </div>
@@ -515,4 +370,4 @@ const Menu = () => {
   );
 };
 
-export default Menu;
+export default Rewards;
