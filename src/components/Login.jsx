@@ -68,14 +68,14 @@ const Login = () => {
   };
 
   return (
-    <div className="max-w-lg mx-auto m-20 bg-opacity-45 backdrop-filter backdrop-blur-md bg-white dark:bg-gray-700 rounded-lg shadow-md px-8 py-10 flex flex-col items-center">
+    <div className="max-w-lg mx-auto m-20 bg-opacity-70 backdrop-filter backdrop-blur-md dark:backdrop-filter dark:bg-opacity-70 dark:backdrop-blur-md bg-white dark:bg-[#111829] rounded-lg shadow-md px-8 py-10 flex flex-col items-center">
       <img
         src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
         alt="profile-img"
         className="profile-img-card"
       />
       <h1 className="text-xl font-bold text-center text-gray-700 dark:text-gray-200 mb-8">
-        Welcome to My Company
+        Welcome to RestCoffee
       </h1>
       <Form
         onSubmit={handleLogin}

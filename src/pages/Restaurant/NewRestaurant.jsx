@@ -8,6 +8,7 @@ import { isEmail } from "validator";
 import { Textarea } from "@tremor/react";
 import { useLocation } from "react-router-dom";
 import Breadcrumbs from "../../components/Breadcrumbs";
+import GeoLocation from "../../components/GeoLocation";
 
 const required = (value) => {
   if (!value) {
@@ -32,7 +33,7 @@ const validEmail = (value) => {
 const Restaurant = () => {
   const [currentUser, setCurrentUser] = useState(undefined);
   const [email, setEmail] = useState("");
-  const [location, setLocation] = useState({});
+  const [location, setLocation] = useState(null);
   const [name, setName] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [cuisine, setCuisine] = useState("");
@@ -74,6 +75,10 @@ const Restaurant = () => {
     console.log(e.target.files[0]);
     console.log("1-logo: " + logoFile);
     console.log("2-cover: " + coverFile);
+  };
+
+  const handleLocationChange = (coords) => {
+    setLocation(coords);
   };
 
   const handleRestaurant = (e) => {
@@ -176,7 +181,7 @@ const Restaurant = () => {
                   value={name}
                   onChange={onChangeName}
                   validations={[required]}
-                  class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
+                  className="w-full px-6 dark:text-gray-200 dark:bg-gray-600 py-3 rounded-md border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-1 focus:ring-blue-500"
                 />
               </div>
 
@@ -195,7 +200,7 @@ const Restaurant = () => {
                   onChange={onChangeEmail}
                   validations={[required, validEmail]}
                   placeholder="example@domain.com"
-                  class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
+                  className="w-full px-6 dark:text-gray-200 dark:bg-gray-600 py-3 rounded-md border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-1 focus:ring-blue-500"
                 />
               </div>
 
@@ -204,17 +209,26 @@ const Restaurant = () => {
                   for="location"
                   class="mb-3 block dark:text-white font-medium text-[#07074D]"
                 >
-                  Location
+                  Location{" "}
+                  {location ? console.log(location) : " Not selected !"}
                 </label>
+                <GeoLocation onLocationChange={handleLocationChange} />
                 <Input
                   type="text"
                   name="location"
                   id="location"
-                  value={location}
+                  value={
+                    location
+                      ? "Latitude: " +
+                        location.latitude +
+                        " / Longitude: " +
+                        location.longitude
+                      : ""
+                  }
+                  disabled
                   onChange={onChangeLocation}
-                  validations={[required]}
-                  placeholder="Enter your restaurant/coffee shop location"
-                  class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
+                  placeholder="Select a location to get coordinates !"
+                  class="w-full rounded-md mt-3 border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
                 />
               </div>
 
@@ -225,7 +239,7 @@ const Restaurant = () => {
                 >
                   Cuisine
                 </label>
-                <input
+                <Input
                   type="text"
                   name="cuisine"
                   id="cuisine"
@@ -244,15 +258,15 @@ const Restaurant = () => {
                 >
                   Phone Number
                 </label>
-                <input
-                  type="text"
+                <Input
+                  type="number"
                   name="phoneNumber"
                   id="phoneNumber"
                   value={phoneNumber}
                   onChange={onChangePhoneNumber}
                   validations={[required]}
                   placeholder="Enter your restaurant/coffee shop phone number"
-                  class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
+                  className="w-full px-6 dark:text-gray-200 dark:bg-gray-600 py-3 rounded-md border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-1 focus:ring-blue-500"
                 />
               </div>
 
@@ -281,7 +295,7 @@ const Restaurant = () => {
                 >
                   Instagram
                 </label>
-                <input
+                <Input
                   type="text"
                   name="instagram"
                   id="instagram"
@@ -289,7 +303,7 @@ const Restaurant = () => {
                   onChange={onChangeInstagram}
                   validations={[required]}
                   placeholder="Enter your Restaurant/Coffee shop instagram"
-                  class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
+                  className="w-full px-6 dark:text-gray-200 dark:bg-gray-600 py-3 rounded-md border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-1 focus:ring-blue-500"
                 />
               </div>
 
@@ -300,7 +314,7 @@ const Restaurant = () => {
                 >
                   Price Range
                 </label>
-                <input
+                <Input
                   type="text"
                   name="priceRange"
                   id="priceRange"
@@ -308,7 +322,7 @@ const Restaurant = () => {
                   onChange={onChangePriceRange}
                   validations={[required]}
                   placeholder="Enter your Restaurant/Coffee shop price range"
-                  class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
+                  className="w-full px-6 dark:text-gray-200 dark:bg-gray-600 py-3 rounded-md border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-1 focus:ring-blue-500"
                 />
               </div>
 

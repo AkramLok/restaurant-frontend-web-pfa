@@ -10,6 +10,7 @@ const Navbar = () => {
   const [showAdminBoard, setShowAdminBoard] = useState(false);
   const [currentUser, setCurrentUser] = useState(undefined);
   const [showMenu, setShowMenu] = useState(false); // State to toggle menu visibility
+  const [dark, setDark] = useState(localStorage.getItem("darkMode") === "true");
 
   useEffect(() => {
     const user = AuthService.getCurrentUser();
@@ -29,17 +30,21 @@ const Navbar = () => {
     };
   }, []);
 
+  useEffect(() => {
+    // Update local storage when dark mode changes
+    localStorage.setItem("darkMode", dark);
+    // Add or remove dark mode class based on state
+    document.body.classList.toggle("dark", dark);
+  }, [dark]);
+
   const logOut = () => {
     AuthService.logout();
     setShowModeratorBoard(false);
     setShowAdminBoard(false);
     setCurrentUser(undefined);
   };
-  const [dark, setDark] = React.useState(false);
-
   const darkModeHandler = () => {
-    setDark(!dark);
-    document.body.classList.toggle("dark");
+    setDark((prevDark) => !prevDark); // Toggle dark mode state
   };
 
   const toggleMenu = () => {
@@ -63,7 +68,7 @@ const Navbar = () => {
         </a>
         <div class="flex items-center md:order-2 space-x-1 md:space-x-2 rtl:space-x-reverse">
           {currentUser ? (
-            <div className="text-sm mr-4">
+            <div className="text-sm">
               <Link
                 to={"/profile"}
                 className="dark:text-white text-gray-800 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 py-2 md:px-5 md:py-2.5 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800"
@@ -75,7 +80,7 @@ const Navbar = () => {
             <div className="text-white text-sm mr-4">
               <Link
                 to={"/login"}
-                className="dark:text-white text-gray-800 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 py-2 md:px-5 md:py-2.5 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800"
+                className="dark:text-white mr-2 text-gray-800 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 py-2 md:px-5 md:py-2.5 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800"
               >
                 Login
               </Link>
@@ -93,8 +98,8 @@ const Navbar = () => {
                 <button
                   type="button"
                   aria-label="Color Mode"
-                  onClick={() => darkModeHandler()}
-                  class="flex justify-center p-2 text-gray-500 transition duration-150 ease-in-out bg-gray-100 border border-transparent rounded-md lg:bg-white lg:dark:bg-gray-900 dark:text-gray-200 dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 hover:text-gray-700 focus:outline-none focus:bg-gray-50 dark:focus:bg-gray-700 active:bg-gray-50"
+                  onClick={darkModeHandler}
+                  class="flex justify-center p-2 text-[#111827] transition duration-150 ease-in-out bg-gray-100 border border-transparent rounded-md lg:bg-gray-200 lg:dark:bg-[#111827] dark:text-gray-200 dark:bg-[#111827] hover:bg-gray-50 dark:hover:bg-gray-700 hover:text-gray-700 focus:outline-none focus:bg-gray-200 dark:focus:bg-[#111829] active:bg-gray-50"
                 >
                   {dark && (
                     <svg
@@ -125,14 +130,14 @@ const Navbar = () => {
             </ul>
           )}
           {currentUser && (
-            <ul className="flex space-x-4">
+            <ul className="text-sm mr-4">
               <li>
                 <Link
                   to={"/login"}
-                  className="hover:text-gray-300 dark:text-white"
+                  className="hover:text-gray-300 mr-4 dark:text-white text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 md:px-5 md:py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
                   onClick={logOut}
                 >
-                  LogOut
+                  Logout
                 </Link>
               </li>
             </ul>
@@ -143,8 +148,8 @@ const Navbar = () => {
                 <button
                   type="button"
                   aria-label="Color Mode"
-                  onClick={() => darkModeHandler()}
-                  class="flex justify-center p-2 text-[#111827] transition duration-150 ease-in-out bg-gray-100 border border-transparent rounded-md lg:bg-white lg:dark:bg-[#111827] dark:text-gray-200 dark:bg-[#111827] hover:bg-gray-50 dark:hover:bg-gray-700 hover:text-gray-700 focus:outline-none focus:bg-gray-50 dark:focus:bg-[#111827] active:bg-gray-50"
+                  onClick={darkModeHandler}
+                  class="flex justify-center p-2 text-[#111827] transition duration-150 ease-in-out bg-gray-100 border border-transparent rounded-md lg:bg-gray-200 lg:dark:bg-[#111827] dark:text-gray-200 dark:bg-[#111827] hover:bg-gray-50 dark:hover:bg-gray-700 hover:text-gray-700 focus:outline-none focus:bg-gray-200 dark:focus:bg-[#111829] active:bg-gray-50"
                 >
                   {dark && (
                     <svg
@@ -207,7 +212,7 @@ const Navbar = () => {
             showMenu ? "block" : "hidden"
           }`}
         >
-          <ul className="flex space-x-4">
+          <ul className="flex flex-col md:flex-row md:space-x-4">
             <li>
               <Link
                 to={"/home"}
@@ -246,72 +251,6 @@ const Navbar = () => {
                 </Link>
               </li>
             )}
-
-            {/*
-        {currentUser && (
-          <li>
-            <Link to={"/restaurant/all"} className="text-white hover:text-gray-300">
-              RShow
-            </Link>
-          </li>
-        )}
-        {currentUser && (
-          <li>
-            <Link to={"/categorie/new"} className="text-white hover:text-gray-300">
-              CAdd
-            </Link>
-          </li>
-        )}
-        {currentUser && (
-          <li>
-            <Link to={"/categorie/all"} className="text-white hover:text-gray-300">
-              CShow
-            </Link>
-          </li>
-        )}
-                {currentUser && (
-          <li>
-            <Link to={"/categorie/new"} className="text-white hover:text-gray-300">
-              CAdd
-            </Link>
-          </li>
-        )}
-        {currentUser && (
-          <li>
-            <Link to={"/product/all"} className="text-white hover:text-gray-300">
-              PShow
-            </Link>
-          </li>
-        )}
-        {currentUser && (
-          <li>
-            <Link to={"/product/new"} className="text-white hover:text-gray-300">
-              PAdd
-            </Link>
-          </li>
-        )}*/}
-
-            {/* {showModeratorBoard && (
-          <li>
-            <Link to={"/mod"} className="text-white hover:text-gray-300">
-              Moderator Board
-            </Link>
-          </li>
-        )}
-        {showAdminBoard && (
-          <li>
-            <Link to={"/admin"} className="text-white hover:text-gray-300">
-              Admin Board
-            </Link>
-          </li>
-        )}
-        {currentUser && (
-          <li>
-            <Link to={"/user"} className="text-white hover:text-gray-300">
-              User
-            </Link>
-          </li>
-        )} */}
           </ul>
         </div>
       </div>

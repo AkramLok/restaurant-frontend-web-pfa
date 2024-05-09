@@ -14,9 +14,6 @@ import BoardAdmin from "./components/BoardAdmin";
 import Menu from "./pages/Menu/Menu";
 import NewRestaurant from "./pages/Restaurant/NewRestaurant";
 import NewCategorie from "./pages/Categories/NewCategorie";
-import NewProduct from "./pages/Products/NewProduct";
-import GetAllRestaurants from "./pages/Restaurant/GetAllRestaurants";
-import GetAllCategories from "./pages/Categories/GetAllCategories";
 import GetAllProducts from "./pages/Products/GetAllProducts";
 import Rewards from "./pages/Rewards/Rewards";
 import NotFound from "./pages/Other/NotFound";
@@ -69,10 +66,7 @@ const App = () => {
         <Route exact path="/menu" element={<Menu />} />
         <Route exact path="/rewards" element={<Rewards />} />
         <Route exact path="/restaurant/new" element={<NewRestaurant />} />
-        <Route exact path="/restaurant/all" element={<GetAllRestaurants />} />
         <Route exact path="/categorie/new" element={<NewCategorie />} />
-        <Route exact path="/categorie/all" element={<GetAllCategories />} />
-        <Route exact path="/product/new" element={<NewProduct />} />
         <Route exact path="/product/all" element={<GetAllProducts />} />
         <Route path="/user" element={<BoardUser />} />
         <Route path="/mod" element={<BoardModerator />} />

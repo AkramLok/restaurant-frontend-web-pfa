@@ -31,6 +31,46 @@ const getAllProductsByCategoryId = (categoryId) => {
   return axios.get(API_URL + "foodCategory/" + categoryId, config);
 };
 
+const getAllActivatedProductsByCategoryId = (categoryId) => {
+  const user = JSON.parse(localStorage.getItem("user"));
+  const token = user.accessToken;
+
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  return axios.get(
+    API_URL + "foodCategory/" + categoryId + "/activated",
+    config
+  );
+};
+
+const deactivateProductById = (productId) => {
+  const user = JSON.parse(localStorage.getItem("user"));
+  const token = user.accessToken;
+
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+  return axios.put(API_URL + productId + "/deactivate", config);
+};
+
+const activateProductById = (productId) => {
+  const user = JSON.parse(localStorage.getItem("user"));
+  const token = user.accessToken;
+
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+  return axios.put(API_URL + productId + "/activate", config);
+};
+
 const deleteProductByCategoryId = (productId) => {
   const user = JSON.parse(localStorage.getItem("user"));
   const token = user.accessToken;
@@ -46,6 +86,9 @@ const deleteProductByCategoryId = (productId) => {
 const ProductService = {
   addProductByCategorieId,
   getAllProductsByCategoryId,
+  getAllActivatedProductsByCategoryId,
+  deactivateProductById,
+  activateProductById,
   deleteProductByCategoryId,
 };
 

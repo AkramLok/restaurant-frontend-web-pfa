@@ -5,6 +5,7 @@ import AuthService from "../../services/auth.service";
 import logoNoResto from "../../assets/images/placeholder-profile.jpg";
 import coverNoResto from "../../assets/images/placeholder-image.webp";
 import ProductService from "../../services/product.service";
+import GeoLocationShow from "../Menu/GeoLocationShow";
 
 const Rewards = () => {
   const [restaurantOwned, setRestaurantOwned] = useState(null);
@@ -16,6 +17,7 @@ const Rewards = () => {
   const [showModal, setShowModal] = useState(false); // State to manage visibility of modal
   const [showModalProduct, setShowModalProduct] = useState(false); // State to manage visibility of modal
   const [categorieToAddProduct, setCategorieToAddProduct] = useState(null);
+  const [address, setAddress] = useState("");
   const [deleteProductByCategoryId, setDeleteProductByCategoryId] =
     useState("");
 
@@ -40,6 +42,12 @@ const Rewards = () => {
             position: "absolute",
             top: 0,
           });
+          const response = await fetch(
+            `https://nominatim.openstreetmap.org/reverse?lat=${restaurantOwned.location.latitude}&lon=${restaurantOwned.location.longitude}&format=json`
+          );
+          const data = await response.json();
+          setAddress(data.display_name);
+
           const responseCategories =
             await CateService.getCategoriesByRestaurantId(restaurantOwned.id);
           const categoriesRestaurantOwned = responseCategories.data;
@@ -224,7 +232,7 @@ const Rewards = () => {
                     </h3>
                     <div className="text-sm leading-normal mt-0 mb-2 text-blueGray-400 font-bold uppercase">
                       <i className="fas fa-map-marker-alt mr-2 text-lg text-blueGray-400"></i>
-                      Los Angeles, California
+                      {address}
                     </div>
                     <div className="mb-2 text-blueGray-600 mt-10">
                       <i className="fas fa-briefcase mr-2 text-lg text-blueGray-400"></i>
@@ -240,6 +248,16 @@ const Rewards = () => {
                         ? restaurantOwned.phoneNumber
                         : "No phone number"}
                     </div>
+                    {restaurantOwned ? (
+                      <GeoLocationShow
+                        initialCoords={[
+                          restaurantOwned.location.latitude,
+                          restaurantOwned.location.longitude,
+                        ]}
+                      />
+                    ) : (
+                      ""
+                    )}
                   </div>
                   <div class="mt-10 py-10 border-t border-blueGray-200 text-center">
                     <div class="flex flex-wrap justify-center">

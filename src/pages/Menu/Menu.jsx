@@ -10,6 +10,7 @@ import Skeleton from "./Skeleton";
 
 import { useLocation } from "react-router-dom";
 import Breadcrumbs from "../../components/Breadcrumbs";
+import GeoLocationShow from "./GeoLocationShow";
 
 const Menu = () => {
   const [restaurantOwned, setRestaurantOwned] = useState(null);
@@ -21,6 +22,9 @@ const Menu = () => {
   const [showModal, setShowModal] = useState(false); // State to manage visibility of modal
   const [showModalProduct, setShowModalProduct] = useState(false); // State to manage visibility of modal
   const [categorieToAddProduct, setCategorieToAddProduct] = useState(null);
+  const [showMore, setShowMore] = useState(false);
+  const [applyIsActivatedFilter, setApplyIsActivatedFilter] = useState(true);
+  const [address, setAddress] = useState("");
   const [deleteProductByCategoryId, setDeleteProductByCategoryId] =
     useState("");
 
@@ -45,6 +49,12 @@ const Menu = () => {
             position: "absolute",
             top: 0,
           });
+          const response = await fetch(
+            `https://nominatim.openstreetmap.org/reverse?lat=${restaurantOwned.location.latitude}&lon=${restaurantOwned.location.longitude}&format=json`
+          );
+          const data = await response.json();
+          setAddress(data.display_name);
+
           const responseCategories =
             await CateService.getCategoriesByRestaurantId(restaurantOwned.id);
           const categoriesRestaurantOwned = responseCategories.data;
@@ -74,6 +84,7 @@ const Menu = () => {
   // Function to toggle visibility of categories
   const toggleCategories = () => {
     setShowCategories(!showCategories);
+    setShowMore(!showMore);
   };
 
   // Function to toggle visibility of modal
@@ -81,18 +92,54 @@ const Menu = () => {
     setShowModal(!showModal);
   };
 
+  const toggleIsActivatedFilter = () => {
+    setApplyIsActivatedFilter((prevState) => !prevState);
+  };
+
   const toggleModalProduct = (category) => {
     setCategorieToAddProduct(category);
     setShowModalProduct(!showModalProduct);
   };
 
-  const handleDeleteProduct = async (productId) => {
+  const [filters, setFilters] = useState({
+    minPrice: 0,
+    maxPrice: Infinity,
+    minBonusPoints: 0,
+    isActivated: true,
+    searchName: "",
+  });
+
+  // Handler for updating filter values
+  const handleFilterChange = (filterName, value) => {
+    if (filterName === "maxPrice" && value === "") {
+      value = Infinity;
+    }
+    setFilters({ ...filters, [filterName]: value });
+  };
+
+  const deactivateProductHandler = async (productId) => {
     try {
-      const responseDeleteProduct =
-        await ProductService.deleteProductByCategoryId(productId);
-      const deletedProduct = responseDeleteProduct.data;
-      setDeleteProductByCategoryId(deletedProduct);
+      const responseDeleteProduct = await ProductService.deactivateProductById(
+        productId
+      );
+      const deactivatedProduct = responseDeleteProduct.data;
       updateCategories();
+      console.log(
+        "Deactivating of product " + productId + " was successfully !"
+      );
+    } catch (error) {
+      console.error("Error deleting product", error);
+    }
+  };
+
+  const activateProductHandler = async (productId) => {
+    try {
+      const responseDeleteProduct = await ProductService.activateProductById(
+        productId
+      );
+      const deactivatedProduct = responseDeleteProduct.data;
+      updateCategories();
+      console.log("Activating of product " + productId + " was successfully !");
     } catch (error) {
       console.error("Error deleting product", error);
     }
@@ -109,40 +156,6 @@ const Menu = () => {
       console.error("Error fetching updated categories:", error);
     }
   };
-
-  const productGallery = (category, product) => (
-    <div className="relative group">
-      <img
-        alt="ecommerce"
-        className="object-cover w-full h-full rounded-lg"
-        src={"http://localhost:8080/api/product/files/" + product.img}
-      />
-      <div className="absolute inset-0 bg-black bg-opacity-50 text-white p-2 opacity-0 transition-opacity duration-300 group-hover:opacity-100 flex items-center justify-center">
-        <div className="bg-white rounded-lg p-4 shadow-md">
-          <h3 className="text-gray-500 text-xs tracking-widest title-font mb-1">
-            {category.name}
-          </h3>
-          <h2 className="text-gray-900 title-font text-lg font-medium">
-            {product.name.length > 20
-              ? product.name.substring(0, 20) + "..."
-              : product.name}
-          </h2>
-          <p className="mt-1 text-gray-900">${product.price}</p>
-          <p className="mt-1 overflow-hidden overflow-ellipsis text-gray-900">
-            {product.info.length > 20
-              ? product.info.substring(0, 20) + "..."
-              : product.info}
-          </p>
-          <button
-            onClick={() => handleDeleteProduct(product.id)}
-            className="mt-2 px-3 py-1 bg-gray-200 rounded-md text-sm text-gray-800 hover:bg-gray-300"
-          >
-            Delete
-          </button>
-        </div>
-      </div>
-    </div>
-  );
 
   const location = useLocation();
   const getBreadcrumbs = () => {
@@ -196,8 +209,8 @@ const Menu = () => {
               <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-xl rounded-lg -mt-64 dark:bg-gray-300">
                 <div className="px-6">
                   <div className="flex flex-wrap justify-center">
-                    <div className="w-full lg:w-3/12 px-4 lg:order-2 flex justify-center">
-                      <div className="relative">
+                    <div className="w-full lg:w-3/12 px-4 lg:order-2 flex justify-center mt-[-60px]">
+                      <div className="relative overflow-hidden rounded-full h-40 w-40">
                         {restaurantOwned ? (
                           <img
                             alt="..."
@@ -205,13 +218,13 @@ const Menu = () => {
                               "http://localhost:8080/api/restaurants/files/" +
                               restaurantOwned.logoUrl
                             }
-                            className="shadow-xl rounded-full h-auto align-middle border-none absolute -m-16 -ml-20 lg:-ml-16 max-w-150-px"
+                            className="shadow-xl h-full w-full object-cover object-center"
                           />
                         ) : (
                           <img
                             alt="..."
                             src={logoNoResto}
-                            className="shadow-xl rounded-full h-auto align-middle border-none absolute -m-16 -ml-20 lg:-ml-16 max-w-150-px"
+                            className="shadow-xl h-full w-full object-cover object-center"
                           />
                         )}
                       </div>
@@ -221,11 +234,11 @@ const Menu = () => {
                       <div className="w-full lg:w-4/12 px-4 lg:order-3 lg:text-right lg:self-center">
                         <div className="py-6 px-3 mt-32 sm:mt-0">
                           <button
-                            className="bg-pink-500 active:bg-pink-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-2 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150"
+                            className="bg-blue-500 active:bg-blue-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-2 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150"
                             onClick={toggleCategories}
                             type="button"
                           >
-                            Show more
+                            {showMore ? "Show less" : "Show more"}
                           </button>
                         </div>
                       </div>
@@ -236,7 +249,7 @@ const Menu = () => {
                       <div className="flex justify-center py-4 lg:pt-4 pt-8">
                         <div className="mr-4 p-3 text-center">
                           <span className="text-xl font-bold block uppercase tracking-wide text-blueGray-600">
-                            {restaurantOwned.rating
+                            {restaurantOwned.id
                               ? restaurantOwned.rating
                               : "None"}
                           </span>
@@ -246,7 +259,7 @@ const Menu = () => {
                         </div>
                         <div className="mr-4 p-3 text-center">
                           <span className="text-xl font-bold block uppercase tracking-wide text-blueGray-600">
-                            {restaurantOwned.likes
+                            {restaurantOwned.id
                               ? restaurantOwned.likes
                               : "None"}
                           </span>
@@ -274,8 +287,8 @@ const Menu = () => {
                         : "No restaurant added !"}
                     </h3>
                     <div className="text-sm leading-normal mt-0 mb-2 text-blueGray-400 font-bold uppercase">
-                      <i className="fas fa-map-marker-alt mr-2 text-lg text-blueGray-400"></i>
-                      Los Angeles, California
+                      <i className="fas fa-map-marker-alt mr-2 text-sm text-blueGray-400"></i>
+                      {address}
                     </div>
                     <div className="mb-2 text-blueGray-600 mt-10">
                       <i className="fas fa-briefcase mr-2 text-lg text-blueGray-400"></i>
@@ -292,6 +305,17 @@ const Menu = () => {
                         : "No phone number"}
                     </div>
                   </div>
+                  {restaurantOwned ? (
+                    <GeoLocationShow
+                      initialCoords={[
+                        restaurantOwned.location.latitude,
+                        restaurantOwned.location.longitude,
+                      ]}
+                    />
+                  ) : (
+                    ""
+                  )}
+
                   <div class="mt-10 py-10 border-t border-blueGray-200 text-center">
                     <div class="flex flex-wrap justify-center">
                       <div class="w-full lg:w-9/12 px-4">
@@ -305,9 +329,9 @@ const Menu = () => {
                           <a
                             href="#pablo"
                             onClick={toggleCategories}
-                            class="font-normal text-pink-500"
+                            class="font-normal text-blue-500"
                           >
-                            Show more
+                            {showMore ? "Show less" : "Show more"}
                           </a>
                         ) : (
                           <div></div>
@@ -330,6 +354,63 @@ const Menu = () => {
                           >
                             Add New Category
                           </button>
+                          <span className="m-6 flex items-center justify-center">
+                            <p className="rounded-md bg-gray-200 px-4 py-2 mr-2">
+                              Filter:
+                            </p>
+                            <input
+                              type="number"
+                              value={filters.minPrice}
+                              onChange={(e) =>
+                                handleFilterChange("minPrice", e.target.value)
+                              }
+                              placeholder="Minimum Price"
+                              className="rounded-md px-4 py-2 mr-2"
+                            />
+                            <input
+                              type="number"
+                              value={filters.maxPrice}
+                              onChange={(e) =>
+                                handleFilterChange("maxPrice", e.target.value)
+                              }
+                              placeholder="Maximum Price"
+                              className="rounded-md px-4 py-2 mr-2"
+                            />
+                            <input
+                              type="number"
+                              value={filters.minBonusPoints}
+                              onChange={(e) =>
+                                handleFilterChange(
+                                  "minBonusPoints",
+                                  e.target.value
+                                )
+                              }
+                              placeholder="Minimum Bonus Points"
+                              className="rounded-md px-4 py-2 mr-2"
+                            />
+                            <button
+                              className={`rounded-md p-2 ${
+                                applyIsActivatedFilter
+                                  ? "bg-blue-500 hover:bg-blue-600 text-white"
+                                  : "bg-gray-200 hover:bg-gray-300 text-gray-800"
+                              }`}
+                              onClick={toggleIsActivatedFilter}
+                            >
+                              {applyIsActivatedFilter
+                                ? "Activated Only"
+                                : "All Products"}
+                            </button>
+                            <input
+                              type="text"
+                              value={filters.searchName}
+                              onChange={(e) =>
+                                handleFilterChange("searchName", e.target.value)
+                              }
+                              placeholder="Search by Product Name"
+                              className="rounded-md px-4 py-2 ml-2"
+                            />
+                          </span>
+
                           {cateRestOwned.map((category) => (
                             <div
                               key={category.id}
@@ -338,109 +419,129 @@ const Menu = () => {
                               <h4 className="text-xl font-semibold">
                                 {category.name}
                               </h4>
-
                               <ul className="list-disc ml-6">
                                 <section className="text-gray-600 body-font">
-                                  <div className="container px-4 py-10 mx-auto">
-                                    <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                                  <div className="container px-5 py-8 mx-auto">
+                                    <div className="flex flex-wrap -m-4">
                                       {category.products
-                                        .reduce((chunks, product, index) => {
-                                          const chunkIndex = Math.floor(
-                                            index / 4
+                                        .filter((product) => {
+                                          // Apply isActivated filter conditionally
+                                          const isActivatedCondition =
+                                            applyIsActivatedFilter
+                                              ? product.isActivated ===
+                                                filters.isActivated
+                                              : true;
+
+                                          // Return true only if all conditions are met, including the isActivated condition if applicable
+                                          return (
+                                            product.price >= filters.minPrice &&
+                                            product.price <= filters.maxPrice &&
+                                            product.bonusPoints >=
+                                              filters.minBonusPoints &&
+                                            isActivatedCondition &&
+                                            product.name
+                                              .toLowerCase()
+                                              .includes(
+                                                filters.searchName.toLowerCase()
+                                              )
                                           );
-                                          if (!chunks[chunkIndex]) {
-                                            chunks[chunkIndex] = [];
-                                          }
-                                          chunks[chunkIndex].push(product);
-                                          return chunks;
-                                        }, [])
-                                        .map((chunk, chunkIndex) => (
-                                          <div key={chunkIndex}>
-                                            {chunk.map((product, index) => (
-                                              <div
-                                                className="relative mb-6"
-                                                key={index}
+                                        })
+                                        .map((product) => (
+                                          <div
+                                            className="lg:w-1/4 md:w-1/2 p-8 w-full relative group"
+                                            key={product.id}
+                                          >
+                                            <div className="relative overflow-hidden">
+                                              <a
+                                                className="block relative overflow-hidden rounded"
+                                                style={{
+                                                  width: "100%",
+                                                  paddingBottom: "100%",
+                                                  position: "relative",
+                                                  borderRadius: "16px 16px 0 0",
+                                                }}
                                               >
-                                                {productGallery(
-                                                  category,
-                                                  product
+                                                <img
+                                                  alt="ecommerce"
+                                                  className="absolute inset-0 object-cover object-center w-full h-full block"
+                                                  src={
+                                                    "http://localhost:8080/api/product/files/" +
+                                                    product.img
+                                                  }
+                                                />
+                                              </a>
+                                              <div
+                                                className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+                                                style={{
+                                                  borderRadius: "16px 16px 0 0",
+                                                }}
+                                              >
+                                                <button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full mr-2">
+                                                  Update
+                                                </button>
+                                                {product.isActivated ? (
+                                                  <button
+                                                    onClick={() =>
+                                                      deactivateProductHandler(
+                                                        product.id
+                                                      )
+                                                    }
+                                                    className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-full"
+                                                  >
+                                                    Deactivate
+                                                  </button>
+                                                ) : (
+                                                  <button
+                                                    onClick={() =>
+                                                      activateProductHandler(
+                                                        product.id
+                                                      )
+                                                    }
+                                                    className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-full"
+                                                  >
+                                                    Activate
+                                                  </button>
                                                 )}
                                               </div>
-                                            ))}
+                                            </div>
+                                            <div
+                                              className="border p-5 transition duration-300 hover:shadow-xl"
+                                              style={{
+                                                width: "100%",
+                                                position: "relative",
+                                                borderRadius: "0 0 16px 16px",
+                                                overflow: "hidden",
+                                              }}
+                                            >
+                                              <h3 className="text-gray-500 text-xs tracking-widest title-font mb-1">
+                                                {category.name}
+                                              </h3>
+                                              <h2 className="text-gray-900 title-font text-lg font-medium">
+                                                {product.name.length > 20
+                                                  ? product.name.substring(
+                                                      0,
+                                                      20
+                                                    ) + "..."
+                                                  : product.name}
+                                              </h2>
+                                              <p className="mt-1">
+                                                ${product.price}
+                                              </p>
+                                              <p className="mt-1 overflow-hidden overflow-ellipsis">
+                                                {product.info.length > 80
+                                                  ? product.info.substring(
+                                                      0,
+                                                      80
+                                                    ) + "..."
+                                                  : product.info}
+                                              </p>
+                                            </div>{" "}
                                           </div>
                                         ))}
                                     </div>
                                   </div>
                                 </section>
                               </ul>
-
-                              <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                                <div class="grid gap-4">
-                                  <img
-                                    class="h-auto max-w-full rounded-lg"
-                                    src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image.jpg"
-                                    alt=""
-                                  />
-                                  <img
-                                    class="h-auto max-w-full rounded-lg"
-                                    src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-1.jpg"
-                                    alt=""
-                                  />
-                                  <img
-                                    class="h-auto max-w-full rounded-lg"
-                                    src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-2.jpg"
-                                    alt=""
-                                  />
-                                </div>
-
-                                <div class="grid gap-4">
-                                  <div>
-                                    <img
-                                      class="h-auto max-w-full rounded-lg"
-                                      src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-6.jpg"
-                                      alt=""
-                                    />
-                                  </div>
-                                  <div>
-                                    <img
-                                      class="h-auto max-w-full rounded-lg"
-                                      src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-7.jpg"
-                                      alt=""
-                                    />
-                                  </div>
-                                  <div>
-                                    <img
-                                      class="h-auto max-w-full rounded-lg"
-                                      src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-8.jpg"
-                                      alt=""
-                                    />
-                                  </div>
-                                </div>
-                                <div class="grid gap-4">
-                                  <div>
-                                    <img
-                                      class="h-auto max-w-full rounded-lg"
-                                      src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-9.jpg"
-                                      alt=""
-                                    />
-                                  </div>
-                                  <div>
-                                    <img
-                                      class="h-auto max-w-full rounded-lg"
-                                      src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-10.jpg"
-                                      alt=""
-                                    />
-                                  </div>
-                                  <div>
-                                    <img
-                                      class="h-auto max-w-full rounded-lg"
-                                      src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-11.jpg"
-                                      alt=""
-                                    />
-                                  </div>
-                                </div>
-                              </div>
-
                               <button
                                 onClick={() => toggleModalProduct(category)}
                                 className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4"
