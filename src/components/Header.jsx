@@ -1,6 +1,6 @@
-import React from 'react';
-import foodImage from '../assets/images/food-ad-1.jpeg';
-import '../style/Header.css';
+import React from "react";
+import foodImage from "../assets/images/food-ad-1.jpeg";
+import "../style/Header.css";
 
 const Header = () => {
   return (
@@ -12,15 +12,21 @@ const Header = () => {
               Brand new
             </p>
           </div>
-          <main class="header_animation_codepen_1">
+          {/*<main class="header_animation_codepen_1">
             <section class="animation">
-              <div class="first"><div>Carlos Córdova</div></div>
-              <div class="second"><div>Web Developer</div></div>
-              <div class="third"><div>Systems Engineer</div></div>
+              <div class="first">
+                <div>Carlos Córdova</div>
+              </div>
+              <div class="second">
+                <div>Web Developer</div>
+              </div>
+              <div class="third">
+                <div>Systems Engineer</div>
+              </div>
             </section>
-          </main>
+  </main>*/}
           <h2 className="max-w-lg mb-6 font-sans text-3xl font-bold leading-none tracking-tight text-gray-900 sm:text-4xl md:mx-auto">
-            <span className="relative inline-block">
+            <span className="relative inline-block text-white">
               <svg
                 viewBox="0 0 52 24"
                 fill="currentColor"
@@ -44,7 +50,7 @@ const Header = () => {
                 />
               </svg>
               <span className="relative">The</span>
-            </span>{' '}
+            </span>{" "}
             quick, brown fox jumps over a lazy dog
           </h2>
           <p className="text-white md:text-lg">
@@ -75,7 +81,7 @@ const Header = () => {
         </p>
       </div>
       <img
-      src="https://kitwind.io/assets/kometa/half-browser.png"
+        src="https://kitwind.io/assets/kometa/half-browser.png"
         className="w-full max-w-screen-sm mx-auto rounded shadow-2xl md:w-auto lg:max-w-screen-md"
         alt=""
       />

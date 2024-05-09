@@ -8,7 +8,7 @@ import "leaflet/dist/leaflet.css";
 
 const GeoLocation = ({ onLocationChange }) => {
   const [position, setPosition] = useState([33.5656, -7.6]);
-  const [zoom] = useState(17);
+  const [zoom] = useState(15);
   const [search, setSearch] = useState(null);
   const [address, setAddress] = useState("");
 

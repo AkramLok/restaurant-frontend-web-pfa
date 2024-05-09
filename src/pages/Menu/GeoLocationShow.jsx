@@ -4,6 +4,7 @@ import ReactLeafletSearch from "react-leaflet-search";
 import icon from "../../assets/icons/geolocalisation/marker-icon.png";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet"; // Import L object from Leaflet library
+import zIndex from "@mui/material/styles/zIndex";
 
 const GeoLocationShow = ({ initialCoords }) => {
   const [position, setPosition] = useState(initialCoords);
@@ -37,24 +38,16 @@ const GeoLocationShow = ({ initialCoords }) => {
 
   return (
     <div>
-      {search && (
-        <h3 className="mb-3">
-          {/*Coordinates: {search.lat}, {search.lng}<br />*/}
-          Address: {address}
-        </h3>
-      )}
       <Map
         onClick={handleMapClick}
         center={position}
         zoom={zoom}
-        style={{ height: "400px", width: "100%" }}
+        style={{ height: "400px", width: "100%", zIndex: 1 }}
       >
         <TileLayer
           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.osm.org/{z}/{x}/{y}.png"
         />
-
-        {/* Marker to indicate the specified location */}
 
         <ReactLeafletSearch
           position="topright"
@@ -67,6 +60,12 @@ const GeoLocationShow = ({ initialCoords }) => {
         />
         <Marker position={position} icon={customIcon} />
       </Map>
+      {search && (
+        <h3 className="mb-3 text-gray-300 text-center">
+          {/*Coordinates: {search.lat}, {search.lng}<br />*/}
+          Address: {address}
+        </h3>
+      )}
     </div>
   );
 };

@@ -8,7 +8,7 @@ import AuthService from "../services/auth.service";
 const required = (value) => {
   if (!value) {
     return (
-      <div className="text-sm text-gray-500 dark:text-gray-300">
+      <div className="text-sm text-quartenary dark:text-gray-300">
         This field is required!
       </div>
     );
@@ -68,14 +68,14 @@ const Login = () => {
   };
 
   return (
-    <div className="max-w-lg mx-auto m-20 bg-opacity-70 backdrop-filter backdrop-blur-md dark:backdrop-filter dark:bg-opacity-70 dark:backdrop-blur-md bg-white dark:bg-[#111829] rounded-lg shadow-md px-8 py-10 flex flex-col items-center">
+    <div className="max-w-lg mx-auto mt-20 mb-36 bg-opacity-70 backdrop-filter backdrop-blur-md dark:backdrop-filter dark:bg-opacity-70 dark:backdrop-blur-md bg-tertiary dark:bg-[#111829] rounded-lg shadow-md px-16 py-28 flex flex-col items-center">
       <img
         src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
         alt="profile-img"
         className="profile-img-card"
       />
-      <h1 className="text-xl font-bold text-center text-gray-700 dark:text-gray-200 mb-8">
-        Welcome to RestCoffee
+      <h1 className="text-xl text-center text-quartenary dark:text-gray-200 mb-8">
+        Welcome to Coffee & Plates
       </h1>
       <Form
         onSubmit={handleLogin}
@@ -86,7 +86,7 @@ const Login = () => {
           <div className="w-full">
             <label
               htmlFor="username"
-              className="text-sm text-gray-700 dark:text-gray-200 mr-2"
+              className="text-sm text-quartenary dark:text-gray-200 mr-2"
             >
               Username:
             </label>
@@ -101,7 +101,7 @@ const Login = () => {
             />
             <label
               htmlFor="password"
-              className="text-sm text-gray-700 dark:text-gray-200 mr-2"
+              className="text-sm text-quartenary dark:text-gray-200 mr-2"
             >
               Password:
             </label>
@@ -133,7 +133,7 @@ const Login = () => {
           ref={checkBtn}
         />
         <button
-          className={`bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-md shadow-sm ${
+          className={`bg-quartenary hover:bg-tertiary text-secondary font-medium py-2 px-4 rounded-md shadow-sm ${
             loading ? "opacity-50 cursor-not-allowed" : ""
           }`}
           disabled={loading}
@@ -147,10 +147,10 @@ const Login = () => {
         </button>
       </Form>
       <div className="mt-4 text-center">
-        <span className="text-sm text-gray-500 dark:text-gray-300">
+        <span className="text-sm text-quartenary dark:text-gray-300">
           Don't have an account yet?{" "}
         </span>
-        <Link to={"/register"} className="text-blue-500 hover:text-blue-600">
+        <Link to={"/register"} className="text-tertiary hover:text-quartenary">
           Sign Up
         </Link>
       </div>

@@ -2,9 +2,11 @@ import React, { useEffect, useState } from "react";
 import RestService from "../../services/restaurant.service";
 import CateService from "../../services/categorie.service";
 import logoNoResto from "../../assets/images/placeholder-profile.jpg";
-import coverNoResto from "../../assets/images/placeholder-image.webp";
+//import coverNoResto from "../../assets/images/placeholder-image.webp";
+import coverNoResto from "../../assets/images/coverNoResto.jpg";
 import CategorieForm from "./CategorieForm";
 import ProductForm from "./ProductForm";
+import UpdateProductForm from "./UpdateProductForm";
 import ProductService from "../../services/product.service";
 import Skeleton from "./Skeleton";
 
@@ -21,7 +23,9 @@ const Menu = () => {
   const [showCategories, setShowCategories] = useState(false); // State to manage visibility of categories
   const [showModal, setShowModal] = useState(false); // State to manage visibility of modal
   const [showModalProduct, setShowModalProduct] = useState(false); // State to manage visibility of modal
+  const [showUpdateProductModal, setShowUpdateProductModal] = useState(false); // State to manage visibility of modal
   const [categorieToAddProduct, setCategorieToAddProduct] = useState(null);
+  const [productToUpdate, setProductToUpdate] = useState(null);
   const [showMore, setShowMore] = useState(false);
   const [applyIsActivatedFilter, setApplyIsActivatedFilter] = useState(true);
   const [address, setAddress] = useState("");
@@ -99,6 +103,11 @@ const Menu = () => {
   const toggleModalProduct = (category) => {
     setCategorieToAddProduct(category);
     setShowModalProduct(!showModalProduct);
+  };
+
+  const toggleUpdateProductModal = (product) => {
+    setProductToUpdate(product);
+    setShowUpdateProductModal(!showUpdateProductModal);
   };
 
   const [filters, setFilters] = useState({
@@ -286,48 +295,53 @@ const Menu = () => {
                         ? restaurantOwned.name
                         : "No restaurant added !"}
                     </h3>
-                    <div className="text-sm leading-normal mt-0 mb-2 text-blueGray-400 font-bold uppercase">
-                      <i className="fas fa-map-marker-alt mr-2 text-sm text-blueGray-400"></i>
-                      {address}
+                    <div className="mb-2 text-blueGray-600">
+                      <i className="fas fa-map-marker-alt mr-2 text-lg"></i>
+                      Location : &nbsp;
+                      {address ? address : "No location"}
                     </div>
-                    <div className="mb-2 text-blueGray-600 mt-10">
-                      <i className="fas fa-briefcase mr-2 text-lg text-blueGray-400"></i>
+                    <div className="mb-2 text-blueGray-600">
+                      <i class="fas fa-kitchen-set text-lg"></i>{" "}
                       {/*Solution Manager - Creative Tim Officer*/}
+                      Cuisine : &nbsp;
                       {restaurantOwned.cuisine
                         ? restaurantOwned.cuisine
                         : "No cuisine"}
                     </div>
                     <div className="mb-2 text-blueGray-600">
-                      <i className="fas fa-university mr-2 text-lg text-blueGray-400"></i>
+                      <i className="fas fa-phone mr-2 text-lg"></i>
                       {/*University of Computer Science*/}
+                      Phone Number : &nbsp;
                       {restaurantOwned.phoneNumber
                         ? restaurantOwned.phoneNumber
                         : "No phone number"}
                     </div>
+                    <div class="mb-5">
+                      {restaurantOwned ? (
+                        <GeoLocationShow
+                          initialCoords={[
+                            restaurantOwned.location.latitude,
+                            restaurantOwned.location.longitude,
+                          ]}
+                        />
+                      ) : (
+                        ""
+                      )}
+                    </div>
                   </div>
-                  {restaurantOwned ? (
-                    <GeoLocationShow
-                      initialCoords={[
-                        restaurantOwned.location.latitude,
-                        restaurantOwned.location.longitude,
-                      ]}
-                    />
-                  ) : (
-                    ""
-                  )}
-
                   <div class="mt-10 py-10 border-t border-blueGray-200 text-center">
                     <div class="flex flex-wrap justify-center">
                       <div class="w-full lg:w-9/12 px-4">
-                        <p class="mb-4 text-lg leading-relaxed text-blueGray-700">
+                        <p class="mb-4 text-lg leading-relaxed text-blueGray-600">
+                          <i className="fas fa-pen mr-2 text-lg"></i>
                           Description :{" "}
                           {restaurantOwned.description
                             ? restaurantOwned.description
-                            : "None"}
+                            : "No Description"}
                         </p>
                         {restaurantOwned.id ? (
                           <a
-                            href="#pablo"
+                            href="#"
                             onClick={toggleCategories}
                             class="font-normal text-blue-500"
                           >
@@ -476,7 +490,14 @@ const Menu = () => {
                                                   borderRadius: "16px 16px 0 0",
                                                 }}
                                               >
-                                                <button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full mr-2">
+                                                <button
+                                                  onClick={() =>
+                                                    toggleUpdateProductModal(
+                                                      product
+                                                    )
+                                                  }
+                                                  className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full mr-2"
+                                                >
                                                   Update
                                                 </button>
                                                 {product.isActivated ? (
@@ -606,6 +627,33 @@ const Menu = () => {
               <ProductForm
                 category={categorieToAddProduct}
                 toggleModalProduct={toggleModalProduct}
+                updateCategories={updateCategories}
+              />
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Update Product Modal */}
+      {showUpdateProductModal && (
+        <div className="fixed z-10 inset-0 overflow-y-auto">
+          <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <div
+              className="fixed inset-0 transition-opacity"
+              aria-hidden="true"
+            >
+              <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
+            </div>
+            <span
+              className="hidden sm:inline-block sm:align-middle sm:h-screen"
+              aria-hidden="true"
+            >
+              &#8203;
+            </span>
+            <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+              <UpdateProductForm
+                product={productToUpdate}
+                toggleUpdateProductModal={toggleUpdateProductModal}
                 updateCategories={updateCategories}
               />
             </div>

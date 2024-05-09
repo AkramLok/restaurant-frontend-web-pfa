@@ -157,11 +157,11 @@ const Restaurant = () => {
   };
 
   return (
-    <section class="text-gray-600 body-font mb-12">
+    <section class="text-gray-600 body-font">
       <Breadcrumbs paths={getBreadcrumbs()} />
-      <div class="container px-5 mt-12 py-24 mx-auto bg-white dark:bg-opacity-80 dark:bg-[#111827] bg-opacity-55 backdrop-filter backdrop-blur-md body-font">
+      <div class="container px-5 py-24 mx-auto bg-white dark:bg-opacity-80 dark:bg-[#111827] bg-opacity-85 backdrop-filter backdrop-blur-md body-font">
         <div className="flex items-center justify-center p-5">
-          <div className="mx-auto w-full max-w-[550px]">
+          <div className="mx-auto w-full max-w-[1280px]">
             <span className="block text-3xl font-semibold mb-4 dark:text-white">
               Add Restaurant
             </span>
@@ -228,7 +228,7 @@ const Restaurant = () => {
                   disabled
                   onChange={onChangeLocation}
                   placeholder="Select a location to get coordinates !"
-                  class="w-full rounded-md mt-3 border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
+                  className="w-full px-6 mt-5 dark:text-gray-200 dark:bg-gray-600 py-3 rounded-md border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-1 focus:ring-blue-500"
                 />
               </div>
 
@@ -247,7 +247,7 @@ const Restaurant = () => {
                   onChange={onChangeCuisine}
                   validations={[required]}
                   placeholder="Enter your restaurant/coffee shop cuisine"
-                  class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
+                  className="w-full px-6 dark:text-gray-200 dark:bg-gray-600 py-3 rounded-md border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-1 focus:ring-blue-500"
                 />
               </div>
 
@@ -284,7 +284,7 @@ const Restaurant = () => {
                   onChange={onChangeDescription}
                   validations={[required]}
                   placeholder="Enter your Restaurant/Coffee shop description"
-                  className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
+                  className="w-full px-6 dark:text-gray-200 dark:bg-gray-600 py-3 rounded-md border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-1 focus:ring-blue-500"
                 />
               </div>
 

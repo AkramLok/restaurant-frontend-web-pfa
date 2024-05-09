@@ -15,6 +15,16 @@ const required = (value) => {
   }
 };
 
+const lessThanZero = (value) => {
+  if (value < 0) {
+    return (
+      <div className="text-sm text-gray-500 dark:text-gray-300">
+        Number must be greater than or equal to 0!
+      </div>
+    );
+  }
+};
+
 const RewardForm = ({ product, toggleModal, updateCategories }) => {
   const [currentUser, setCurrentUser] = useState(undefined);
   const [loading, setLoading] = useState(true);
@@ -88,7 +98,7 @@ const RewardForm = ({ product, toggleModal, updateCategories }) => {
               placeholder="Enter required points"
               value={requiredPoints}
               onChange={(e) => setRequiredPoints(e.target.value)}
-              validations={[required]}
+              validations={[required, lessThanZero]} // Add lessThanZero validator
               className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
             />
           </div>

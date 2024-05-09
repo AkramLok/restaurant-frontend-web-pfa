@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Routes, Route, Link, Navigate } from "react-router-dom";
+import { Routes, Route, useLocation, Link, Navigate } from "react-router-dom";
 //import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 import AuthService from "./services/auth.service";
@@ -22,6 +22,7 @@ import EventBus from "./common/EventBus";
 import ProfileMore from "./components/ProfileMore";
 import Navbar from "./components/Navbar";
 import Bar from "./components/Bar";
+import "@fortawesome/fontawesome-free/css/all.min.css";
 import { faMoon } from "@fortawesome/free-regular-svg-icons";
 import { IconContext } from "react-icons";
 
@@ -29,6 +30,8 @@ const App = () => {
   const [showModeratorBoard, setShowModeratorBoard] = useState(false);
   const [showAdminBoard, setShowAdminBoard] = useState(false);
   const [currentUser, setCurrentUser] = useState(undefined);
+  const location = useLocation();
+
   useEffect(() => {
     const user = AuthService.getCurrentUser();
 
@@ -53,6 +56,10 @@ const App = () => {
     setShowAdminBoard(false);
     setCurrentUser(undefined);
   };
+
+  useEffect(() => {
+    window.scrollTo(0, 0); // Scroll to top whenever route changes
+  }, [location.pathname]);
 
   return (
     <div>

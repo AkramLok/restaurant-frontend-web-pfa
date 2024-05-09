@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import logoNoResto from "../../assets/images/placeholder-profile.jpg";
-import coverNoResto from "../../assets/images/placeholder-image.webp";
+//import coverNoResto from "../../assets/images/placeholder-image.webp";
+import coverNoResto from "../../assets/images/coverNoResto.jpg";
 
 const Skeleton = () => {
   const [backgroundStyle, setBackgroundStyle] = useState({});
@@ -75,61 +76,68 @@ const Skeleton = () => {
                   <div className="flex justify-center py-4 lg:pt-4 pt-8">
                     {/* Ratings */}
                     <div className="mr-4 p-3 text-center">
+                      <span className="text-xl font-bold block uppercase tracking-wide text-blueGray-600">
+                        <p className="animate-pulse w-24 h-2 mt-6 bg-gray-200 rounded-lg dark:bg-gray-600"></p>
+                      </span>
                       <span className="animate-pulse text-sm text-blueGray-400">
                         Rating
-                      </span>
-                      <span className="text-xl font-bold block uppercase tracking-wide text-blueGray-600">
-                        <p className="animate-pulse w-48 h-2 mt-6 bg-gray-200 rounded-lg dark:bg-gray-700"></p>
                       </span>
                     </div>
                     {/* Likes */}
                     <div className="mr-4 p-3 text-center">
+                      <span className="text-xl font-bold block uppercase tracking-wide text-blueGray-600">
+                        <p className="animate-pulse w-24 h-2 mt-6 bg-gray-200 rounded-lg dark:bg-gray-600"></p>
+                      </span>
                       <span className="animate-pulse text-sm text-blueGray-400">
                         Likes
-                      </span>
-                      <span className="text-xl font-bold block uppercase tracking-wide text-blueGray-600">
-                        <p className="animate-pulse w-48 h-2 mt-6 bg-gray-200 rounded-lg dark:bg-gray-700"></p>
                       </span>
                     </div>
                     {/* Price Range */}
                     <div className="mr-4 p-3 text-center">
+                      <span className="text-sm text-blueGray-600">
+                        <p className="animate-pulse w-24 h-2 mt-6 bg-gray-200 rounded-lg dark:bg-gray-600"></p>
+                      </span>
                       <span className="animate-pulse text-sm text-blueGray-400">
                         Price Range
-                      </span>
-                      <span className="text-sm text-blueGray-400">
-                        <p className="animate-pulse w-48 h-2 mt-6 bg-gray-200 rounded-lg dark:bg-gray-700"></p>
                       </span>
                     </div>
                   </div>
                 </div>
               </div>
 
-              {/* Restaurant details */}
               <div className="text-center mt-12">
-                <div className="flex items-center justify-center mb-2">
-                  <i className="animate-pulse fas fa-map-marker-alt mr-2 text-lg text-blueGray-400"></i>
-                  <p className="animate-pulse w-48 h-2 mt-6 bg-gray-200 rounded-lg dark:bg-gray-700"></p>
+                {/* Restaurant details */}
+                <div className="mb-2 text-blueGray-600">
+                  <i className="fas fa-map-marker-alt mr-2 text-lg"></i>
+                  Location : &nbsp;
+                  <p className="mb-4 inline-block text-lg leading-relaxed text-blueGray-600">
+                    <span className="animate-pulse w-24 h-2 bg-gray-200 rounded-lg dark:bg-gray-600"></span>
+                  </p>
                 </div>
-                <div className="flex items-center justify-center mb-2">
-                  <i className="animate-pulse fas fa-briefcase mr-2 text-lg text-blueGray-400"></i>
-                  <p className="animate-pulse w-48 h-2 mt-6 bg-gray-200 rounded-lg dark:bg-gray-700"></p>
+                <div className="mb-2 text-blueGray-600">
+                  <i className="fas fa-kitchen-set text-lg"></i> Cuisine :
+                  &nbsp;
+                  <p className="mb-4 inline-block text-lg leading-relaxed text-blueGray-600">
+                    <span className="animate-pulse w-24 h-2 bg-gray-200 rounded-lg dark:bg-gray-600"></span>
+                  </p>
                 </div>
-                <div className="flex items-center justify-center mb-2">
-                  <i className="animate-pulse fas fa-university mr-2 text-lg text-blueGray-400"></i>
-                  <p className="animate-pulse w-48 h-2 mt-6 bg-gray-200 rounded-lg dark:bg-gray-700"></p>
+                <div className="mb-2 text-blueGray-600">
+                  <i className="fas fa-phone mr-2 text-lg"></i>
+                  Phone Number : &nbsp;
+                  <p className="mb-4 inline-block text-lg leading-relaxed text-blueGray-600">
+                    <span className="animate-pulse w-24 h-2 bg-gray-200 rounded-lg dark:bg-gray-600"></span>
+                  </p>
                 </div>
               </div>
 
-              {/* Restaurant description */}
               <div className="mt-10 py-10 border-t border-blueGray-200 text-center">
                 <div className="flex flex-wrap justify-center">
                   <div className="w-full lg:w-9/12 px-4">
-                    <p className="mb-4 text-lg leading-relaxed text-blueGray-700">
-                      <p className="animate-pulse w-48 h-2 mt-6 bg-gray-200 rounded-lg dark:bg-gray-700"></p>
+                    <p className="mb-4 text-lg leading-relaxed text-blueGray-600">
+                      <i className="fas fa-pen mr-2 text-lg"></i>
+                      Description :
+                      <span className="animate-pulse w-24 h-2 bg-gray-200 rounded-lg dark:bg-gray-600"></span>
                     </p>
-                    <a href="#pablo" className="font-normal text-pink-500">
-                      <p className="animate-pulse w-48 h-2 mt-6 bg-gray-200 rounded-lg dark:bg-gray-700"></p>
-                    </a>
                   </div>
                 </div>
               </div>

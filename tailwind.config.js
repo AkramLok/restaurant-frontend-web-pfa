@@ -20,12 +20,12 @@ module.exports = {
         22: "7rem",
       },
       colors: {
-        primary: "#4F5665",
+        primary: "#222831",
         "primary-context": "#7C828A",
-        secondary: "#ffba33",
+        secondary: "#393E46",
         "secondary-200": "#f4a200",
-        tertiary: "#D2691E",
-        quartenary: "#0b132a",
+        tertiary: "#00ADB5",
+        quartenary: "#EEEEEE",
         brown: "#6D4C41", // You can replace '#6D4C41' with your desired shade of brown
         "olive-green": "#556B2F", // You can replace '#556B2F' with your desired shade of olive green
         beige: "#F5F5DC", // You can replace '#F5F5DC' with your desired shade of beige

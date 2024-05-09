@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import RestService from "../../services/restaurant.service";
 import CateService from "../../services/categorie.service";
 import logoNoResto from "../../assets/images/placeholder-profile.jpg";
-import coverNoResto from "../../assets/images/placeholder-image.webp";
+//import coverNoResto from "../../assets/images/placeholder-image.webp";
+import coverNoResto from "../../assets/images/coverNoResto.jpg";
 import Skeleton from "./Skeleton";
 
 import { useLocation } from "react-router-dom";
@@ -258,20 +259,23 @@ const Rewards = () => {
                         ? restaurantOwned.name
                         : "No restaurant added !"}
                     </h3>
-                    <div className="text-sm leading-normal mt-0 mb-2 text-blueGray-400 font-bold uppercase">
-                      <i className="fas fa-map-marker-alt mr-2 text-sm text-blueGray-400"></i>
-                      {address}
+                    <div className="mb-2 text-blueGray-600">
+                      <i className="fas fa-map-marker-alt mr-2 text-lg"></i>
+                      Location : &nbsp;
+                      {address ? address : "No location"}
                     </div>
-                    <div className="mb-2 text-blueGray-600 mt-10">
-                      <i className="fas fa-briefcase mr-2 text-lg text-blueGray-400"></i>
+                    <div className="mb-2 text-blueGray-600">
+                      <i class="fas fa-kitchen-set text-lg"></i>{" "}
                       {/*Solution Manager - Creative Tim Officer*/}
+                      Cuisine : &nbsp;
                       {restaurantOwned.cuisine
                         ? restaurantOwned.cuisine
                         : "No cuisine"}
                     </div>
                     <div className="mb-2 text-blueGray-600">
-                      <i className="fas fa-university mr-2 text-lg text-blueGray-400"></i>
+                      <i className="fas fa-phone mr-2 text-lg"></i>
                       {/*University of Computer Science*/}
+                      Phone Number : &nbsp;
                       {restaurantOwned.phoneNumber
                         ? restaurantOwned.phoneNumber
                         : "No phone number"}
@@ -291,7 +295,8 @@ const Rewards = () => {
                   <div class="mt-10 py-10 border-t border-blueGray-200 text-center">
                     <div class="flex flex-wrap justify-center">
                       <div class="w-full lg:w-9/12 px-4">
-                        <p class="mb-4 text-lg leading-relaxed text-blueGray-700">
+                        <p class="mb-4 text-lg leading-relaxed text-blueGray-600">
+                          <i className="fas fa-pen mr-2 text-lg"></i>
                           Description :{" "}
                           {restaurantOwned.description
                             ? restaurantOwned.description
@@ -299,7 +304,7 @@ const Rewards = () => {
                         </p>
                         {restaurantOwned.id ? (
                           <a
-                            href="#pablo"
+                            href="#"
                             onClick={toggleCategories}
                             class="font-normal text-blue-500"
                           >
@@ -555,7 +560,7 @@ const Rewards = () => {
             <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
               <DiscountForm
                 product={productToAddDiscount}
-                toggleModalProduct={toggleDiscountModal}
+                toggleModal={toggleDiscountModal}
                 updateCategories={updateCategories}
               />
             </div>

@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 const Breadcrumbs = ({ paths }) => {
   return (
-    <div class="bg-gray-200 dark:bg-gray-800">
+    <div class="bg-quartenary dark:bg-gray-800 shadow">
       <div class="container flex items-center px-6 py-4 mx-auto overflow-x-auto whitespace-nowrap">
         <a href="#" class="text-gray-600 dark:text-gray-200 mr-4">
           <svg

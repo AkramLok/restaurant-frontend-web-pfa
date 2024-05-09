@@ -51,10 +51,10 @@ const ProfileMore = () => {
       {loading ? (
         <div></div>
       ) : (
-        <div className="bg-white dark:bg-gray-800">
+        <div className="bg-quartenary dark:bg-gray-800 p-4">
           <div className="container mx-auto bg-white dark:bg-gray-800 rounded">
             <div className="xl:w-full border-b border-gray-300 dark:border-gray-700 py-5 bg-white dark:bg-gray-800">
-              <div className="flex w-full mx-auto xl:w-full xl:mx-0 items-center">
+              <div className="flex w-11/12 mx-auto xl:w-full xl:mx-0 items-center p-3">
                 <p className="text-lg text-gray-800 dark:text-gray-100 font-bold">
                   Profile
                 </p>
@@ -491,13 +491,13 @@ const ProfileMore = () => {
               </div>
             </div>
           </div>
-          <div className="container mx-auto w-11/12 xl:w-full">
-            <div className="w-full py-4 sm:px-0 bg-white dark:bg-gray-800 flex justify-end">
-              <button className="bg-gray-200 focus:outline-none transition duration-150 ease-in-out hover:bg-gray-300 dark:bg-gray-700 rounded text-indigo-600 dark:text-indigo-600 px-6 py-2 text-xs mr-4">
+          <div className="container mx-auto w-full xl:w-full">
+            <div className="w-full py-4 sm:px-0 bg-quartenary dark:bg-gray-800 flex justify-end">
+              <button className="bg-secondary focus:outline-none dark:bg-gray-700 rounded text-quartenary dark:text-indigo-600 px-6 py-2 text-xs mr-4">
                 Cancel
               </button>
               <button
-                className="bg-indigo-700 focus:outline-none transition duration-150 ease-in-out hover:bg-indigo-600 rounded text-white px-8 py-2 text-sm"
+                className="bg-tertiary focus:outline-none rounded text-white px-8 py-2 text-sm"
                 type="submit"
               >
                 Save

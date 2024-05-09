@@ -10,7 +10,7 @@ import AuthService from "../services/auth.service";
 const required = (value) => {
   if (!value) {
     return (
-      <div className="text-sm text-gray-500 dark:text-gray-300">
+      <div className="text-sm text-quartenary dark:text-gray-300">
         This field is required!
       </div>
     );
@@ -116,14 +116,14 @@ const Register = (props) => {
   };
 
   return (
-    <div className="max-w-lg mx-auto m-20 bg-opacity-70 backdrop-filter backdrop-blur-md dark:backdrop-filter dark:bg-opacity-70 dark:backdrop-blur-md bg-white dark:bg-[#111829] rounded-lg shadow-md px-8 py-10 flex flex-col items-center">
+    <div className="max-w-lg mx-auto m-20 bg-opacity-70 backdrop-filter backdrop-blur-md dark:backdrop-filter dark:bg-opacity-70 dark:backdrop-blur-md bg-tertiary dark:bg-primary rounded-lg shadow-md px-16 py-28 flex flex-col items-center">
       <img
         src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
         alt="profile-img"
         className="profile-img-card"
       />
-      <h1 className="text-xl font-bold text-center text-gray-700 dark:text-gray-200 mb-8">
-        Welcome to RestCoffee
+      <h1 className="text-xl font-bold text-center text-quartenary dark:text-gray-200 mb-5 mt-4">
+        Welcome to Coffee & Plates
       </h1>
       <Form
         onSubmit={handleRegister}
@@ -135,7 +135,7 @@ const Register = (props) => {
             <div className="w-full">
               <label
                 htmlFor="firstName"
-                className="text-sm text-gray-700 dark:text-gray-200 mr-2"
+                className="text-sm text-quartenary dark:text-gray-200 mr-2"
               >
                 Name:
               </label>
@@ -151,7 +151,7 @@ const Register = (props) => {
 
               <label
                 htmlFor="username"
-                className="text-sm text-gray-700 dark:text-gray-200 mr-2"
+                className="text-sm text-quartenary dark:text-gray-200 mr-2"
               >
                 Username:
               </label>
@@ -167,7 +167,7 @@ const Register = (props) => {
 
               <label
                 htmlFor="email"
-                className="text-sm text-gray-700 dark:text-gray-200 mr-2"
+                className="text-sm text-quartenary dark:text-gray-200 mr-2"
               >
                 Email:
               </label>
@@ -184,7 +184,7 @@ const Register = (props) => {
 
               <label
                 htmlFor="password"
-                className="text-sm text-gray-700 dark:text-gray-200 mr-2"
+                className="text-sm text-quartenary dark:text-gray-200 mr-2"
               >
                 Password:
               </label>
@@ -200,7 +200,7 @@ const Register = (props) => {
 
               <label
                 htmlFor="phone"
-                className="text-sm text-gray-700 dark:text-gray-200 mr-2"
+                className="text-sm text-quartenary dark:text-gray-200 mr-2"
               >
                 Phone:
               </label>
@@ -237,7 +237,7 @@ const Register = (props) => {
         {!successful && (
           <button
             type="submit"
-            className="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-md shadow-sm"
+            className="bg-quartenary hover:bg-tertiary text-secondary font-medium py-2 px-4 rounded-md shadow-sm"
           >
             Register
           </button>
@@ -245,10 +245,10 @@ const Register = (props) => {
       </Form>
       {!successful && (
         <div className="mt-4 text-center">
-          <span className="text-sm text-gray-500 dark:text-gray-300">
+          <span className="text-sm text-quartenary dark:text-gray-300">
             Already have an account?{" "}
           </span>
-          <Link to={"/login"} className="text-blue-500 hover:text-blue-600">
+          <Link to={"/login"} className="text-tertiary hover:text-quartenary">
             Login
           </Link>
         </div>
