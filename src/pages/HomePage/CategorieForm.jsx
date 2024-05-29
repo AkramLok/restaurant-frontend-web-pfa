@@ -1,9 +1,10 @@
 import React, { useEffect, useState, useRef } from "react";
 import Form from "react-validation/build/form";
 import CheckButton from "react-validation/build/button";
-import AuthService from "../../services/auth.service";
-import RewardService from "../../services/reward.service";
 import Input from "react-validation/build/input";
+import CategorieService from "../../services/categorie.service";
+import AuthService from "../../services/auth.service";
+import RestService from "../../services/restaurant.service";
 
 const required = (value) => {
   if (!value) {
@@ -15,21 +16,13 @@ const required = (value) => {
   }
 };
 
-const lessThanZero = (value) => {
-  if (value < 0) {
-    return (
-      <div className="text-sm text-gray-500 dark:text-gray-300">
-        Number must be greater than or equal to 0!
-      </div>
-    );
-  }
-};
-
-const RewardForm = ({ product, toggleModal, updateCategories }) => {
+const CategorieForm = ({ restaurantId, toggleModal, updateCategories }) => {
   const [currentUser, setCurrentUser] = useState(undefined);
   const [loading, setLoading] = useState(true);
+  const [restaurantSelected, setRestaurantSelected] = useState({});
+  const [ownerWithRestaurants, setOwnerWithRestaurants] = useState(null);
   const [name, setName] = useState("");
-  const [requiredPoints, setRequiredPoints] = useState("");
+  const [description, setDescription] = useState("");
   const [successful, setSuccessful] = useState(false);
   const [message, setMessage] = useState("");
   const form = useRef();
@@ -43,14 +36,14 @@ const RewardForm = ({ product, toggleModal, updateCategories }) => {
     }
   }, []);
 
-  const handleReward = (e) => {
+  const handleCategorie = (e) => {
     e.preventDefault();
     setMessage("");
     setSuccessful(false);
 
     form.current.validateAll();
     if (checkBtn.current.context._errors.length === 0) {
-      RewardService.addRewardByProductId(requiredPoints, product.id)
+      CategorieService.addCategorie(name, restaurantId)
         .then((response) => {
           console.log("Response:", response); // Check the value of response
           if (response && response.data) {
@@ -58,7 +51,6 @@ const RewardForm = ({ product, toggleModal, updateCategories }) => {
             setMessage(response.data.message);
             setSuccessful(true);
             updateCategories();
-            setRequiredPoints("");
             //toggleModal();
           } else {
             console.error("Response or response data is undefined.");
@@ -84,22 +76,22 @@ const RewardForm = ({ product, toggleModal, updateCategories }) => {
   return (
     <div className="flex items-center justify-center p-12">
       <div className="mx-auto w-full max-w-[550px]">
-        <Form onSubmit={handleReward} ref={form}>
+        <Form onSubmit={handleCategorie} ref={form}>
           <div className="mb-5">
             <label
-              htmlFor="requiredPoints"
+              htmlFor="name"
               className="mb-3 block text-base font-medium text-black"
             >
-              Required Points{console.log(product)}
+              Categorie Name
             </label>
             <Input
-              type="number"
-              name="requiredPoints"
-              id="requiredPoints"
-              placeholder="Enter required points"
-              value={requiredPoints}
-              onChange={(e) => setRequiredPoints(e.target.value)}
-              validations={[required, lessThanZero]} // Add lessThanZero validator
+              type="text"
+              name="name"
+              id="name"
+              placeholder="Enter categorie name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              validations={[required]}
               className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
             />
           </div>
@@ -142,4 +134,4 @@ const RewardForm = ({ product, toggleModal, updateCategories }) => {
   );
 };
 
-export default RewardForm;
+export default CategorieForm;

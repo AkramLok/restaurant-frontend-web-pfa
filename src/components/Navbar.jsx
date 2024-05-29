@@ -266,7 +266,17 @@ const Navbar = () => {
                   to={"/rewards"}
                   className="hover:text-gray-300 dark:text-white"
                 >
-                  Rewards
+                  Rewards & Discounts
+                </Link>
+              </li>
+            )}
+            {currentUser && (
+              <li>
+                <Link
+                  to={"/dashboard"}
+                  className="hover:text-gray-300 dark:text-white"
+                >
+                  Dashboard
                 </Link>
               </li>
             )}

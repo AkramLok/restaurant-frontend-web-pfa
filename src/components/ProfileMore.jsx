@@ -51,9 +51,9 @@ const ProfileMore = () => {
       {loading ? (
         <div></div>
       ) : (
-        <div className="bg-quartenary dark:bg-gray-800 p-4">
-          <div className="container mx-auto bg-white dark:bg-gray-800 rounded">
-            <div className="xl:w-full border-b border-gray-300 dark:border-gray-700 py-5 bg-white dark:bg-gray-800">
+        <div className="bg-quartenary bg-gray dark:bg-black p-4">
+          <div className="container mx-auto dark:bg-gray-800 rounded mb-4">
+            <div className="xl:w-full py-5 bg-white dark:bg-gray-800">
               <div className="flex w-11/12 mx-auto xl:w-full xl:mx-0 items-center p-3">
                 <p className="text-lg text-gray-800 dark:text-gray-100 font-bold">
                   Profile
@@ -74,11 +74,11 @@ const ProfileMore = () => {
                 </div>
               </div>
             </div>
-            <div className="container mx-auto px-4">
+            {/*<div className="md:flex md:justify-between">
+            <div className="container mx-auto px-4 bg-blue">
               <h3 className="text-lg text-gray-800 dark:text-gray-100">
                 Profile: {currentUser.username}
               </h3>
-              <div className="md:flex md:justify-between">
                 <div className="md:w-1/2">
                   <p className="text-lg text-gray-800 dark:text-gray-100 mt-4 md:mt-0">
                     Token: {currentUser.accessToken.substring(0, 20)} ...{" "}
@@ -104,9 +104,9 @@ const ProfileMore = () => {
                       ))}
                   </ul>
                 </div>
-              </div>
             </div>
-            <div className="mx-auto">
+              </div>*/}
+            <div className="mx-auto mt-8">
               <div className="w-full mx-auto xl:mx-0">
                 <div className="rounded relative mt-8 h-48">
                   <img
@@ -236,8 +236,8 @@ const ProfileMore = () => {
                   >
                     Email
                   </label>
-                  <div className="border border-green-400 shadow-sm rounded flex">
-                    <div className="px-4 py-3 dark:text-gray-100 flex items-center border-r border-green-400">
+                  <div className="border border-gray-300 shadow-sm rounded flex">
+                    <div className="px-4 py-3 dark:text-gray-100 flex items-center">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         className="icon icon-tabler icon-tabler-mail"
@@ -266,7 +266,7 @@ const ProfileMore = () => {
                       disabled
                     />
                   </div>
-                  <div className="flex justify-between items-center pt-1 text-green-400">
+                  <div className="flex justify-between items-center pt-1">
                     <p className="text-xs">Email submission success!</p>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"

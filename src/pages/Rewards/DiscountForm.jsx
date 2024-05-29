@@ -62,6 +62,7 @@ const DiscountForm = ({ product, toggleModal, updateCategories }) => {
             setMessage(response.data.message);
             setSuccessful(true);
             updateCategories();
+            setDiscountPercentage("");
           } else {
             setMessage("An error occurred while processing your request.");
             setSuccessful(false);

@@ -6,12 +6,14 @@ import AuthService from "./services/auth.service";
 
 import Login from "./components/Login";
 import Register from "./components/Register";
-import Home from "./components/Home";
+//import Home from "./components/Home";
+import Home from "./pages/HomePage/Home";
 import Profile from "./components/Profile";
 import BoardUser from "./components/BoardUser";
 import BoardModerator from "./components/BoardModerator";
 import BoardAdmin from "./components/BoardAdmin";
 import Menu from "./pages/Menu/Menu";
+import Dashboard from "./pages/Dashboard/Dashboard";
 import NewRestaurant from "./pages/Restaurant/NewRestaurant";
 import NewCategorie from "./pages/Categories/NewCategorie";
 import GetAllProducts from "./pages/Products/GetAllProducts";
@@ -72,6 +74,7 @@ const App = () => {
         <Route exact path="/profile" element={<ProfileMore />} />
         <Route exact path="/menu" element={<Menu />} />
         <Route exact path="/rewards" element={<Rewards />} />
+        <Route exact path="/dashboard" element={<Dashboard />} />
         <Route exact path="/restaurant/new" element={<NewRestaurant />} />
         <Route exact path="/categorie/new" element={<NewCategorie />} />
         <Route exact path="/product/all" element={<GetAllProducts />} />
