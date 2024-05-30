@@ -8,7 +8,7 @@ import CategorieForm from "./CategorieForm";
 import ProductForm from "./ProductForm";
 import UpdateProductForm from "./UpdateProductForm";
 import ProductService from "../../services/product.service";
-import Skeleton from "./SkeletonOld";
+import Skeleton from "./Skeleton";
 
 import { useLocation } from "react-router-dom";
 import Breadcrumbs from "../../components/Breadcrumbs";

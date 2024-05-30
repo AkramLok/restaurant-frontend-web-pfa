@@ -13,8 +13,10 @@ import HomeVisit from "../../components/Home";
 import { useLocation } from "react-router-dom";
 import Breadcrumbs from "../../components/Breadcrumbs";
 import GeoLocationShow from "./GeoLocationShow";
+import AuthService from "../../services/auth.service";
 
 const Menu = () => {
+  const [currentUser, setCurrentUser] = useState(undefined);
   const [restaurantOwned, setRestaurantOwned] = useState(null);
   const [cateRestOwned, setCateRestOwned] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -31,6 +33,7 @@ const Menu = () => {
   const [address, setAddress] = useState("");
   const [deleteProductByCategoryId, setDeleteProductByCategoryId] =
     useState("");
+  const user = JSON.parse(localStorage.getItem("user"));
 
   useEffect(() => {
     const fetchRestaurants = async () => {
@@ -83,6 +86,14 @@ const Menu = () => {
       }
     };
     fetchRestaurants();
+  }, []);
+
+  useEffect(() => {
+    const user = AuthService.getCurrentUser();
+
+    if (user) {
+      setCurrentUser(user);
+    }
   }, []);
 
   // Function to toggle visibility of categories
@@ -181,7 +192,7 @@ const Menu = () => {
         //   Loading restaurant data. Please wait...
         // </p>
         <Skeleton />
-      ) : restaurantOwned ? (
+      ) : currentUser ? (
         <div>
           <section className="relative block h-500-px">
             <div
