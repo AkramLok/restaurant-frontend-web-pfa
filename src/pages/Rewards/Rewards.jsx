@@ -253,7 +253,7 @@ const Rewards = () => {
                         <button
                           className={`rounded-md p-2 ${
                             applyIsActivatedFilter
-                              ? "bg-blue-500 hover:bg-blue-600 text-white"
+                              ? "bg-tertiary hover:bg-[#007B82] text-white"
                               : "bg-gray-200 hover:bg-gray-300 text-gray-800"
                           }`}
                           onClick={toggleIsActivatedFilter}

@@ -18,6 +18,22 @@ const addRestaurant = (formData) => {
   //return axios.get(API_URL + "admin", { headers: authHeader() });
 };
 
+const modifyRestaurant = (formData) => {
+  const user = JSON.parse(localStorage.getItem("user"));
+  const token = user.accessToken;
+
+  console.log(token);
+
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  return axios.put(API_URL, formData, config);
+  //return axios.get(API_URL + "admin", { headers: authHeader() });
+};
+
 const getRestaurantByOwnerId = () => {
   const user = JSON.parse(localStorage.getItem("user"));
   const token = user.accessToken;
@@ -32,7 +48,7 @@ const getRestaurantByOwnerId = () => {
 
 const RestService = {
   addRestaurant,
-  //getRestaurantsByOwner,
+  modifyRestaurant,
   getRestaurantByOwnerId,
 };
 

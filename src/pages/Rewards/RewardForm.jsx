@@ -124,7 +124,7 @@ const RewardForm = ({ product, toggleModal, updateCategories }) => {
           <div>
             <button
               type="submit"
-              className="hover:shadow-form rounded-md bg-[#005055] py-3 px-8 text-base font-semibold text-white outline-none"
+              className="hover:shadow-form rounded-md bg-tertiary hover:bg-[#007B82] py-3 px-8 text-base font-semibold text-white outline-none"
             >
               Add
             </button>

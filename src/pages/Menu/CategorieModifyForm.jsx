@@ -1,9 +1,10 @@
 import React, { useEffect, useState, useRef } from "react";
 import Form from "react-validation/build/form";
 import CheckButton from "react-validation/build/button";
-import AuthService from "../../services/auth.service";
-import DiscountService from "../../services/discount.service";
 import Input from "react-validation/build/input";
+import CategorieService from "../../services/categorie.service";
+import AuthService from "../../services/auth.service";
+import RestService from "../../services/restaurant.service";
 
 const required = (value) => {
   if (!value) {
@@ -15,26 +16,17 @@ const required = (value) => {
   }
 };
 
-const percentageValidator = (value) => {
-  const parsedValue = parseFloat(value);
-  if (isNaN(parsedValue) || parsedValue < 0 || parsedValue > 100) {
-    return (
-      <div className="text-sm text-red-500 dark:text-red-400">
-        Please enter a valid percentage between 0 and 100.
-      </div>
-    );
-  }
-};
-
-const DiscountForm = ({ product, toggleModal, updateCategories }) => {
-  const form = useRef();
-  const checkBtn = useRef();
+const CategorieModifyForm = ({ category, toggleModal, updateCategories }) => {
   const [currentUser, setCurrentUser] = useState(undefined);
   const [loading, setLoading] = useState(true);
-  const [discountPercentage, setDiscountPercentage] = useState("");
+  const [restaurantSelected, setRestaurantSelected] = useState({});
+  const [ownerWithRestaurants, setOwnerWithRestaurants] = useState(null);
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
   const [successful, setSuccessful] = useState(false);
   const [message, setMessage] = useState("");
-  const [errors, setErrors] = useState({});
+  const form = useRef();
+  const checkBtn = useRef();
 
   useEffect(() => {
     const user = AuthService.getCurrentUser();
@@ -44,31 +36,30 @@ const DiscountForm = ({ product, toggleModal, updateCategories }) => {
     }
   }, []);
 
-  const onChangeDiscountPercentage = (e) => {
-    const discountPer = e.target.value;
-    setDiscountPercentage(discountPer);
-  };
-
-  const handleDiscount = (e) => {
+  const handleCategorie = (e) => {
     e.preventDefault();
     setMessage("");
     setSuccessful(false);
 
     form.current.validateAll();
     if (checkBtn.current.context._errors.length === 0) {
-      DiscountService.addDiscountByProductId(discountPercentage, product.id)
+      CategorieService.modifyCategorie(name, category.id)
         .then((response) => {
+          console.log("Response:", response); // Check the value of response
           if (response && response.data) {
+            console.log("Response data:", response.data); // Check the value of response.data
             setMessage(response.data.message);
             setSuccessful(true);
             updateCategories();
-            setDiscountPercentage("");
+            //toggleModal();
           } else {
+            console.error("Response or response data is undefined.");
             setMessage("An error occurred while processing your request.");
             setSuccessful(false);
           }
         })
         .catch((error) => {
+          console.error("Error:", error);
           const resMessage =
             (error.response &&
               error.response.data &&
@@ -85,29 +76,24 @@ const DiscountForm = ({ product, toggleModal, updateCategories }) => {
   return (
     <div className="flex items-center justify-center p-12">
       <div className="mx-auto w-full max-w-[550px]">
-        <Form onSubmit={handleDiscount} ref={form}>
+        <Form onSubmit={handleCategorie} ref={form}>
           <div className="mb-5">
             <label
-              htmlFor="discountPercentage"
+              htmlFor="name"
               className="mb-3 block text-base font-medium text-black"
             >
-              Discount Percentage
+              Categorie Name To Modify
             </label>
             <Input
-              type="number"
-              name="discountPercentage"
-              id="discountPercentage"
-              placeholder="Enter discount percentage"
-              value={discountPercentage}
-              onChange={onChangeDiscountPercentage}
-              validations={[required, percentageValidator]}
+              type="text"
+              name="name"
+              id="name"
+              placeholder="Enter categorie name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              validations={[required]}
               className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
             />
-            {errors.discountPercentage && (
-              <div className="text-sm text-red-500 dark:text-red-400">
-                {errors.discountPercentage}
-              </div>
-            )}
           </div>
 
           {message && (
@@ -132,7 +118,7 @@ const DiscountForm = ({ product, toggleModal, updateCategories }) => {
               type="submit"
               className="hover:shadow-form rounded-md bg-tertiary hover:bg-[#007B82] py-3 px-8 text-base font-semibold text-white outline-none"
             >
-              Add
+              Modifier
             </button>
             <button
               onClick={toggleModal}
@@ -148,4 +134,4 @@ const DiscountForm = ({ product, toggleModal, updateCategories }) => {
   );
 };
 
-export default DiscountForm;
+export default CategorieModifyForm;

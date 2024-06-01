@@ -21,6 +21,25 @@ const addCategorie = (name, restaurantId) => {
   );
 };
 
+const modifyCategorie = (name, categoryId) => {
+  const user = JSON.parse(localStorage.getItem("user"));
+  const token = user.accessToken;
+
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  return axios.put(
+    API_URL + categoryId,
+    {
+      name,
+    },
+    config
+  );
+};
+
 const getCategoriesByRestaurantId = (restaurantId) => {
   const user = JSON.parse(localStorage.getItem("user"));
   const token = user.accessToken;
@@ -35,6 +54,7 @@ const getCategoriesByRestaurantId = (restaurantId) => {
 
 const CategorieService = {
   addCategorie,
+  modifyCategorie,
   getCategoriesByRestaurantId,
 };
 

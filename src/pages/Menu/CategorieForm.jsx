@@ -82,7 +82,7 @@ const CategorieForm = ({ restaurantId, toggleModal, updateCategories }) => {
               htmlFor="name"
               className="mb-3 block text-base font-medium text-black"
             >
-              Categorie Name
+              Categorie Name To Add
             </label>
             <Input
               type="text"
@@ -116,7 +116,7 @@ const CategorieForm = ({ restaurantId, toggleModal, updateCategories }) => {
           <div>
             <button
               type="submit"
-              className="hover:shadow-form rounded-md bg-[#005055] py-3 px-8 text-base font-semibold text-white outline-none"
+              className="hover:shadow-form rounded-md bg-tertiary hover:bg-[#007B82] py-3 px-8 text-base font-semibold text-white outline-none"
             >
               Add
             </button>

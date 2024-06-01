@@ -45,22 +45,16 @@ const Navbar = () => {
     setCurrentUser(undefined);
   };
   const darkModeHandler = () => {
-    setDark((prevDark) => !prevDark); // Toggle dark mode state
+    setDark((prevDark) => !prevDark);
   };
 
   const toggleMenu = () => {
-    setShowMenu(!showMenu); // Toggle menu visibility
+    setShowMenu(!showMenu);
   };
   return (
     <nav class="bg-quartenary sticky top-0 z-10 border-b border-gray-200 dark:bg-gray-900">
       <div class="flex flex-wrap items-center justify-between max-w-screen-xl mx-auto p-4">
         <a href="/" class="flex items-center space-x-3 rtl:space-x-reverse">
-          {/*<img
-            //src="https://flowbite.com/docs/images/logo.svg"
-            src={logo}
-            class="h-10"
-            alt="Flowbite Logo"
-  />*/}
           <svg
             class="css-ze2te4 css-1j6mmh7"
             className="h-7"
@@ -99,13 +93,13 @@ const Navbar = () => {
             <div className="text-white text-sm mr-4">
               <Link
                 to={"/login"}
-                className="dark:text-white mr-2 text-gray-800 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 py-2 md:px-5 md:py-2.5 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800"
+                className="dark:text-white mr-2 text-gray-800 dark:text-white hover:bg-gray-100 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 py-2 md:px-5 md:py-2.5 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800"
               >
                 Login
               </Link>
               <Link
                 to={"/register"}
-                className="dark:text-white text-white bg-primary hover:bg-tertiary focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 md:px-5 md:py-2.5 dark:bg-primary dark:hover:bg-tertiary focus:outline-none dark:focus:ring-blue-800"
+                className="dark:text-white text-white bg-tertiary hover:bg-[#007B82] focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 md:px-5 md:py-2.5 dark:bg-primary dark:hover:bg-tertiary focus:outline-none dark:focus:ring-blue-800"
               >
                 Sign up
               </Link>

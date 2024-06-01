@@ -9,6 +9,7 @@ import ProductForm from "./ProductForm";
 import UpdateProductForm from "./UpdateProductForm";
 import ProductService from "../../services/product.service";
 import Skeleton from "./Skeleton";
+import CategorieModifyForm from "./CategorieModifyForm";
 
 import { useLocation } from "react-router-dom";
 import Breadcrumbs from "../../components/Breadcrumbs";
@@ -22,9 +23,11 @@ const Menu = () => {
   const [imageUrl, setImageUrl] = useState("");
   const [showCategories, setShowCategories] = useState(false); // State to manage visibility of categories
   const [showModal, setShowModal] = useState(false); // State to manage visibility of modal
+  const [showModalModify, setShowModalModify] = useState(false); // State to manage visibility of modal
   const [showModalProduct, setShowModalProduct] = useState(false); // State to manage visibility of modal
   const [showUpdateProductModal, setShowUpdateProductModal] = useState(false); // State to manage visibility of modal
   const [categorieToAddProduct, setCategorieToAddProduct] = useState(null);
+  const [categorieToModify, setCategorieToModify] = useState(null);
   const [productToUpdate, setProductToUpdate] = useState(null);
   const [showMore, setShowMore] = useState(false);
   const [applyIsActivatedFilter, setApplyIsActivatedFilter] = useState(true);
@@ -94,6 +97,11 @@ const Menu = () => {
   // Function to toggle visibility of modal
   const toggleModal = () => {
     setShowModal(!showModal);
+  };
+
+  const toggleModalModify = (category) => {
+    setCategorieToModify(category);
+    setShowModalModify(!showModalModify);
   };
 
   const toggleIsActivatedFilter = () => {
@@ -257,7 +265,7 @@ const Menu = () => {
                         <h3 className="mb-4 text-lg font-bold">Categories:</h3>
                         <button
                           onClick={toggleModal}
-                          className="mb-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                          className="mb-4 bg-tertiary hover:bg-[#007B82] text-white font-bold py-2 px-4 rounded"
                         >
                           Add New Category
                         </button>
@@ -298,7 +306,7 @@ const Menu = () => {
                           <button
                             className={`rounded-md p-2 ${
                               applyIsActivatedFilter
-                                ? "bg-blue-500 hover:bg-blue-600 text-white"
+                                ? "bg-tertiary hover:bg-[#007B82] text-white"
                                 : "bg-gray-200 hover:bg-gray-300 text-gray-800"
                             }`}
                             onClick={toggleIsActivatedFilter}
@@ -456,12 +464,20 @@ const Menu = () => {
                                 </div>
                               </section>
                             </ul>
-                            <button
-                              onClick={() => toggleModalProduct(category)}
-                              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4"
-                            >
-                              Add New Product in {category.name}
-                            </button>
+                            <div>
+                              <button
+                                onClick={() => toggleModalModify(category)}
+                                className="bg-tertiary hover:bg-[#007B82] text-white font-bold py-2 px-4 rounded mt-4 mr-4"
+                              >
+                                Modifier categorie
+                              </button>
+                              <button
+                                onClick={() => toggleModalProduct(category)}
+                                className="bg-tertiary hover:bg-[#007B82] text-white font-bold py-2 px-4 rounded mt-4"
+                              >
+                                Add New Product in {category.name}
+                              </button>
+                            </div>
                           </div>
                         ))}
                       </div>
@@ -493,6 +509,32 @@ const Menu = () => {
               <CategorieForm
                 restaurantId={restaurantOwned.id}
                 toggleModal={toggleModal}
+                updateCategories={updateCategories}
+              />
+            </div>
+          </div>
+        </div>
+      )}
+      {/* Modal Modify */}
+      {showModalModify && (
+        <div className="fixed z-10 inset-0 overflow-y-auto">
+          <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <div
+              className="fixed inset-0 transition-opacity"
+              aria-hidden="true"
+            >
+              <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
+            </div>
+            <span
+              className="hidden sm:inline-block sm:align-middle sm:h-screen"
+              aria-hidden="true"
+            >
+              &#8203;
+            </span>
+            <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+              <CategorieModifyForm
+                category={categorieToModify}
+                toggleModal={toggleModalModify}
                 updateCategories={updateCategories}
               />
             </div>
