@@ -16,11 +16,11 @@ const Blog = () => {
                 src={c1}
                 alt="Inventory Management"
               />
-              <div class="p-6 bg-white">
-                <h2 class="tracking-widest text-xs title-font font-medium text-gray-400 mb-1">
+              <div class="p-6 bg-white dark:bg-gray-800 dark:text-white">
+                <h2 class="tracking-widest text-xs title-font font-medium text-gray-400 dark:text-white mb-1">
                   FEATURE
                 </h2>
-                <h1 class="title-font text-lg font-medium text-gray-900 mb-3">
+                <h1 class="title-font text-lg font-medium text-gray-900 dark:text-white mb-3">
                   Inventory Management
                 </h1>
                 <p class="leading-relaxed mb-3">
@@ -37,11 +37,11 @@ const Blog = () => {
                 src={c2}
                 alt="Order Tracking"
               />
-              <div class="p-6 bg-white">
-                <h2 class="tracking-widest text-xs title-font font-medium text-gray-400 mb-1">
+              <div class="p-6 bg-white dark:bg-gray-800 dark:text-white">
+                <h2 class="tracking-widest text-xs title-font font-medium text-gray-400 dark:text-white mb-1">
                   FEATURE
                 </h2>
-                <h1 class="title-font text-lg font-medium text-gray-900 mb-3">
+                <h1 class="title-font text-lg font-medium text-gray-900 dark:text-white mb-3">
                   Order Tracking
                 </h1>
                 <p class="leading-relaxed mb-3">
@@ -58,11 +58,11 @@ const Blog = () => {
                 src={c3}
                 alt="Customer Management"
               />
-              <div class="p-6 bg-white">
-                <h2 class="tracking-widest text-xs title-font font-medium text-gray-400 mb-1">
+              <div class="p-6 bg-white dark:bg-gray-800 dark:text-white">
+                <h2 class="tracking-widest text-xs title-font font-medium text-gray-400 dark:text-white mb-1">
                   FEATURE
                 </h2>
-                <h1 class="title-font text-lg font-medium text-gray-900 mb-3">
+                <h1 class="title-font text-lg font-medium text-gray-900 dark:text-white mb-3">
                   Customer Management
                 </h1>
                 <p class="leading-relaxed mb-3">

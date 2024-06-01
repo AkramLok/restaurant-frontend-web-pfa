@@ -1,21 +1,50 @@
-import React from "react";
 import { Bar } from "react-chartjs-2";
+import React, { useEffect, useState } from "react";
+import RestService from "../../services/restaurant.service";
+import CateService from "../../services/categorie.service";
 
 const ProductsData = () => {
-  // Sample product data
-  const products = [
-    { name: "Product A", price: 10, bonusPoints: 5 },
-    { name: "Product B", price: 15, bonusPoints: 7 },
-    { name: "Product C", price: 20, bonusPoints: 10 },
-    // Add more products as needed
-  ];
+  const [restaurantOwned, setRestaurantOwned] = useState(null);
+  const [cateRestOwned, setCateRestOwned] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  // Extracting labels and data for the chart
+  useEffect(() => {
+    const fetchRestaurants = async () => {
+      try {
+        const response = await RestService.getRestaurantByOwnerId();
+        const restaurantOwned = response.data;
+        setRestaurantOwned(restaurantOwned);
+        console.log(restaurantOwned);
+        if (restaurantOwned) {
+          const responseCategories =
+            await CateService.getCategoriesByRestaurantId(restaurantOwned.id);
+          const categoriesRestaurantOwned = responseCategories.data;
+          setCateRestOwned(categoriesRestaurantOwned);
+          console.log(categoriesRestaurantOwned);
+        }
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching your restaurant:", error);
+        setLoading(false);
+      }
+    };
+    fetchRestaurants();
+  }, []);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (!restaurantOwned || cateRestOwned.length === 0) {
+    return <div>No data available</div>;
+  }
+
+  const products = cateRestOwned.flatMap((category) => category.products);
+
   const productNames = products.map((product) => product.name);
   const productPrices = products.map((product) => product.price);
   const productBonusPoints = products.map((product) => product.bonusPoints);
 
-  // Chart data
   const data = {
     labels: productNames,
     datasets: [
@@ -40,10 +69,32 @@ const ProductsData = () => {
     ],
   };
 
+  const options = {
+    scales: {
+      x: {
+        ticks: {
+          color: "black",
+        },
+      },
+      y: {
+        ticks: {
+          color: "black",
+        },
+      },
+    },
+    plugins: {
+      legend: {
+        labels: {
+          color: "black",
+        },
+      },
+    },
+  };
+
   return (
     <div>
       <h2>Products Chart</h2>
-      <Bar data={data} />
+      <Bar data={data} options={options} />
     </div>
   );
 };

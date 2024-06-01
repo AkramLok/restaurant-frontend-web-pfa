@@ -6,8 +6,9 @@ import Chart from "chart.js/auto";
 
 const OrdersData = () => {
   const [restaurantOwned, setRestaurantOwned] = useState(null);
-  const [orders, setOrders] = useState(null);
+  const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [chart, setChart] = useState(null);
 
   const calculateStats = (orders) => {
@@ -34,7 +35,7 @@ const OrdersData = () => {
     return {
       maxPrice: max,
       minPrice: min,
-      avgPrice: avg,
+      avgPrice: avg.toFixed(2), // Fix the average to 2 decimal places
     };
   };
 
@@ -50,10 +51,10 @@ const OrdersData = () => {
         );
         const ordersRestaurantOwned = responseOrders.data;
         setOrders(ordersRestaurantOwned);
-
         setLoading(false);
       } catch (error) {
         console.error("Error fetching your restaurant:", error);
+        setError("Error fetching data. Please try again later.");
         setLoading(false);
       }
     };
@@ -62,11 +63,13 @@ const OrdersData = () => {
   }, []);
 
   useEffect(() => {
-    if (!orders) return;
+    if (orders.length === 0) return;
 
-    const ctx = document.getElementById("orderChart");
+    const ctx = document.getElementById("orderChart").getContext("2d");
     const orderLabels = orders.map((order, index) => `Order ${index + 1}`);
     const orderPrices = orders.map((order) => order.totalPrice);
+
+    if (chart) chart.destroy(); // Destroy previous chart instance if it exists
 
     const newChart = new Chart(ctx, {
       type: "bar",
@@ -86,42 +89,60 @@ const OrdersData = () => {
         scales: {
           y: {
             beginAtZero: true,
+            ticks: {
+              color: "black",
+            },
+          },
+          x: {
+            ticks: {
+              color: "black",
+            },
+          },
+        },
+        plugins: {
+          legend: {
+            labels: {
+              color: "black",
+            },
           },
         },
       },
     });
 
     setChart(newChart);
-
-    return () => {
-      if (chart) chart.destroy();
-    };
   }, [orders]);
 
   const stats = calculateStats(orders);
 
   return (
-    <div>
-      {orders === null ? (
+    <div className="p-6 bg-white rounded-lg shadow-md">
+      {loading ? (
         <p>Loading...</p>
+      ) : error ? (
+        <p className="text-red-500">{error}</p>
       ) : (
         <div>
-          <h2>Orders for {restaurantOwned && restaurantOwned.name}</h2>
+          <h2 className="text-xl font-bold mb-4">
+            Orders for {restaurantOwned && restaurantOwned.name}
+          </h2>
           <DashboardCard
-            title="Nombre des ordres fait au restaurant"
+            title="Total Orders"
             content={`Total: ${orders && orders.length}`}
           />
-          {orders &&
-            orders.map((order) => (
-              <div key={order.id}>
+          <div className="my-4">
+            {orders.map((order) => (
+              <div key={order.id} className="mb-2 p-2 border rounded">
                 <p>Order ID: {order.id}</p>
+                <p>Total Price: ${order.totalPrice}</p>
+                <p>Order Date: {new Date(order.date).toLocaleDateString()}</p>
                 {/* Add more details about each order as needed */}
               </div>
             ))}
-          <h2>Order Statistics</h2>
-          <p>Maximum Total Price: {stats.maxPrice}</p>
-          <p>Minimum Total Price: {stats.minPrice}</p>
-          <p>Average Total Price: {stats.avgPrice}</p>
+          </div>
+          <h2 className="text-xl font-bold mb-2">Order Statistics</h2>
+          <p>Maximum Total Price: ${stats.maxPrice}</p>
+          <p>Minimum Total Price: ${stats.minPrice}</p>
+          <p>Average Total Price: ${stats.avgPrice}</p>
           <canvas id="orderChart" width="600" height="400"></canvas>
         </div>
       )}
