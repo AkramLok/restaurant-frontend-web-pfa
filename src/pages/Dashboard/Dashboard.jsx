@@ -42,7 +42,7 @@ const Dashboard = () => {
       case "FeedbacksData":
         return <FeedbacksData />;
       default:
-        return <GeneralData />;
+        return <ProductsData />;
     }
   };
 

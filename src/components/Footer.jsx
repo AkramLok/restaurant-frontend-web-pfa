@@ -44,7 +44,7 @@ const Footer = () => {
               <li>
                 <a
                   class="text-white dark:text-white hover:text-gray-400"
-                  href="/menu"
+                  href="/login"
                 >
                   Products
                 </a>
@@ -52,7 +52,7 @@ const Footer = () => {
               <li>
                 <a
                   class="text-white dark:text-white hover:text-gray-400"
-                  href="/menu"
+                  href="/login"
                 >
                   Produits Activés
                 </a>
@@ -60,7 +60,7 @@ const Footer = () => {
               <li>
                 <a
                   class="text-white dark:text-white hover:text-gray-400"
-                  href="/menu"
+                  href="/login"
                 >
                   Categories
                 </a>
@@ -75,7 +75,7 @@ const Footer = () => {
               <li>
                 <a
                   class="text-white dark:text-white hover:text-gray-400"
-                  href="/dashboard"
+                  href="/login"
                 >
                   Ordres
                 </a>
@@ -83,7 +83,7 @@ const Footer = () => {
               <li>
                 <a
                   class="text-white dark:text-white hover:text-gray-400"
-                  href="/dashboard"
+                  href="/login"
                 >
                   Serveurs
                 </a>
@@ -91,7 +91,7 @@ const Footer = () => {
               <li>
                 <a
                   class="text-white dark:text-white hover:text-gray-400"
-                  href="/dashboard"
+                  href="/login"
                 >
                   Clients
                 </a>
@@ -99,7 +99,7 @@ const Footer = () => {
               <li>
                 <a
                   class="text-white dark:text-white hover:text-gray-400"
-                  href="/dashboard"
+                  href="/login"
                 >
                   Points
                 </a>
@@ -114,7 +114,7 @@ const Footer = () => {
               <li>
                 <a
                   class="text-white dark:text-white hover:text-gray-400"
-                  href="/rewards"
+                  href="/login"
                 >
                   Rewards
                 </a>
@@ -122,7 +122,7 @@ const Footer = () => {
               <li>
                 <a
                   class="text-white dark:text-white hover:text-gray-400"
-                  href="/rewards"
+                  href="/login"
                 >
                   Discounts
                 </a>
