@@ -427,7 +427,7 @@ const NewRestaurant = () => {
                 <div>
                   <button
                     type="submit"
-                    class="hover:shadow-form rounded-md bg-[#005055] py-3 px-8 text-white font-semibold dark:text-white outline-none"
+                    class="hover:shadow-form rounded-md bg-tertiary hover:bg-[#007B82] py-3 px-8 text-white font-semibold dark:text-white outline-none"
                   >
                     {restaurantOwned.id
                       ? "Modify Restaurant " + restaurantOwned.name

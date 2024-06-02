@@ -63,53 +63,45 @@ const OrdersData = () => {
   }, []);
 
   useEffect(() => {
-    if (orders.length === 0) return;
+    if (orders.length > 0) {
+      setTimeout(() => {
+        const canvas = document.getElementById("orderChart");
+        if (!canvas) {
+          console.error("Canvas element not found");
+          return;
+        }
+        const ctx = canvas.getContext("2d");
+        if (!ctx) {
+          console.error("Failed to get canvas context");
+          return;
+        }
 
-    const ctx = document.getElementById("orderChart").getContext("2d");
-    const orderLabels = orders.map((order, index) => `Order ${index + 1}`);
-    const orderPrices = orders.map((order) => order.totalPrice);
+        if (chart) chart.destroy();
 
-    if (chart) chart.destroy(); // Destroy previous chart instance if it exists
-
-    const newChart = new Chart(ctx, {
-      type: "bar",
-      data: {
-        labels: orderLabels,
-        datasets: [
-          {
-            label: "Total Price",
-            data: orderPrices,
-            backgroundColor: "rgba(75, 192, 192, 0.2)",
-            borderColor: "rgba(75, 192, 192, 1)",
-            borderWidth: 1,
+        const newChart = new Chart(ctx, {
+          type: "bar",
+          data: {
+            labels: orders.map((order, index) => `Order ${index + 1}`),
+            datasets: [
+              {
+                label: "Total Price",
+                data: orders.map((order) => order.totalPrice),
+                backgroundColor: "rgba(75, 192, 192, 0.2)",
+                borderColor: "rgba(75, 192, 192, 1)",
+                borderWidth: 1,
+              },
+            ],
           },
-        ],
-      },
-      options: {
-        scales: {
-          y: {
-            beginAtZero: true,
-            ticks: {
-              color: "black",
+          options: {
+            scales: {
+              y: { beginAtZero: true },
             },
           },
-          x: {
-            ticks: {
-              color: "black",
-            },
-          },
-        },
-        plugins: {
-          legend: {
-            labels: {
-              color: "black",
-            },
-          },
-        },
-      },
-    });
+        });
 
-    setChart(newChart);
+        setChart(newChart);
+      }, 0);
+    }
   }, [orders]);
 
   const stats = calculateStats(orders);
@@ -134,7 +126,7 @@ const OrdersData = () => {
               <div key={order.id} className="mb-2 p-2 border rounded">
                 <p>Order ID: {order.id}</p>
                 <p>Total Price: ${order.totalPrice}</p>
-                <p>Order Date: {new Date(order.date).toLocaleDateString()}</p>
+                {/*<p>Order Date: {new Date(order.date).toLocaleDateString()}</p>*/}
                 {/* Add more details about each order as needed */}
               </div>
             ))}

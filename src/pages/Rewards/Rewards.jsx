@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import RestService from "../../services/restaurant.service";
 import CateService from "../../services/categorie.service";
+import RewardService from "../../services/reward.service";
+import DiscountService from "../../services/discount.service";
 import logoNoResto from "../../assets/images/placeholder-profile.jpg";
 //import coverNoResto from "../../assets/images/placeholder-image.webp";
 import coverNoResto from "../../assets/images/coverNoResto.jpg";
@@ -26,6 +28,7 @@ const Rewards = () => {
   const [productToAddDiscount, setProductToAddDiscount] = useState(null);
   const [showMore, setShowMore] = useState(false);
   const [address, setAddress] = useState("");
+  const [products, setProducts] = useState("");
   const [applyIsActivatedFilter, setApplyIsActivatedFilter] = useState(true);
   const [deleteProductByCategoryId, setDeleteProductByCategoryId] =
     useState("");
@@ -83,10 +86,75 @@ const Rewards = () => {
     fetchRestaurants();
   }, []);
 
+  useEffect(() => {
+    const fetchProductsDetails = async () => {
+      // Guard clause to prevent unnecessary fetches
+      if (!cateRestOwned || !cateRestOwned.length) return;
+
+      const updatedCategories = await Promise.all(
+        cateRestOwned.map(async (category) => {
+          const updatedProducts = await Promise.all(
+            category.products.map(async (product) => {
+              const [rewardResult, discountResult] = await Promise.all([
+                checkRewardForProduct(product.id),
+                checkDiscountForProduct(product.id),
+              ]);
+
+              // Only update product if necessary
+              return {
+                ...product,
+                reward:
+                  rewardResult.reward !== product.reward
+                    ? rewardResult.reward
+                    : product.reward,
+                discount:
+                  discountResult.discount !== product.discount
+                    ? discountResult.discount
+                    : product.discount,
+              };
+            })
+          );
+
+          return { ...category, products: updatedProducts };
+        })
+      );
+
+      // Only update state if it actually changed
+      if (JSON.stringify(cateRestOwned) !== JSON.stringify(updatedCategories)) {
+        setCateRestOwned(updatedCategories);
+      }
+    };
+
+    if (cateRestOwned && cateRestOwned.length > 0) {
+      fetchProductsDetails();
+    }
+  }, [cateRestOwned]); // Ensure this effect is correctly dependent only on cateRestOwned
+
   // Function to toggle visibility of categories
   const toggleCategories = () => {
     setShowCategories(!showCategories);
     setShowMore(!showMore);
+  };
+
+  // Add methods to check if there's a reward or discount for a product
+  const checkRewardForProduct = async (productId) => {
+    try {
+      const { data } = await RewardService.getRewardByProductId(productId);
+      return data ? { reward: data } : { reward: null };
+    } catch (error) {
+      console.error("Failed to fetch reward:", error);
+      return { reward: null };
+    }
+  };
+
+  const checkDiscountForProduct = async (productId) => {
+    try {
+      const { data } = await DiscountService.getDiscountByProductId(productId);
+      return data ? { discount: data } : { discount: null };
+    } catch (error) {
+      console.error("Failed to fetch discount:", error);
+      return { discount: null };
+    }
   };
 
   const toggleIsActivatedFilter = () => {
@@ -383,6 +451,22 @@ const Rewards = () => {
                                                 "..."
                                               : product.info}
                                           </p>
+                                          {product.reward && (
+                                            <p>
+                                              Reward Points Required:{" "}
+                                              {product.reward.requiredPoints}
+                                            </p>
+                                          )}
+                                          {product.discount && (
+                                            <p>
+                                              Discount:{" "}
+                                              {
+                                                product.discount
+                                                  .discountPercentage
+                                              }
+                                              % off
+                                            </p>
+                                          )}
                                         </div>{" "}
                                       </div>
                                     ))}

@@ -28,7 +28,7 @@ const Menu = () => {
   const [showUpdateProductModal, setShowUpdateProductModal] = useState(false); // State to manage visibility of modal
   const [categorieToAddProduct, setCategorieToAddProduct] = useState(null);
   const [productToUpdate, setProductToUpdate] = useState(null);
-  const [showMore, setShowMore] = useState(false);
+  const [showMore, setShowMore] = useState(true);
   const [applyIsActivatedFilter, setApplyIsActivatedFilter] = useState(true);
   const [address, setAddress] = useState("");
   const [deleteProductByCategoryId, setDeleteProductByCategoryId] =
@@ -335,7 +335,7 @@ const Menu = () => {
                   </div>
 
                   {/* Categories section */}
-                  {showCategories && cateRestOwned && (
+                  {!showCategories && cateRestOwned && (
                     <div className="mt-10 py-10 border-t border-blueGray-200">
                       <div className="flex flex-wrap justify-center">
                         <div className="w-full lg:w-11/12 px-4">
