@@ -107,7 +107,7 @@ const OrdersData = () => {
   const stats = calculateStats(orders);
 
   return (
-    <div className="p-6 bg-white rounded-lg shadow-md">
+    <div className="p-6 bg-white dark:bg-gray-800 dark:text-white rounded-lg shadow-md">
       {loading ? (
         <p>Loading...</p>
       ) : error ? (

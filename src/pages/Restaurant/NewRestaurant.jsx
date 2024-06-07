@@ -43,6 +43,7 @@ const NewRestaurant = () => {
   const [description, setDescription] = useState("");
   const [instagram, setInstagram] = useState("");
   const [priceRange, setPriceRange] = useState("");
+  const [locationError, setLocationError] = useState("");
 
   const [logoFile, setLogoFile] = useState(null);
   const [coverFile, setCoverFile] = useState(null);
@@ -94,6 +95,7 @@ const NewRestaurant = () => {
 
   const handleLocationChange = (coords) => {
     setLocation(coords);
+    setLocationError(""); // Clear location error when location is set
   };
 
   const handleRestaurant = (e) => {
@@ -117,6 +119,11 @@ const NewRestaurant = () => {
         ownerId,
       })
     );
+
+    if (!location) {
+      setLocationError("Location is required!");
+      return;
+    }
 
     if (checkBtn.current.context._errors.length === 0) {
       const formData = new FormData();
@@ -205,12 +212,12 @@ const NewRestaurant = () => {
   };
 
   return (
-    <section class="text-gray-600 body-font">
+    <section className="text-gray-600 body-font">
       <Breadcrumbs paths={getBreadcrumbs()} />
       {loading ? (
         <Skeleton />
       ) : (
-        <div class="container px-5 py-24 mx-auto bg-white dark:bg-opacity-80 dark:bg-[#111827] bg-opacity-85 backdrop-filter backdrop-blur-md body-font">
+        <div className="container px-5 py-24 mx-auto bg-white dark:bg-opacity-80 dark:bg-[#111827] bg-opacity-85 backdrop-filter backdrop-blur-md body-font">
           <div className="flex items-center justify-center p-5">
             <div className="mx-auto w-full max-w-[1280px]">
               <span className="block text-3xl font-semibold mb-4 dark:text-white">
@@ -219,10 +226,10 @@ const NewRestaurant = () => {
                   : "Add Restaurant"}
               </span>
               <Form onSubmit={handleRestaurant} ref={form}>
-                <div class="mb-5">
+                <div className="mb-5">
                   <label
-                    for="name"
-                    class="mb-3 block dark:text-white font-medium text-[#07074D]"
+                    htmlFor="name"
+                    className="mb-3 block dark:text-white font-medium text-[#07074D]"
                   >
                     Restaurant/Coffee Shop Name
                   </label>
@@ -238,10 +245,10 @@ const NewRestaurant = () => {
                   />
                 </div>
 
-                <div class="mb-5">
+                <div className="mb-5">
                   <label
-                    for="email"
-                    class="mb-3 dark:text-white block font-medium text-[#07074D]"
+                    htmlFor="email"
+                    className="mb-3 dark:text-white block font-medium text-[#07074D]"
                   >
                     Email Address
                   </label>
@@ -257,10 +264,10 @@ const NewRestaurant = () => {
                   />
                 </div>
 
-                <div class="mb-5">
+                <div className="mb-5">
                   <label
-                    for="location"
-                    class="mb-3 block dark:text-white font-medium text-[#07074D]"
+                    htmlFor="location"
+                    className="mb-3 block dark:text-white font-medium text-[#07074D]"
                   >
                     Location{" "}
                     {location ? console.log(location) : " Not selected !"}
@@ -270,6 +277,7 @@ const NewRestaurant = () => {
                     type="text"
                     name="location"
                     id="location"
+                    required
                     value={
                       location
                         ? "Latitude: " +
@@ -283,12 +291,17 @@ const NewRestaurant = () => {
                     placeholder="Select a location to get coordinates !"
                     className="w-full px-6 mt-5 dark:text-gray-200 dark:bg-gray-600 py-3 rounded-md border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-1 focus:ring-blue-500"
                   />
+                  {locationError && (
+                    <div className="text-sm text-red-500 dark:text-red-300">
+                      {locationError}
+                    </div>
+                  )}
                 </div>
 
-                <div class="mb-5">
+                <div className="mb-5">
                   <label
-                    for="cuisine"
-                    class="mb-3 block dark:text-white font-medium text-[#07074D]"
+                    htmlFor="cuisine"
+                    className="mb-3 block dark:text-white font-medium text-[#07074D]"
                   >
                     Cuisine
                   </label>
@@ -304,10 +317,10 @@ const NewRestaurant = () => {
                   />
                 </div>
 
-                <div class="mb-5">
+                <div className="mb-5">
                   <label
-                    for="phone"
-                    class="mb-3 block dark:text-white font-medium text-[#07074D]"
+                    htmlFor="phone"
+                    className="mb-3 block dark:text-white font-medium text-[#07074D]"
                   >
                     Phone Number
                   </label>
@@ -323,10 +336,10 @@ const NewRestaurant = () => {
                   />
                 </div>
 
-                <div class="mb-5">
+                <div className="mb-5">
                   <label
-                    for="description"
-                    class="mb-3 block dark:text-white font-medium text-[#07074D]"
+                    htmlFor="description"
+                    className="mb-3 block dark:text-white font-medium text-[#07074D]"
                   >
                     Description
                   </label>
@@ -341,10 +354,10 @@ const NewRestaurant = () => {
                   />
                 </div>
 
-                <div class="mb-5">
+                <div className="mb-5">
                   <label
-                    for="instagram"
-                    class="mb-3 block dark:text-white font-medium text-[#07074D]"
+                    htmlFor="instagram"
+                    className="mb-3 block dark:text-white font-medium text-[#07074D]"
                   >
                     Instagram
                   </label>
@@ -360,10 +373,10 @@ const NewRestaurant = () => {
                   />
                 </div>
 
-                <div class="mb-5">
+                <div className="mb-5">
                   <label
-                    for="price_range"
-                    class="mb-3 block dark:text-white font-medium text-[#07074D]"
+                    htmlFor="price_range"
+                    className="mb-3 block dark:text-white font-medium text-[#07074D]"
                   >
                     Price Range
                   </label>
@@ -427,7 +440,7 @@ const NewRestaurant = () => {
                 <div>
                   <button
                     type="submit"
-                    class="hover:shadow-form rounded-md bg-tertiary hover:bg-[#007B82] py-3 px-8 text-white font-semibold dark:text-white outline-none"
+                    className="hover:shadow-form rounded-md bg-tertiary hover:bg-[#007B82] py-3 px-8 text-white font-semibold dark:text-white outline-none"
                   >
                     {restaurantOwned.id
                       ? "Modify Restaurant " + restaurantOwned.name

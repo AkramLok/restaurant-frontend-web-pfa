@@ -60,8 +60,8 @@ const WaitersData = () => {
         <div>
           <h2 className="text-lg font-bold mb-4">Waiters</h2>
           <div className="overflow-auto">
-            <table className="min-w-full shadow-md rounded-lg overflow-hidden">
-              <thead className="bg-white dark:bg-gray-800">
+            <table className="min-w-full shadow-md overflow-hidden">
+              <thead className="bg-white dark:bg-gray-800 dark:text-white">
                 <tr>
                   <th className="px-4 py-2">Name</th>
                   <th className="px-4 py-2">Phone</th>
@@ -70,7 +70,10 @@ const WaitersData = () => {
               </thead>
               <tbody>
                 {waiters.map((waiter) => (
-                  <tr key={waiter.id} className="hover:bg-gray-800 border">
+                  <tr
+                    key={waiter.id}
+                    className="hover:bg-white bg-white dark:text-white dark:bg-gray-800 bg-opacity-25 border"
+                  >
                     <td className="px-4 py-2">{waiter.name}</td>
                     <td className="px-4 py-2">{waiter.phone}</td>
                     <td className="px-4 py-2">{waiter.email}</td>
@@ -78,7 +81,7 @@ const WaitersData = () => {
                 ))}
                 {!waiters ||
                   (waiters && waiters.length === 0 && (
-                    <tr className="hover:bg-gray-100 border">
+                    <tr className="hover:bg-white border">
                       <td colSpan="3" className="px-4 py-2 text-center">
                         No waiters available
                       </td>

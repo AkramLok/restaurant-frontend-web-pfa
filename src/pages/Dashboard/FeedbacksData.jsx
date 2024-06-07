@@ -42,7 +42,7 @@ const FeedbacksData = () => {
         <div className="overflow-x-auto">
           <table className="w-full border-collapse border border-gray-200">
             <thead>
-              <tr className="bg-gray-200">
+              <tr className="bg-gray-200 dark:bg-gray-800 dark:text-white">
                 <th className="py-3 px-6 border">Feedback ID</th>
                 <th className="py-3 px-6 border">Description</th>
                 <th className="py-3 px-6 border">Rating</th>
@@ -51,7 +51,10 @@ const FeedbacksData = () => {
             <tbody>
               {feedbacks &&
                 feedbacks.map((feedback) => (
-                  <tr key={feedback.id} className="hover:bg-gray-100">
+                  <tr
+                    key={feedback.id}
+                    className="hover:bg-gray-100 dark:bg-gray-800 dark:text-white bg-white bg-opacity-25 "
+                  >
                     <td className="py-3 px-6 border">{feedback.id}</td>
                     <td className="py-3 px-6 border">{feedback.description}</td>
                     <td className="py-3 px-6 border">{feedback.rating}</td>
