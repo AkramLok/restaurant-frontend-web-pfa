@@ -4,7 +4,7 @@ This project is the **web application** for restaurant owners to manage their bu
 
 ## Front Links : 
   #### Backend API (Spring Boot): [Restaurant Backend API](https://github.com/AkramLok/restaurant-backend-pfa)
-  #### Mobile application (for Clients) : [Restaurant Moble APP](https://github.com/AkramLok/restaurant-mobile-pfa) - [Restaurant Moble APP2](https://github.com/oussama-krittel/pfa-client-mobile-app )
+  #### Mobile application (for Clients) : [Restaurant Mobile APP](https://github.com/AkramLok/restaurant-mobile-pfa) - [Restaurant Mobile APP2](https://github.com/oussama-krittel/pfa-client-mobile-app )
   #### Mobile application for login test only (waiter login need some id): [Restaurant Moble Test APP](https://github.com/AkramLok/resstaurant-mobile-test-pfa)
 
 ## Features
